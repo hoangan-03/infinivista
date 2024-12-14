@@ -4,9 +4,15 @@ import {APIBaseService} from '../main.service';
 import {IExample, IExamplePagination} from './example.interface';
 
 export class ExampleService extends APIBaseService {
-    private static readonly ROUTES = {
+    //
+    public static readonly ROUTES = {
         example: this.BASE_API_URL + '/example',
         exampleById: (id: string) => this.BASE_API_URL + `/example/${id}`,
+    };
+
+    public static readonly APP_ROUTES = {
+        example: this.API_APP_ROUTE + '/example',
+        exampleById: (id: string) => this.API_APP_ROUTE + `/example/${id}`,
     };
 
     // ONLY GET REQUESTS HAVE .then, others like POST, PUT and DELETE do not have .then
