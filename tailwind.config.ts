@@ -10,48 +10,61 @@ const config: Config = {
         './components/**/*.{js,ts,jsx,tsx,mdx}',
     ],
     theme: {
-        extend: {
-            container: {
-                center: true,
-                screens: {
-                    desktop: '1440px',
-                },
-            },
-            screens: {
-                desktop: '1440px',
-            },
-            colors: {
-                background: 'var(--background)',
-                foreground: 'var(--foreground)',
-            },
-            fontFamily: {
-                montserrat: ['Montserrat', 'sans-serif'],
-            },
-            fontSize: {
-                overline: '0.625rem', // 10px
-                caption: '0.75rem', // 12px
-                paragraph2: '0.875rem', // 14px
-                paragraph1: '1rem', // 16px
-                subtitle2: '1rem', // 16px
-                subtitle1: '1.25rem', // 20px
-                heading6: '1rem', // 16px
-                heading5: '1.25rem', // 20px
-                heading4: '1.75rem', // 28px
-                heading3: '2.25rem', // 36px
-                heading2: '3rem', // 48px
-                heading1: '3.5rem', // 56px
-                display3: '4rem', // 64px
-                display2: '5rem', // 80px
-                display1: '6rem', // 96px
-            },
-            borderRadius: {
-                xs: '5px',
-                sm: '8px',
-                DEFAULT: '10px',
-                lg: '12px',
-                xl: '16px',
-            },
-        },
+    	extend: {
+    		container: {
+    			center: true,
+    			screens: {
+    				desktop: '1440px'
+    			}
+    		},
+    		screens: {
+    			desktop: '1440px'
+    		},
+    		colors: {
+    			background: 'var(--background)',
+    			foreground: 'var(--foreground)',
+    			sidebar: {
+    				DEFAULT: 'hsl(var(--sidebar-background))',
+    				foreground: 'hsl(var(--sidebar-foreground))',
+    				primary: 'hsl(var(--sidebar-primary))',
+    				'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+    				accent: 'hsl(var(--sidebar-accent))',
+    				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+    				border: 'hsl(var(--sidebar-border))',
+    				ring: 'hsl(var(--sidebar-ring))'
+    			}
+    		},
+    		fontFamily: {
+    			montserrat: [
+    				'Montserrat',
+    				'sans-serif'
+    			]
+    		},
+    		fontSize: {
+    			overline: '0.625rem',
+    			caption: '0.75rem',
+    			paragraph2: '0.875rem',
+    			paragraph1: '1rem',
+    			subtitle2: '1rem',
+    			subtitle1: '1.25rem',
+    			heading6: '1rem',
+    			heading5: '1.25rem',
+    			heading4: '1.75rem',
+    			heading3: '2.25rem',
+    			heading2: '3rem',
+    			heading1: '3.5rem',
+    			display3: '4rem',
+    			display2: '5rem',
+    			display1: '6rem'
+    		},
+    		borderRadius: {
+    			xs: '5px',
+    			sm: '8px',
+    			DEFAULT: '10px',
+    			lg: '12px',
+    			xl: '16px'
+    		}
+    	}
     },
     plugins: [
         require('tailwindcss-animate'),
