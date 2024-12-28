@@ -11,6 +11,9 @@ const config: Config = {
     ],
     theme: {
     	extend: {
+			backgroundImage: {
+				'radial-gradient': 'radial-gradient(169.40% 89.55% at 94.76% 6.29%, rgba(0, 0, 0, 0.40) 0%, rgba(255, 255, 255, 0.00) 100%)',
+			},
     		container: {
     			center: true,
     			screens: {
@@ -32,7 +35,8 @@ const config: Config = {
     				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
     				border: 'hsl(var(--sidebar-border))',
     				ring: 'hsl(var(--sidebar-ring))'
-    			}
+    			},
+				'radial-gradient': 'radial-gradient(169.40% 89.55% at 94.76% 6.29%, rgba(0, 0, 0, 0.40) 0%, rgba(255, 255, 255, 0.00) 100%)',
     		},
     		fontFamily: {
     			montserrat: [
@@ -63,7 +67,10 @@ const config: Config = {
     			DEFAULT: '10px',
     			lg: '12px',
     			xl: '16px'
-    		}
+    		},
+			flex: {
+				2: '2 2 0%', // Grow 2 times compared to others
+			}
     	}
     },
     plugins: [

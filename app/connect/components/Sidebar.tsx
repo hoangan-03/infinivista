@@ -10,7 +10,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarTrigger,
-} from '@/app/newsfeed/components/ui/sidebar';
+} from '@/app/connect/components/ui/sidebar';
 
 // Menu items.
 const items = [

@@ -9,6 +9,16 @@ const nextConfig = {
 
         return config;
     },
+    async redirects() {
+        return [
+            // Basic redirect
+            {
+                source: '/connect',
+                destination: '/connect/for-you',
+                permanent: true,
+            },
+        ]
+    },
 };
 
 export default nextConfig;

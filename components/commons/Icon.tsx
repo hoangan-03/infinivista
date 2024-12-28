@@ -1,15 +1,17 @@
 import React from 'react';
 
 import Search from '@/assets/icons/search.svg';
+import Plus from '@/assets/icons/icon-plus.svg';
 import {cn} from '@/lib/utils';
 
 const Icons = {
     Search,
+    Plus,
 };
 
 interface IconProps {
-    width?: number;
-    height?: number;
+    width?: number | string;
+    height?: number | string;
     name: keyof typeof Icons;
     className?: string;
 }

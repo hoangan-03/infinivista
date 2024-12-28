@@ -25,3 +25,63 @@
     --sidebar-ring: 217.2 91.2% 59.8%
   }
 }
+
+o {
+  @apply text-overline; /* 0.625rem */
+}
+
+c {
+  @apply text-caption; /* 0.75rem */
+}
+
+p2 {
+  @apply text-paragraph2; /* 0.875rem */
+}
+
+p1 {
+  @apply text-paragraph1; /* 1rem */
+}
+
+s2 {
+  @apply text-subtitle2; /* 1rem */
+}
+
+s1 {
+  @apply text-subtitle1; /* 1.25rem */
+}
+
+h6 {
+  @apply text-heading6; /* 1rem */
+}
+
+h5 {
+  @apply text-heading5; /* 1.25rem */
+}
+
+h4 {
+  @apply text-heading4; /* 1.75rem */
+}
+
+h3 {
+  @apply text-heading3; /* 2.25rem */
+}
+
+h2 {
+  @apply text-heading2; /* 3rem */
+}
+
+h1 {
+  @apply text-heading1; /* 3.5rem */
+}
+
+d3 {
+  @apply text-display3; /* 4rem */
+}
+
+d2 {
+  @apply text-display2; /* 5rem */
+}
+
+d1 {
+  @apply text-display1; /* 6rem */
+}
