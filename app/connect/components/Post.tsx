@@ -19,15 +19,15 @@ const postMockupData = {
         },
         {
             id: 3,
-            type: 'video',
-            src: 'https://res.cloudinary.com/dght74v9o/video/upload/v1735408640/samples/elephants.mp4',
-            alt: 'Video 1',
-        },
-        {
-            id: 4,
             type: 'image',
             src: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408639/samples/landscapes/beach-boat.jpg',
             alt: 'Image 2',
+        },
+        {
+            id: 4,
+            type: 'video',
+            src: 'https://res.cloudinary.com/dght74v9o/video/upload/v1735408640/samples/elephants.mp4',
+            alt: 'Video 1',
         },
         {
             id: 5,
@@ -127,6 +127,8 @@ const Post: React.FC<PostProps> = ({className}) => {
         return timeStamp;
     };
 
+    const maxNumberOfDisplays = 3;
+
     return (
         <div id='post-frame' className={cn('flex flex-col gap-5 rounded-[1.5rem] p-7 shadow-xl', className)}>
             <section id='post-author' className='flex items-center gap-3'>
@@ -143,24 +145,34 @@ const Post: React.FC<PostProps> = ({className}) => {
             <section id='post-text'>
                 <p1 className='text-justify font-medium'>{postMockupData.text}</p1>
             </section>
-            <section id='post-multimedia' className='grid grid-cols-[repeat(auto-fill,_minmax(180px,_1fr))] gap-3'>
-                {postMockupData.multimedia.map(
-                    (media, index) =>
-                        index < 4 && (
+            <section
+                id='post-multimedia'
+                className='grid auto-rows-fr grid-cols-[repeat(auto-fill,_minmax(188px,_1fr))] gap-3'
+            >
+                {postMockupData.multimedia.map((media, index) => {
+                    const length = postMockupData.multimedia.length;
+                    const overflow = length > maxNumberOfDisplays;
+                    const lastDisplayIndex = maxNumberOfDisplays - 1;
+
+                    return (
+                        index < maxNumberOfDisplays && (
                             <div
                                 id={media.type + '-' + media.id}
                                 key={media.id}
                                 className={`relative h-full w-full rounded-xl object-cover`}
                             >
-                                {index === 3 && (
-                                    <Icon
-                                        name='Plus'
-                                        width='30%'
-                                        height='30%'
-                                        className='absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transform select-none text-[4rem] text-white'
-                                    />
+                                {index === lastDisplayIndex && overflow && (
+                                    // <Icon
+                                    //     name='Plus'
+                                    //     width='30%'
+                                    //     height='30%'
+                                    //     className='absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transform select-none text-[4rem] text-white'
+                                    // />
+                                    <div className='absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transform select-none text-[4rem] text-white'>{length - 2}+</div>
                                 )}
-                                <div className={`h-full w-full ${index === 3 && 'brightness-[10%] filter'}}`}>
+                                <div
+                                    className={`h-full w-full ${index === lastDisplayIndex && overflow && 'brightness-[10%] filter'}}`}
+                                >
                                     {media.type === 'image' && (
                                         <img
                                             src={media.src}
@@ -169,14 +181,18 @@ const Post: React.FC<PostProps> = ({className}) => {
                                         />
                                     )}
                                     {media.type === 'video' && (
-                                        <video controls={index < 3} className='h-full w-full rounded-xl object-cover'>
+                                        <video
+                                            controls={!(lastDisplayIndex && overflow)}
+                                            className='h-full w-full rounded-xl object-cover'
+                                        >
                                             <source src={media.src} type='video/mp4' />
                                         </video>
                                     )}
                                 </div>
                             </div>
                         )
-                )}
+                    );
+                })}
             </section>
             <section id='post-comments'>Comments</section>
         </div>
