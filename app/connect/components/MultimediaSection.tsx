@@ -89,7 +89,7 @@ const MultimediaSection: React.FC<MultimediaSectionProps> = ({attachmentList, ma
                         })}
                     </section>
                 </DialogTrigger>
-                <DialogContent className={cn('h-fit', className)}>
+                <DialogContent id='dialog-content' className={cn(className)}>
                     <DialogHeader>
                         <DialogTitle className='sticky top-0 z-10 flex justify-center items-center gap-4 bg-white py-2'>
                             {imageCount && imageCount.toString() + ' Images'}

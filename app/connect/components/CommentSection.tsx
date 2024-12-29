@@ -40,9 +40,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({
             <DialogTrigger>
                 <Icon name='Comment' width={24} height={24} />
             </DialogTrigger>
-            <DialogContent className={cn('h-[80%]', className)}>
+            <DialogContent id='dialog-content' className={cn(className)}>
                 {/* FIX THIS DIALOGHEADER (height not fit to parent) */}
-                <DialogHeader className=''>
+                <DialogHeader>
                     <DialogTitle id='commentsection-header' className='flex gap-4'>
                         <div className='flex items-center gap-1'>
                             <ReactButton reactionList={reactionList} handleClickReact={handleClickReact} />
@@ -56,7 +56,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
                     </DialogTitle>
                     <DialogDescription
                         id='commentsection-content'
-                        className='flex h-full flex-col justify-between gap-5 pt-5'
+                        className='flex h-[calc(90vh-4.5rem)] flex-col justify-between gap-5 pt-5'
                     >
                         <div
                             id='commentsection-content-comments'
