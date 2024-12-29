@@ -10,7 +10,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarTrigger,
-} from '@/app/connect/components/ui/sidebar';
+} from '@/components/ui/sidebar';
 
 // Menu items.
 const items = [

@@ -4,18 +4,18 @@ declare global {
   namespace JSX {
     interface IntrinsicElements {
       // Overline
-      'o': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+      'overline': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
       
       // Caption
-      'c': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+      'cap': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
       
       // Paragraphs
       'p2': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
       'p1': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
       
       // Subtitles
-      's2': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
-      's1': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+      'subtitle2': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+      'subtitle1': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
 
       // Headings
       'h6': React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>;
@@ -26,9 +26,9 @@ declare global {
       'h1': React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>;
       
       // Display
-      'd3': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
-      'd2': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
-      'd1': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+      'display3': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+      'display2': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+      'display1': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
     }
   }
 }

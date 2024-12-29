@@ -1,156 +1,160 @@
+'use client';
+
 import React from 'react';
 import {cn} from '@/lib/utils';
+
 import Avatar from './Avatar';
 import {Icon} from '@/components/commons';
-import {Plus} from 'lucide-react';
+import CommentInput from './CommentInput';
 
-const postMockupData = {
-    id: 1,
-    author: 'John Doe',
-    time: new Date(),
-    avatar: '',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet quam non lectus facilisis consectetur.',
-    multimedia: [
-        {
-            id: 2,
-            type: 'image',
-            src: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408648/cld-sample-4.jpg',
-            alt: 'Image 1',
-        },
-        {
-            id: 3,
-            type: 'image',
-            src: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408639/samples/landscapes/beach-boat.jpg',
-            alt: 'Image 2',
-        },
-        {
-            id: 4,
-            type: 'video',
-            src: 'https://res.cloudinary.com/dght74v9o/video/upload/v1735408640/samples/elephants.mp4',
-            alt: 'Video 1',
-        },
-        {
-            id: 5,
-            type: 'video',
-            src: 'https://res.cloudinary.com/dght74v9o/video/upload/v1735408641/samples/cld-sample-video.mp4',
-            alt: 'Video 2',
-        },
-        {
-            id: 6,
-            type: 'video',
-            src: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408639/samples/ecommerce/leather-bag-gray.jpg',
-            alt: 'Image 3',
-        },
-    ],
-    reactions: [
-        {
-            id: 7, // Updated ID for reaction
-            type: 'like',
-            count: 5,
-            people: [
-                {
-                    id: 8,
-                    name: 'Alice',
-                    profilePic: 'alice.jpg',
-                },
-                {
-                    id: 9,
-                    name: 'Bob',
-                    profilePic: 'bob.jpg',
-                },
-            ],
-        },
-        {
-            id: 10, // Updated ID for reaction
-            type: 'reply',
-            count: 3,
-            people: [
-                {
-                    id: 11,
-                    name: 'Charlie',
-                    profilePic: 'charlie.jpg',
-                },
-            ],
-        },
-        {
-            id: 12, // Updated ID for reaction
-            type: 'love',
-            count: 2,
-            people: [
-                {
-                    id: 13,
-                    name: 'David',
-                    profilePic: 'david.jpg',
-                },
-            ],
-        },
-    ],
-    comments: [
-        {
-            id: 14, // Updated ID for comment
-            author: 'Jane Smith',
-            text: 'Great post! Thanks for sharing.',
-        },
-        {
-            id: 15, // Updated ID for comment
-            author: 'Bob Johnson',
-            text: 'I agree. It was very informative.',
-        },
-    ],
-    reposts: 7,
-};
+import CurrentUser from '../mockData/self';
+import CommentSection from './CommentSection';
+import ReactButton from './ReactButton';
+import {getSumReactions, getTimeStamp} from '../utils/utils';
+
+type AttachmentType = 'image' | 'video';
+type ReactionType = 'like' | 'love' | 'sad';
+
+interface Attachment {
+    id: number;
+    type: AttachmentType;
+    src: string;
+    alt: string;
+}
+
+interface Person {
+    id: number;
+    name: string;
+    profilePic: string;
+}
+
+interface Reaction {
+    id: number;
+    type: ReactionType;
+    count: number;
+    people: Person[];
+}
+
+interface Comment {
+    id: number;
+    created_by: string;
+    profilePic: string;
+    created_at: Date;
+    commentText: string;
+}
+
+interface PostInterface {
+    id: number;
+    author: string;
+    created_at: Date;
+    avatar: string;
+    description: string;
+    attachmentList: Attachment[];
+    reactionList: Reaction[];
+    viewCount: number;
+    commentList: Comment[];
+    repostCount: number;
+    shareCount: number;
+}
 
 interface PostProps {
+    post: PostInterface | null;
     className?: string;
 }
 
-const Post: React.FC<PostProps> = ({className}) => {
-    const getTimeStamp = (time: Date): string => {
-        const timeOffset: number = (new Date().getTime() - postMockupData.time.getTime()) / 1000;
-        let timeStamp: string;
-        if (timeOffset < 60) {
-            const seconds = Math.floor(timeOffset);
-            timeStamp = seconds >= 30 ? `${seconds} second${seconds !== 1 && 's'} ago` : 'Just now';
-        } else if (timeOffset < 3600) {
-            const minutes = Math.floor(timeOffset / 60);
-            timeStamp = `${minutes} minute${minutes !== 1 && 's'} ago`;
-        } else if (timeOffset < 86400) {
-            const hours = Math.floor(timeOffset / 3600);
-            timeStamp = `${hours} hour${hours !== 1 && 's'} ago`;
-        } else if (timeOffset < 604800) {
-            const days = Math.floor(timeOffset / 86400);
-            timeStamp = `${days} day${days !== 1 && 's'} ago`;
-        } else {
-            timeStamp = postMockupData.toString();
-        }
+const Post: React.FC<PostProps> = ({post, className}) => {
+    const [postObj, setPostObj] = React.useState<PostInterface | null>(post);
 
-        return timeStamp;
-    };
+    React.useEffect(() => {
+        setPostObj(post);
+    }, []);
 
     const maxNumberOfDisplays = 3;
 
+    const handleClickReact = (
+        event: React.MouseEvent<HTMLButtonElement>,
+        reactionType: ReactionType
+    ) => {
+        console.log('Reacted');
+
+        if (!postObj) return;
+
+        const liked = postObj.reactionList.some((reaction) =>
+            reaction.people.some((person) => person.id === CurrentUser.id)
+        );
+        const reaction = postObj.reactionList.find(
+            (reaction) => reaction.type === reactionType
+        );
+
+        const updatedReactionList = [...postObj.reactionList];
+
+        if (liked) {
+            if (reaction) {
+                reaction.people = reaction.people.filter(
+                    (person) => person.id !== CurrentUser.id
+                );
+                reaction.count--;
+                if (reaction.count === 0) {
+                    updatedReactionList.splice(
+                        updatedReactionList.indexOf(reaction),
+                        1
+                    );
+                }
+            }
+        } else {
+            if (reaction) {
+                reaction.people.push(CurrentUser);
+                reaction.count++;
+            } else {
+                updatedReactionList.push({
+                    id: Math.max(...updatedReactionList.map((r) => r.id)) + 1,
+                    type: reactionType,
+                    count: 1,
+                    people: [CurrentUser],
+                });
+            }
+        }
+
+        setPostObj({ ...postObj, reactionList: updatedReactionList });
+    };
+
+    if (!postObj) {
+        // Show loading indicator or placeholder
+        return (
+            <div className="flex items-center justify-center h-40">
+                <p>Loading post...</p>
+            </div>
+        );
+    }
+
     return (
-        <div id='post-frame' className={cn('flex flex-col gap-5 rounded-[1.5rem] p-7 shadow-xl', className)}>
+        <div
+            id='post-frame'
+            className={cn(
+                'flex min-w-fit flex-col gap-5 rounded-[1.5rem] border-[1px] border-gray-100 bg-white p-7 shadow-lg',
+                className
+            )}
+        >
             <section id='post-author' className='flex items-center gap-3'>
-                <Avatar src={postMockupData.avatar} />
+                <Avatar src={postObj?.avatar} />
                 <div>
                     <h6 id='post-author-name' className='font-bold'>
-                        {postMockupData.author}
+                        {postObj?.author}
                     </h6>
-                    <c id='post-author-time' className='font-medium text-gray-500'>
-                        {getTimeStamp(postMockupData.time)}
-                    </c>
+                    <cap id='post-author-time' className='font-medium text-gray-500'>
+                        {getTimeStamp(postObj?.created_at)}
+                    </cap>
                 </div>
             </section>
             <section id='post-text'>
-                <p1 className='text-justify font-medium'>{postMockupData.text}</p1>
+                <p1 className='text-justify font-medium'>{postObj?.description}</p1>
             </section>
             <section
                 id='post-multimedia'
                 className='grid auto-rows-fr grid-cols-[repeat(auto-fill,_minmax(188px,_1fr))] gap-3'
             >
-                {postMockupData.multimedia.map((media, index) => {
-                    const length = postMockupData.multimedia.length;
+                {postObj?.attachmentList.map((media, index) => {
+                    const length = postObj?.attachmentList.length;
                     const overflow = length > maxNumberOfDisplays;
                     const lastDisplayIndex = maxNumberOfDisplays - 1;
 
@@ -159,7 +163,7 @@ const Post: React.FC<PostProps> = ({className}) => {
                             <div
                                 id={media.type + '-' + media.id}
                                 key={media.id}
-                                className={`relative h-full w-full rounded-xl object-cover`}
+                                className='relative h-full w-full rounded-xl object-cover shadow-sm'
                             >
                                 {index === lastDisplayIndex && overflow && (
                                     // <Icon
@@ -168,10 +172,15 @@ const Post: React.FC<PostProps> = ({className}) => {
                                     //     height='30%'
                                     //     className='absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transform select-none text-[4rem] text-white'
                                     // />
-                                    <div className='absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transform select-none text-[4rem] text-white'>{length - 2}+</div>
+                                    <div className='absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transform select-none text-[4rem] text-white'>
+                                        {length - 2}+
+                                    </div>
                                 )}
                                 <div
-                                    className={`h-full w-full ${index === lastDisplayIndex && overflow && 'brightness-[10%] filter'}}`}
+                                    className={cn(
+                                        'h-full w-full',
+                                        index === lastDisplayIndex && overflow && 'brightness-[10%] filter'
+                                    )}
                                 >
                                     {media.type === 'image' && (
                                         <img
@@ -194,7 +203,43 @@ const Post: React.FC<PostProps> = ({className}) => {
                     );
                 })}
             </section>
-            <section id='post-comments'>Comments</section>
+            <section id='post-comments'>
+                <div id='button-bar' className='flex flex-col gap-2'>
+                    <hr />
+                    <div className='flex items-center justify-between gap-3'>
+                        <div id='react-container' className='flex gap-4'>
+                            {/* <ReactButton reactionList={postObj?.reactionList} handleClickReact={handleClickReact} /> */}
+                            {/* <CommentSection reactionList={postObj?.reactionList} commentList={postObj?.commentList} /> */}
+                            <button>
+                                <Icon name='Repost' width={24} height={24} />
+                            </button>
+                        </div>
+                        <div id='share-container' className='flex gap-4'>
+                            <button>
+                                <Icon name='Share' width={24} height={24} className='text-[1.5rem]' />
+                            </button>
+                            <button>
+                                <Icon name='Save' width={24} height={24} />
+                            </button>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+            </section>
+            <section id='post-counters' className='flex items-center justify-between gap-3 whitespace-nowrap'>
+                <subtitle2 className='w-fit font-bold'>{getSumReactions(postObj?.reactionList)} Reactions</subtitle2>
+                <div className='flex gap-3 text-gray-600'>
+                    <p2 className='w-fit'>{postObj?.viewCount} Views</p2>
+                    <p2 className='w-fit'>{postObj?.commentList.length} Comments</p2>
+                    <p2 className='w-fit'>{postObj?.repostCount} Reposts</p2>
+                    <p2 className='w-fit'>{postObj?.shareCount} Shares</p2>
+                </div>
+            </section>
+            <section id='post-textbox'>
+                <CommentInput placeholder='Add a comment...' variant='with-icon' />
+                {/* <p className={cn('text-heading5 text-white')}>kjfhasdjklfhlkjfjklasf</p> */}
+                {/* <p className={`text-heading5 text-white`}>kjfhasdjklfhlkjfjklasf</p> */}
+            </section>
         </div>
     );
 };

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import {usePathname} from 'next/navigation';
 import {cn} from '@/lib/utils';
 
 const defaultTabList = [
@@ -43,7 +44,7 @@ interface ConnectNavbarProps {
 }
 
 const ConnectNavbar: React.FC<ConnectNavbarProps> = ({title, tabList = defaultTabList, className}) => {
-    const currentURL = window.location.href;
+    const currentURL = usePathname();
     const selection = currentURL.split('/').pop();
     tabList.forEach((tab) => {
         tab.selected = tab.pathname === selection;
