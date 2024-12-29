@@ -11,6 +11,7 @@ import CurrentUser from '../mockData/self';
 import CommentSection from './CommentSection';
 import ReactButton from './ReactButton';
 import {getSumReactions, getTimeStamp} from '../utils/utils';
+import MultimediaSection from './MultimediaSection';
 
 type AttachmentType = 'image' | 'video';
 type ReactionType = 'like' | 'love' | 'sad';
@@ -37,6 +38,7 @@ interface Reaction {
 
 interface Comment {
     id: number;
+    userId: number;
     created_by: string;
     profilePic: string;
     created_at: Date;
@@ -58,47 +60,31 @@ interface PostInterface {
 }
 
 interface PostProps {
-    post: PostInterface | null;
+    postObj: PostInterface | null;
     className?: string;
 }
 
-const Post: React.FC<PostProps> = ({post, className}) => {
-    const [postObj, setPostObj] = React.useState<PostInterface | null>(post);
+const Post: React.FC<PostProps> = ({postObj, className}) => {
+    const [, forceRerender] = React.useReducer((x) => x + 1, 0);
 
-    React.useEffect(() => {
-        setPostObj(post);
-    }, []);
+    const [liked, toggleLiked] = React.useState<boolean>(false);
+    // const liked = postObj?.reactionList.some((reaction) => reaction.people.some((person) => person.id === CurrentUser.id));
 
     const maxNumberOfDisplays = 3;
 
-    const handleClickReact = (
-        event: React.MouseEvent<HTMLButtonElement>,
-        reactionType: ReactionType
-    ) => {
+    const handleClickReact = (event: React.MouseEvent<HTMLButtonElement>, reactionType: ReactionType) => {
         console.log('Reacted');
 
         if (!postObj) return;
 
-        const liked = postObj.reactionList.some((reaction) =>
-            reaction.people.some((person) => person.id === CurrentUser.id)
-        );
-        const reaction = postObj.reactionList.find(
-            (reaction) => reaction.type === reactionType
-        );
-
-        const updatedReactionList = [...postObj.reactionList];
+        const reaction = postObj.reactionList.find((reaction) => reaction.type === reactionType);
 
         if (liked) {
             if (reaction) {
-                reaction.people = reaction.people.filter(
-                    (person) => person.id !== CurrentUser.id
-                );
+                reaction.people = reaction.people.filter((person) => person.id !== CurrentUser.id);
                 reaction.count--;
                 if (reaction.count === 0) {
-                    updatedReactionList.splice(
-                        updatedReactionList.indexOf(reaction),
-                        1
-                    );
+                    postObj.reactionList.splice(postObj.reactionList.indexOf(reaction), 1);
                 }
             }
         } else {
@@ -106,8 +92,8 @@ const Post: React.FC<PostProps> = ({post, className}) => {
                 reaction.people.push(CurrentUser);
                 reaction.count++;
             } else {
-                updatedReactionList.push({
-                    id: Math.max(...updatedReactionList.map((r) => r.id)) + 1,
+                postObj.reactionList.push({
+                    id: Math.max(...postObj.reactionList.map((reaction) => reaction.id)) + 1,
                     type: reactionType,
                     count: 1,
                     people: [CurrentUser],
@@ -115,13 +101,30 @@ const Post: React.FC<PostProps> = ({post, className}) => {
             }
         }
 
-        setPostObj({ ...postObj, reactionList: updatedReactionList });
+        toggleLiked((state) => !state);
+    };
+
+    const handleSaveComment = (commentText: string) => {
+        if (!postObj) return;
+        if (commentText.trim() === '') return;
+
+        const newCommentObj: Comment = {
+            id: Math.max(...postObj.commentList.map((comment) => comment.id)) + 1,
+            userId: CurrentUser.id,
+            created_by: CurrentUser.name,
+            profilePic: CurrentUser.profilePic,
+            created_at: new Date(),
+            commentText,
+        };
+        postObj.commentList.push(newCommentObj);
+        forceRerender(); // To update the comment count in the parent component without re-rendering the whole component
+        console.log(postObj.commentList);
     };
 
     if (!postObj) {
         // Show loading indicator or placeholder
         return (
-            <div className="flex items-center justify-center h-40">
+            <div className='flex h-40 items-center justify-center'>
                 <p>Loading post...</p>
             </div>
         );
@@ -149,7 +152,9 @@ const Post: React.FC<PostProps> = ({post, className}) => {
             <section id='post-text'>
                 <p1 className='text-justify font-medium'>{postObj?.description}</p1>
             </section>
-            <section
+
+            <MultimediaSection attachmentList={postObj.attachmentList} maxNumberOfDisplays={maxNumberOfDisplays} />
+            {/* <section
                 id='post-multimedia'
                 className='grid auto-rows-fr grid-cols-[repeat(auto-fill,_minmax(188px,_1fr))] gap-3'
             >
@@ -202,14 +207,19 @@ const Post: React.FC<PostProps> = ({post, className}) => {
                         )
                     );
                 })}
-            </section>
+            </section> */}
             <section id='post-comments'>
                 <div id='button-bar' className='flex flex-col gap-2'>
                     <hr />
                     <div className='flex items-center justify-between gap-3'>
                         <div id='react-container' className='flex gap-4'>
-                            {/* <ReactButton reactionList={postObj?.reactionList} handleClickReact={handleClickReact} /> */}
-                            {/* <CommentSection reactionList={postObj?.reactionList} commentList={postObj?.commentList} /> */}
+                            <ReactButton reactionList={postObj?.reactionList} handleClickReact={handleClickReact} />
+                            <CommentSection
+                                reactionList={postObj?.reactionList}
+                                commentList={postObj?.commentList}
+                                handleClickReact={handleClickReact}
+                                handleSaveComment={handleSaveComment}
+                            />
                             <button>
                                 <Icon name='Repost' width={24} height={24} />
                             </button>
@@ -236,7 +246,7 @@ const Post: React.FC<PostProps> = ({post, className}) => {
                 </div>
             </section>
             <section id='post-textbox'>
-                <CommentInput placeholder='Add a comment...' variant='with-icon' />
+                <CommentInput onSubmit={handleSaveComment} placeholder='Add a comment...' variant='with-icon' />
                 {/* <p className={cn('text-heading5 text-white')}>kjfhasdjklfhlkjfjklasf</p> */}
                 {/* <p className={`text-heading5 text-white`}>kjfhasdjklfhlkjfjklasf</p> */}
             </section>

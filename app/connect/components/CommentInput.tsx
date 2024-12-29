@@ -6,7 +6,7 @@ import {Input} from '@/components/ui/input';
 import {Icon} from '@/components/commons';
 
 interface CommentInputProps {
-    onSubmit?: (comment: string) => void;
+    onSubmit?: (commentText: string) => void;
     placeholder?: string;
     variant?: 'default' | 'with-icon';
 }
@@ -32,7 +32,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
             {variant === 'with-icon' && (
                 <button
                     type='button'
-                    className='text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 hover:text-foreground'
+                    className='absolute right-3 top-1/2 -translate-y-1/2'
                 >
                     <Icon name='emoji_Happy' width={24} height={24} />
                     <span className='sr-only'>Add emoji</span>

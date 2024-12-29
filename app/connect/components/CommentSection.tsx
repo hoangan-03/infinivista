@@ -13,14 +13,25 @@ import {cn} from '@/lib/utils';
 import Comment from './Comment';
 import ReactButton from './ReactButton';
 import {getSumReactions} from '../utils/utils';
+import CommentInput from './CommentInput';
+
+type ReactionType = 'like' | 'love' | 'sad';
 
 interface CommentSectionProps {
     reactionList: any[];
     commentList: any[];
+    handleClickReact: (event: React.MouseEvent<HTMLButtonElement>, reactionType: ReactionType) => void;
+    handleSaveComment: (commentText: string) => void;
     className?: string;
 }
 
-const CommentSection: React.FC<CommentSectionProps> = ({reactionList, commentList, className}) => {
+const CommentSection: React.FC<CommentSectionProps> = ({
+    reactionList,
+    commentList,
+    handleClickReact,
+    handleSaveComment,
+    className,
+}) => {
     const reactionCount = getSumReactions(reactionList);
     const commentCount = commentList.length;
 
@@ -29,23 +40,37 @@ const CommentSection: React.FC<CommentSectionProps> = ({reactionList, commentLis
             <DialogTrigger>
                 <Icon name='Comment' width={24} height={24} />
             </DialogTrigger>
-            <DialogContent className={cn(className)}>
-                <DialogHeader>
-                    <DialogTitle className='flex gap-4'>
+            <DialogContent className={cn('h-[80%]', className)}>
+                {/* FIX THIS DIALOGHEADER (height not fit to parent) */}
+                <DialogHeader className=''>
+                    <DialogTitle id='commentsection-header' className='flex gap-4'>
                         <div className='flex items-center gap-1'>
-                            <ReactButton reactionList={reactionList} />
+                            <ReactButton reactionList={reactionList} handleClickReact={handleClickReact} />
                             {reactionCount}
                         </div>
-                        <div className='h-full w-[2px] bg-black' />
+                        <div id='divider' className='h-full w-[2px] bg-black' />
                         <div className='flex items-center gap-1'>
                             <Icon name='Comment' width={24} height={24} />
                             {commentCount}
                         </div>
                     </DialogTitle>
-                    <DialogDescription className='flex flex-col gap-5 py-5'>
-                        {commentList.map((comment, index) => {
-                            return <Comment key={comment.id} comment={comment} />;
-                        })}
+                    <DialogDescription
+                        id='commentsection-content'
+                        className='flex h-full flex-col justify-between gap-5 pt-5'
+                    >
+                        <div
+                            id='commentsection-content-comments'
+                            className='custom-scrollbar flex h-full flex-col items-center gap-5 overflow-y-auto'
+                        >
+                            {commentList.map((comment, index) => {
+                                return <Comment key={comment.id} comment={comment} />;
+                            })}
+                            <div className='flex w-full flex-col items-center gap-2'>
+                                <hr className='w-1/2' />
+                                <p2 className='text-gray-200'>No more comments</p2>
+                            </div>
+                        </div>
+                        <CommentInput onSubmit={handleSaveComment} placeholder='Add a comment...' variant='with-icon' />
                     </DialogDescription>
                 </DialogHeader>
             </DialogContent>

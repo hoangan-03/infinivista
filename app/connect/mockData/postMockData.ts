@@ -11,7 +11,7 @@ export default {
     attachmentList: [
         {
             id: 2,
-            type: 'image' as AttachmentType, // Type assertion here
+            type: 'image' as AttachmentType,
             src: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408648/cld-sample-4.jpg',
             alt: 'Image 1',
         },
@@ -43,7 +43,7 @@ export default {
     reactionList: [
         {
             id: 7,
-            type: 'like' as ReactionType, // Type assertion
+            type: 'like' as ReactionType,
             count: 5,
             people: [
                 {
@@ -60,7 +60,7 @@ export default {
         },
         {
             id: 10,
-            type: 'love' as ReactionType, // Type assertion
+            type: 'love' as ReactionType,
             count: 3,
             people: [
                 {
@@ -72,7 +72,7 @@ export default {
         },
         {
             id: 12,
-            type: 'sad' as ReactionType, // Type assertion
+            type: 'sad' as ReactionType,
             count: 2,
             people: [
                 {
@@ -86,14 +86,16 @@ export default {
     viewCount: 3000,
     commentList: [
         {
-            id: 14, // Updated ID for comment
+            id: 14,
+            userId: 100,
             created_by: 'Jane Smith',
-            profilePic: '',
+            profilePic: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408640/samples/landscapes/nature-mountains.jpg',
             created_at: new Date(),
             commentText: 'Great post! Thanks for sharing.',
         },
         {
-            id: 15, // Updated ID for comment
+            id: 15,
+            userId: 101,
             created_by: 'Bob Johnson',
             profilePic: '',
             created_at: new Date(),
