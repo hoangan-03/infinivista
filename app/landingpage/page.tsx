@@ -257,7 +257,7 @@ const Home: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <div className='relative h-[1240px] w-full bg-[#058189]' id='screen1'>
+            <div className='relative h-[1240px] w-full bg-[#058189]' id='screen2'>
                 <Image
                     src='/assets/icons/express.png'
                     alt='iPhone Image'
@@ -284,7 +284,7 @@ const Home: React.FC = () => {
                 </div>
             </div>
 
-            <div className='relative h-[1240px] w-full bg-[#DD245C]' id='screen1'>
+            <div className='relative h-[1240px] w-full bg-[#DD245C]' id='screen3'>
                 <Image
                     src='/assets/icons/profile.png'
                     alt='iPhone Image'
@@ -313,7 +313,7 @@ const Home: React.FC = () => {
                 </div>
             </div>
 
-            <div className='relative h-[1240px] w-full bg-[#04A014]' id='screen1'>
+            <div className='relative h-[1240px] w-full bg-[#04A014]' id='screen4'>
                 <Image
                     src='/assets/icons/feed.png'
                     alt='iPhone Image'
@@ -340,7 +340,7 @@ const Home: React.FC = () => {
                 </div>
             </div>
 
-            <div className='relative h-[1240px] w-full bg-[#0C5CF7]' id='screen1'>
+            <div className='relative h-[1240px] w-full bg-[#0C5CF7]' id='screen5'>
                 <Image
                     src='/assets/icons/shopping.png'
                     alt='iPhone Image'
