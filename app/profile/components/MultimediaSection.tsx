@@ -34,10 +34,7 @@ const MultimediaSection: React.FC<MultimediaSectionProps> = ({attachmentList, ma
         <div className=''>
             <Dialog>
                 <DialogTrigger>
-                    <section
-                        id='post-multimedia'
-                        className='grid auto-rows-fr grid-cols-[repeat(auto-fill,_minmax(188px,_1fr))] gap-3'
-                    >
+                    <section className='post-multimedia grid auto-rows-fr grid-cols-[repeat(auto-fill,_minmax(188px,_1fr))] gap-3'>
                         {attachmentList.map((media, index) => {
                             const length = attachmentList.length;
                             const overflow = length > maxNumberOfDisplays;
@@ -89,11 +86,13 @@ const MultimediaSection: React.FC<MultimediaSectionProps> = ({attachmentList, ma
                         })}
                     </section>
                 </DialogTrigger>
-                <DialogContent id='dialog-content' className={cn(className)}>
+                <DialogContent
+                    className={cn('dialog-content', 'sm:max-w-[425px] md:max-w-[600px] lg:max-w-[800px]', className)}
+                >
                     <DialogHeader>
-                        <DialogTitle className='sticky top-0 z-10 flex justify-center items-center gap-4 bg-white py-2'>
+                        <DialogTitle className='sticky top-0 z-10 flex items-center justify-center gap-4 bg-white py-2'>
                             {imageCount && imageCount.toString() + ' Images'}
-                            {imageCount && videoCount && <div id='divider' className='h-full w-[2px] bg-black' />}
+                            {imageCount && videoCount && <div className='divider h-full w-[2px] bg-black' />}
                             {videoCount && videoCount.toString() + ' Videos'}
                         </DialogTitle>
                         <DialogDescription className='flex h-full flex-col justify-between gap-5 pt-5'>
