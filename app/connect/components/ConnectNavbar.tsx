@@ -57,7 +57,7 @@ const ConnectNavbar: React.FC<ConnectNavbarProps> = ({title, tabList = defaultTa
                 {tabList.map((tab, index) => (
                     <a
                         key={index}
-                        href={'/connect/' + tab.pathname}
+                        href={'/connect/' + title.toLowerCase() + '/' + tab.pathname}
                         className={`text-subtitle2 font-bold ${tab.disabled ? style.disabled : tab.selected ? style.selected : style.default}`}
                     >
                         {tab.label}

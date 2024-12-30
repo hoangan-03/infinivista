@@ -24,10 +24,22 @@ const pageList = [
 
 export const Sidebar: React.FC = () => {
     const currentURL = usePathname();
-    const updatedPageList = pageList.map((page) => ({
-        ...page,
-        selected: currentURL.includes(page.pathname), // Check if the URL includes the substring
-    }));
+    const updatedPageList = pageList.map((page) => {
+        if (page.pathname === 'connect') {
+            // Only select 'connect' if it is the exact match and not a child path
+            return {
+                ...page,
+                selected:
+                    currentURL === '/connect' || 
+                    (!currentURL.includes('/connect/feed') && !currentURL.includes('/connect/story') && currentURL.includes('/connect')),
+            };
+        }
+
+        return {
+            ...page,
+            selected: currentURL.includes(page.pathname), // Standard match for other pages
+        };
+    });
 
     return (
         <div className='shadow-sidebar custom-scrollbar-hidden fixed h-screen left-0 top-0 p-6 z-50 overflow-auto'>
@@ -57,7 +69,7 @@ export const Sidebar: React.FC = () => {
                     <div className='mb-5 flex pl-6'>
                         <Separator orientation='vertical' className='h-[90px] bg-gray-200' />
                         <div className='flex w-full flex-col gap-2 pl-2'>
-                            <Link href='/connect'>
+                            <Link href='/connect/feed'>
                                 <button className={cn('w-full rounded-xs p-2 text-left text-[14px] hover:bg-gray-100', updatedPageList[1].selected && 'bg-gray-200')}>
                                     Feed
                                 </button>

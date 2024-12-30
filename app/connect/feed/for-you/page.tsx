@@ -1,8 +1,8 @@
 import React from 'react';
-import Post from '../components/Post';
+import Post from '../../components/Post';
 import _ from 'lodash';
 
-import PostObj from '../mockData/postMockData';
+import PostObj from '../../mockData/postMockData';
 
 const Connect_ForYou = () => {
     return (
