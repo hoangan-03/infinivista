@@ -1,9 +1,17 @@
 import React from 'react';
+// import Share from '@/assets/icons/Arrow-share-forward.svg';
+import { RiShareForwardLine as Share } from 'react-icons/ri';
 
 import Attachment from '@/assets/icons/attachment.svg';
 import CaretDown from '@/assets/icons/caret-down.svg';
 import Chat from '@/assets/icons/chat.svg';
+import Comment from '@/assets/icons/chat_bubble.svg';
+import Repost from '@/assets/icons/Direct Right.svg';
+import emoji_Happy from '@/assets/icons/emoji/Emoji Happy.svg';
 import Globe from '@/assets/icons/globe.svg';
+import Like from '@/assets/icons/heart-3.svg';
+import FilledLike from '@/assets/icons/heart-3-filled.svg';
+import Plus from '@/assets/icons/icon-plus.svg';
 import Image from '@/assets/icons/image.svg';
 import LeftRight from '@/assets/icons/left-right.svg';
 import Logout from '@/assets/icons/logout.svg';
@@ -12,7 +20,7 @@ import Mention from '@/assets/icons/mention.svg';
 import More from '@/assets/icons/more.svg';
 import Navigation from '@/assets/icons/navigation.svg';
 import NotificationBell from '@/assets/icons/notification-bell.svg';
-import Plus from '@/assets/icons/plus.svg';
+import Save from '@/assets/icons/Save Archive.svg';
 import Search from '@/assets/icons/search.svg';
 import SendArrow from '@/assets/icons/send-arrow.svg';
 import SettingsGear from '@/assets/icons/settings-gear.svg';
@@ -41,11 +49,20 @@ const Icons = {
     LeftRight,
     Logout,
     ZoomOut,
+
+    Like,
+    FilledLike,
+    Comment,
+    Repost,
+    Share,
+    Save,
+
+    emoji_Happy
 };
 
 interface IconProps {
-    width?: number;
-    height?: number;
+    width?: number | string;
+    height?: number | string;
     name: keyof typeof Icons;
     className?: string;
 }

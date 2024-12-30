@@ -113,10 +113,6 @@ const config: Config = {
                 lg: '12px',
                 xl: '16px',
             },
-            boxShadow: {
-                'custom-1': '0px 4px 8px 0px #00000040',
-                sidebar: '4px 4px 4px 0px #00000040',
-            },
         },
     },
     plugins: [
@@ -132,7 +128,7 @@ const config: Config = {
             addBase({
                 body: {
                     fontFamily: theme('fontFamily.montserrat'),
-                    color: theme('colors.black'),
+                    fontSize: theme('fontSize.paragraph1'),
                 },
             });
         }),
