@@ -9,6 +9,25 @@ const nextConfig = {
 
         return config;
     },
+    async redirects() {
+        return [
+            // Basic redirect
+            {
+                source: '/connect',
+                destination: '/connect/for-you',
+                permanent: true,
+            },
+        ]
+    },
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'res.cloudinary.com',
+                // pathname: '/res.cloudinary.com/**'
+            }
+        ],
+    }
 };
 
 export default nextConfig;

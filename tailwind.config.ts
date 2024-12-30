@@ -113,7 +113,15 @@ const config: Config = {
                 lg: '12px',
                 xl: '16px',
             },
-        },
+            flex: {
+                2: '2 2 0%', // Grow 2 times compared to others
+            },
+            boxShadow: {
+				sm: '0 4px 4px 0 rgba(0, 0, 0, 0.25)',
+				md: '0 4px 8px 0 rgba(0, 0, 0, 0.25)',
+                lg: '0 8px 25px 0 rgba(0, 0, 0, 0.25)'
+            }
+        }
     },
     plugins: [
         require('tailwindcss-animate'),
@@ -128,8 +136,25 @@ const config: Config = {
             addBase({
                 body: {
                     fontFamily: theme('fontFamily.montserrat'),
-                    fontSize: theme('fontSize.paragraph1'),
+                    // fontSize: theme('fontSize.paragraph1'),
+                    color: theme('colors.black'),
+					fontWeight: theme('fontWeight.medium'),
                 },
+                overline: { fontSize: theme('fontSize.overline') }, 
+                cap: { fontSize: theme('fontSize.caption') }, 
+                p2: { fontSize: theme('fontSize.paragraph2') }, 
+                p1: { fontSize: theme('fontSize.paragraph1') }, 
+                subtitle2: { fontSize: theme('fontSize.subtitle2') }, 
+                subtitle1: { fontSize: theme('fontSize.subtitle1') }, 
+                h6: { fontSize: theme('fontSize.heading6') }, 
+                h5: { fontSize: theme('fontSize.heading5') }, 
+                h4: { fontSize: theme('fontSize.heading4') }, 
+                h3: { fontSize: theme('fontSize.heading3') }, 
+                h2: { fontSize: theme('fontSize.heading2') }, 
+                h1: { fontSize: theme('fontSize.heading1') }, 
+                display3: { fontSize: theme('fontSize.display3') }, 
+                display2: { fontSize: theme('fontSize.display2') }, 
+                display1: { fontSize: theme('fontSize.display1') },
             });
         }),
     ],

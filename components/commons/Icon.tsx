@@ -1,17 +1,10 @@
 import React from 'react';
 // import Share from '@/assets/icons/Arrow-share-forward.svg';
-import { RiShareForwardLine as Share } from 'react-icons/ri';
 
 import Attachment from '@/assets/icons/attachment.svg';
 import CaretDown from '@/assets/icons/caret-down.svg';
 import Chat from '@/assets/icons/chat.svg';
-import Comment from '@/assets/icons/chat_bubble.svg';
-import Repost from '@/assets/icons/Direct Right.svg';
-import emoji_Happy from '@/assets/icons/emoji/Emoji Happy.svg';
 import Globe from '@/assets/icons/globe.svg';
-import Like from '@/assets/icons/heart-3.svg';
-import FilledLike from '@/assets/icons/heart-3-filled.svg';
-import Plus from '@/assets/icons/icon-plus.svg';
 import Image from '@/assets/icons/image.svg';
 import LeftRight from '@/assets/icons/left-right.svg';
 import Logout from '@/assets/icons/logout.svg';
@@ -20,13 +13,24 @@ import Mention from '@/assets/icons/mention.svg';
 import More from '@/assets/icons/more.svg';
 import Navigation from '@/assets/icons/navigation.svg';
 import NotificationBell from '@/assets/icons/notification-bell.svg';
-import Save from '@/assets/icons/Save Archive.svg';
-import Search from '@/assets/icons/search.svg';
 import SendArrow from '@/assets/icons/send-arrow.svg';
 import SettingsGear from '@/assets/icons/settings-gear.svg';
 import ShopCart from '@/assets/icons/shop-cart.svg';
 import Smiley from '@/assets/icons/smiley.svg';
 import ZoomOut from '@/assets/icons/zoom-out.svg';
+import Search from '@/public/assets/icons/search.svg';
+import Plus from '@/public/assets/icons/icon-plus.svg';
+import Like from '@/public/assets/icons/heart-3.svg';
+import FilledLike from '@/public/assets/icons/heart-3-filled.svg';
+import Comment from '@/public/assets/icons/chat_bubble.svg';
+import Repost from '@/public/assets/icons/Direct Right.svg';
+// import Share from '@/assets/icons/Arrow-share-forward.svg';
+import { RiShareForwardLine as Share } from "react-icons/ri";
+import Save from '@/public/assets/icons/Save Archive.svg';
+import { Ellipsis } from 'lucide-react';
+
+import emoji_Happy from '@/public/assets/icons/emoji/Emoji Happy.svg'
+
 import {cn} from '@/lib/utils';
 
 const Icons = {
@@ -38,7 +42,6 @@ const Icons = {
     Smiley,
     CaretDown,
     SendArrow,
-    Plus,
     Globe,
     Navigation,
     Chat,
@@ -49,14 +52,14 @@ const Icons = {
     LeftRight,
     Logout,
     ZoomOut,
-
+    Plus,
     Like,
     FilledLike,
     Comment,
     Repost,
     Share,
     Save,
-
+    Ellipsis,
     emoji_Happy
 };
 

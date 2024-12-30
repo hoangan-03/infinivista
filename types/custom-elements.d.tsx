@@ -1,19 +1,18 @@
-/* eslint-disable @typescript-eslint/no-namespace */
-import React from 'react';
+import React from 'react'
 
-declare module 'react' {
+declare global {
   namespace JSX {
     interface IntrinsicElements {
       // Overline
       'overline': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
-
+      
       // Caption
       'cap': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
-
+      
       // Paragraphs
       'p2': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
       'p1': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
-
+      
       // Subtitles
       'subtitle2': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
       'subtitle1': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
