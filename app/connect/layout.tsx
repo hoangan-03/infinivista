@@ -6,10 +6,11 @@ import Image from 'next/image';
 import ConnectNavbar from './components/ConnectNavbar';
 import {cn} from '@/lib/utils';
 import Button from './components/Button';
+import {Icon} from '@/components/commons';
 
 import SuggestionList from './mockData/suggestionList';
 import TrendingList from './mockData/trendingList';
-import {Icon} from '@/components/commons';
+import FriendList from './mockData/friendList';
 
 const MainContent: React.FC<{children: React.ReactNode}> = ({children}) => {
     return (
@@ -38,20 +39,25 @@ const RightBarElement: React.FC<{title: string; children: React.ReactNode; class
 };
 
 const RightBarContent: React.FC = () => {
-    const [maxSuggestions, setMaxSuggestions] = React.useState<number>(3);
-    const [maxTrending, setMaxTrending] = React.useState<number>(3);
+    const [maxSuggestions, setMaxSuggestions] = React.useState<number>(4);
+    const [maxTrending, setMaxTrending] = React.useState<number>(4);
+    const [maxContacts, setMaxContacts] = React.useState<number>(4);
+
     return (
         <div
             id='right-bar'
-            className='custom-scrollbar-hidden sticky top-0 z-20 box-border h-[calc(100vh-2rem)] flex-1 justify-between overflow-y-auto pt-8'
+            className='custom-scrollbar-hidden sticky bottom-0 top-0 z-20 -mx-4 -mb-8 h-screen flex-1 justify-between overflow-y-auto px-4 py-8'
         >
-            <div id='rightbar-content' className='grid h-full grid-rows-3 gap-5'>
+            <div id='rightbar-content' className='flex h-fit flex-col gap-5'>
                 <RightBarElement title='Suggestions'>
                     <div className='flex flex-col gap-3'>
                         {SuggestionList.map(
                             (person, index) =>
-                                index < 2 && (
-                                    <div key={person.id} className='friend-tag flex w-full justify-between gap-5'>
+                                index < maxSuggestions && (
+                                    <a
+                                        key={person.id}
+                                        className='friend-tag flex w-full cursor-pointer items-center justify-between gap-5 rounded-full hover:bg-gray-200'
+                                    >
                                         <div className='flex w-full items-center gap-3'>
                                             <Image
                                                 src={person.profilePic}
@@ -60,12 +66,12 @@ const RightBarContent: React.FC = () => {
                                                 height={40}
                                                 className='rounded-full'
                                             />
-                                            <cap className='font-semibold text-gray-700'>{person.name}</cap>
+                                            <cap className='font-bold text-gray-700'>{person.name}</cap>
                                         </div>
-                                        <Button className='add-friend-button'>
+                                        <Button className='add-friend-button h-fit p-1'>
                                             <cap>Add Friend</cap>
                                         </Button>
-                                    </div>
+                                    </a>
                                 )
                         )}
                         <div className='flex-center'>
@@ -79,8 +85,11 @@ const RightBarContent: React.FC = () => {
                     <div className='flex flex-col gap-3'>
                         {TrendingList.map(
                             (trend, index) =>
-                                index < 2 && (
-                                    <div key={trend.id} className='friend-tag flex w-full justify-between items-center gap-5'>
+                                index < maxTrending && (
+                                    <a
+                                        key={trend.id}
+                                        className='friend-tag -mx-2 flex w-[calc(100%+1rem)] cursor-pointer items-center justify-between gap-5 rounded-lg px-2 hover:bg-gray-200'
+                                    >
                                         <div className='flex w-full flex-col'>
                                             <cap className='font-bold'>{trend.topic}</cap>
                                             <overline className=''>
@@ -93,12 +102,46 @@ const RightBarContent: React.FC = () => {
                                         <button className='option-button'>
                                             <Icon name='Ellipsis' width={24} height={24} />
                                         </button>
-                                    </div>
+                                    </a>
                                 )
                         )}
                         <button className='w-fit'>
                             <overline className='text-blue-700'>See more</overline>
                         </button>
+                    </div>
+                </RightBarElement>
+                <RightBarElement title='Contacts'>
+                    <div className='flex flex-col gap-4 rounded-xl p-4 shadow-md'>
+                        {FriendList.map(
+                            (person, index) =>
+                                index < maxContacts && (
+                                    <a
+                                        key={person.id}
+                                        className='friend-tag flex w-full cursor-pointer justify-between gap-5 rounded-l-3xl rounded-r-lg hover:bg-gray-200'
+                                    >
+                                        <div className='flex w-full items-center gap-3'>
+                                            <div className='relative h-fit w-fit'>
+                                                <Image
+                                                    src={person.profilePic}
+                                                    alt={'Avatar of ' + person.name}
+                                                    width={40}
+                                                    height={40}
+                                                    className='rounded-full'
+                                                />
+                                                {person.isOnline && (
+                                                    <div className='online-circle absolute bottom-0 right-0 box-border h-4 w-4 translate-x-[20%] translate-y-[20%] rounded-full border-[2px] bg-green-600' />
+                                                )}
+                                            </div>
+                                            <subtitle2 className='font-bold text-gray-700'>{person.name}</subtitle2>
+                                        </div>
+                                    </a>
+                                )
+                        )}
+                        <div className='flex-center'>
+                            <button className='w-fit'>
+                                <overline className='text-blue-700'>See more</overline>
+                            </button>
+                        </div>
                     </div>
                 </RightBarElement>
             </div>

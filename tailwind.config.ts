@@ -118,6 +118,7 @@ const config: Config = {
             },
             boxShadow: {
 				sm: '0 4px 4px 0 rgba(0, 0, 0, 0.25)',
+				md: '0 4px 8px 0 rgba(0, 0, 0, 0.25)',
                 lg: '0 8px 25px 0 rgba(0, 0, 0, 0.25)'
             }
         }
