@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import {cn} from '@/lib/utils';
 
-import DefaultAvatar from '@/assets/images/avatar-default.png';
+import DefaultAvatar from '@/public/assets/images/avatar-default.png';
 
 interface AvatarProps {
     size?: number; // px

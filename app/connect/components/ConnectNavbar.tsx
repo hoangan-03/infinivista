@@ -51,8 +51,8 @@ const ConnectNavbar: React.FC<ConnectNavbarProps> = ({title, tabList = defaultTa
     });
 
     return (
-        <div id='connect-navbar' className={cn('flex w-full items-center justify-between', className)}>
-            <h4 className='text-heading5 font-extrabold text-blue-700'>{title}</h4>
+        <div className={cn('connect-navbar', 'flex w-full items-center justify-between', className)}>
+            <h5 className='font-extrabold text-blue-700'>{title}</h5>
             <div className='flex items-center gap-4'>
                 {tabList.map((tab, index) => (
                     <a

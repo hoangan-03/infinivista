@@ -43,7 +43,7 @@ const items = [
 
 export function AppSidebar() {
     return (
-        <Sidebar id='sidebar' side='left' variant='sidebar' collapsible='icon'>
+        <Sidebar className='sidebar' side='left' variant='sidebar' collapsible='icon'>
             <SidebarContent>
                 <SidebarTrigger />
                 <SidebarGroup>

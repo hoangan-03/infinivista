@@ -40,28 +40,22 @@ const CommentSection: React.FC<CommentSectionProps> = ({
             <DialogTrigger>
                 <Icon name='Comment' width={24} height={24} />
             </DialogTrigger>
-            <DialogContent id='dialog-content' className={cn(className)}>
+            <DialogContent className={cn('dialog-content', className)}>
                 {/* FIX THIS DIALOGHEADER (height not fit to parent) */}
                 <DialogHeader>
-                    <DialogTitle id='commentsection-header' className='flex gap-4'>
+                    <DialogTitle className='commentsection-header flex gap-4'>
                         <div className='flex items-center gap-1'>
                             <ReactButton reactionList={reactionList} handleClickReact={handleClickReact} />
                             {reactionCount}
                         </div>
-                        <div id='divider' className='h-full w-[2px] bg-black' />
+                        <div className='divider h-full w-[2px] bg-black' />
                         <div className='flex items-center gap-1'>
                             <Icon name='Comment' width={24} height={24} />
                             {commentCount}
                         </div>
                     </DialogTitle>
-                    <DialogDescription
-                        id='commentsection-content'
-                        className='flex h-[calc(90vh-4.5rem)] flex-col justify-between gap-5 pt-5'
-                    >
-                        <div
-                            id='commentsection-content-comments'
-                            className='custom-scrollbar flex h-full flex-col items-center gap-5 overflow-y-auto'
-                        >
+                    <DialogDescription className='commentsection-content flex h-[calc(90vh-4.5rem)] flex-col justify-between gap-5 pt-5'>
+                        <div className='commentsection-content-comments custom-scrollbar flex h-full flex-col items-center gap-5 overflow-y-auto'>
                             {commentList.map((comment, index) => {
                                 return <Comment key={comment.id} comment={comment} />;
                             })}

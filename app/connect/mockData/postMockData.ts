@@ -35,7 +35,7 @@ export default {
         },
         {
             id: 6,
-            type: 'video' as AttachmentType,
+            type: 'image' as AttachmentType,
             src: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408639/samples/ecommerce/leather-bag-gray.jpg',
             alt: 'Image 3',
         },
