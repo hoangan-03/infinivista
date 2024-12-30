@@ -2,6 +2,7 @@ import './globals.css';
 
 import type {Metadata, Viewport} from 'next';
 import localFont from 'next/font/local';
+import {Sidebar} from '@/app/communication/components/Sidebar';
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -31,7 +32,18 @@ export default function RootLayout({
 }>) {
     return (
         <html lang='en'>
-            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+                <div className='bg-gray-100'>
+                    <div className='container'>
+                        <div className='relative flex min-h-screen bg-white'>
+                            <aside className='w-[250px]'>
+                                <Sidebar />
+                            </aside>
+                            <main className='w-[calc(100%-250px)] bg-white'>{children}</main>
+                        </div>
+                    </div>
+                </div>
+            </body>
         </html>
     );
 }

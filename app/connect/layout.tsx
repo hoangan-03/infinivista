@@ -155,7 +155,7 @@ type ConnectPageWithLayout = React.FC<{children: React.ReactNode}> & {
 
 const ConnectPage: ConnectPageWithLayout = ({children}) => {
     return (
-        <div id='connect' className='flex gap-10'>
+        <div id='connect' className='w-full flex gap-10'>
             <MainContent>{children}</MainContent>
             <RightBarContent />
         </div>
@@ -166,11 +166,8 @@ export default function ConnectLayout({children}: {children: React.ReactNode}) {
     return (
         <div className='bg-gray-50'>
             <div className='container'>
-                <div className='flex min-h-screen'>
-                    <aside className='z-50 w-[250px] bg-gray-700'>Sidebar</aside>
-                    <main className='w-[calc(100%-250px)] bg-white px-10 pb-8'>
-                        <ConnectPage children={children} />
-                    </main>
+                <div className='w-full flex min-h-screen px-10 pb-8'>
+                    <ConnectPage children={children} />
                 </div>
             </div>
         </div>

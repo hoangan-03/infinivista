@@ -21,10 +21,9 @@ import Sidebar from './components/Sidebar';
 const Home: React.FC = () => {
     return (
         <div className='flex min-h-screen flex-col bg-gray-100'>
-            <Header />
+            {/* <Header /> */}
             <div className='flex flex-1'>
-                <Sidebar />
-                <div className='flex-1 flex-col space-y-6 p-6'>
+                <div className='w-full flex-1 flex-col space-y-6 p-6'>
                     <ProfileCard />
                     <AboutSection />
                     
