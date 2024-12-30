@@ -1,5 +1,6 @@
-export const getTimeStamp = (time: Date): string => {
+export const getTimeStamp = (time: Date | string): string => {
     if (!time) return '';
+    if (typeof time === 'string') time = new Date(time);
 
     const timeOffset: number = (new Date().getTime() - time.getTime()) / 1000;
     let timeStamp: string;
