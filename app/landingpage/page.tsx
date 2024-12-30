@@ -4,10 +4,11 @@ import React from 'react';
 import {cn} from '@/lib/utils';
 
 import {Button} from '../profile/ui/button';
+import Link from 'next/link';
 
 const Home: React.FC = () => {
     return (
-        <div className='flex h-auto w-screen flex-col bg-gray-900 text-white'>
+        <div className='flex h-auto w-full flex-col bg-gray-900 text-white'>
             {/* Navbar */}
             {/* <nav className='flex w-full items-center justify-between bg-black bg-opacity-50 px-8 py-4'>
                 <div className='text-2xl font-bold'>Infinivista</div>
@@ -47,12 +48,14 @@ const Home: React.FC = () => {
                     <h2 className='mb-10 text-6xl font-bold text-white'>
                         Where the <br /> world connects
                     </h2>
-                    <Button
-                        variant='default'
-                        className={cn('w-auto bg-blue-300 px-[80px] py-[30px] text-2xl text-black hover:bg-blue-400')}
-                    >
-                        Join the beta
-                    </Button>
+                    <Link href='/connect/feed'>
+                        <Button
+                            variant='default'
+                            className={cn('w-auto bg-blue-300 px-[80px] py-[30px] text-2xl text-black hover:bg-blue-400')}
+                        >
+                            Join the beta
+                        </Button>
+                    </Link>
                 </div>
             </div>
 
