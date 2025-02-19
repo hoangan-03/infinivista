@@ -1,7 +1,7 @@
 import {ArrowRightIcon} from '@heroicons/react/solid';
 import React from 'react';
 
-import PostObj from '@/app/profile/mock_data/postMockData';
+import PostObj from '@/app/(main)/profile/mock_data/postMockData';
 
 import {Button} from '../ui';
 import Post from './Post';

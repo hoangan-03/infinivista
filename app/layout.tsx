@@ -1,8 +1,7 @@
 import './globals.css';
 
-import type { Metadata, Viewport } from 'next';
+import type {Metadata, Viewport} from 'next';
 import localFont from 'next/font/local';
-import SidebarWrapper from '@/components/commons/SidebarWrapper';
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -31,14 +30,11 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang='en'>
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <div className="bg-gray-100">
-                    <div className="container">
-                        <div className="relative flex min-h-screen bg-white">
-                            {/* SidebarWrapper handles sidebar logic */}
-                            <SidebarWrapper>{children}</SidebarWrapper>
-                        </div>
+                <div className='bg-gray-100'>
+                    <div className='container'>
+                        <div className='relative flex min-h-screen bg-white'>{children}</div>
                     </div>
                 </div>
             </body>

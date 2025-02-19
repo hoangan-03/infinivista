@@ -3,7 +3,7 @@ import React from 'react';
 
 import {cn} from '@/lib/utils';
 
-import {Button} from '../profile/ui/button';
+import {Button} from '../(main)/profile/ui/button';
 import Link from 'next/link';
 
 const Home: React.FC = () => {
