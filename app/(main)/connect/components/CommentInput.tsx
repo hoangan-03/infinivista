@@ -28,7 +28,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
 
     return (
         <form onSubmit={handleSubmit} className='relative'>
-            <Input type='text' name='comment' placeholder={placeholder} className='' />
+            <Input type='text' name='comment' placeholder={placeholder} fontSize='text-paragraph2' />
             {variant === 'with-icon' && (
                 <button
                     type='button'

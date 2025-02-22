@@ -25,11 +25,13 @@ import FilledLike from '@/public/assets/icons/heart-3-filled.svg';
 import Comment from '@/public/assets/icons/chat_bubble.svg';
 import Repost from '@/public/assets/icons/Direct Right.svg';
 // import Share from '@/public/assets/icons/Arrow-share-forward.svg';
-import { RiShareForwardLine as Share } from "react-icons/ri";
+import {RiShareForwardLine as Share} from 'react-icons/ri';
 import Save from '@/public/assets/icons/Save Archive.svg';
-import { Ellipsis } from 'lucide-react';
+import {IoMdEye as EyeOpen} from 'react-icons/io';
+import {IoMdEyeOff as EyeClose} from 'react-icons/io';
+import {Ellipsis} from 'lucide-react';
 
-import emoji_Happy from '@/public/assets/icons/emoji/Emoji Happy.svg'
+import emoji_Happy from '@/public/assets/icons/emoji/Emoji Happy.svg';
 
 import {cn} from '@/lib/utils';
 
@@ -59,8 +61,10 @@ const Icons = {
     Repost,
     Share,
     Save,
+    EyeOpen,
+    EyeClose,
     Ellipsis,
-    emoji_Happy
+    emoji_Happy,
 };
 
 interface IconProps {
