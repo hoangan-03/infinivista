@@ -1,3 +1,4 @@
+import Provider from '@/components/commons/Provider';
 import './globals.css';
 
 import type {Metadata, Viewport} from 'next';
@@ -32,11 +33,13 @@ export default function RootLayout({
     return (
         <html lang='en'>
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <div className='bg-gray-100'>
-                    <div className='container'>
-                        <div className='relative flex min-h-screen bg-white'>{children}</div>
+                {/* <Provider> */}
+                    <div className='bg-gray-100'>
+                        <div className='container'>
+                            <div className='relative flex min-h-screen bg-white'>{children}</div>
+                        </div>
                     </div>
-                </div>
+                {/* </Provider> */}
             </body>
         </html>
     );

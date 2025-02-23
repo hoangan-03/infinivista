@@ -11,6 +11,8 @@ import Link from 'next/link';
 import {Button} from '@/components/ui';
 import {FcGoogle} from 'react-icons/fc';
 import {cn} from '@/lib/utils';
+import {Switch} from '@/components/ui/switch';
+import GoogleSignInButton from './GoogleSignInButton';
 
 const loginSchema = Yup.object().shape({
     email_phone: Yup.string().required(),
@@ -29,6 +31,12 @@ export const LoginForm: React.FC = () => {
     const onSubmit = (data: any) => {
         console.log(data);
     };
+
+    const [rememberMe, setRememberMe] = React.useState(false);
+
+    React.useEffect(() => {
+        console.log(rememberMe);
+    }, [rememberMe]);
 
     return (
         <div id='login-form' className='flex w-full flex-col items-center gap-14'>
@@ -79,7 +87,10 @@ export const LoginForm: React.FC = () => {
 
                         <div className='mt-5 flex items-center justify-between'>
                             <div className='flex items-center focus:underline focus:outline-none'>
-                                <input type='checkbox' id='remember-me' />
+                                <Switch
+                                    checked={rememberMe}
+                                    onClick={() => setRememberMe((rememberMe) => !rememberMe)}
+                                />
                                 <label
                                     htmlFor='remember-me'
                                     className='ml-2 text-paragraph1 text-black md:text-caption'
@@ -101,10 +112,7 @@ export const LoginForm: React.FC = () => {
                         <Button type='submit' className='bg-blue-700 text-caption font-bold text-white'>
                             Sign in
                         </Button>
-                        <Button type='button' className='flex w-full gap-2 text-caption font-bold text-white'>
-                            <FcGoogle />
-                            Or Sign in with Google
-                        </Button>
+                        <GoogleSignInButton />
                         <div className='flex items-center justify-center gap-2'>
                             <p className='text-paragraph1 text-black md:text-caption'>Don't have an account?</p>
                             <Link
