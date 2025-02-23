@@ -13,25 +13,23 @@ import {cn} from '@/lib/utils';
 import {Switch} from '@/components/ui/switch';
 import GoogleSignInButton from '../../_components/GoogleSignInButton';
 
-const loginSchema = Yup.object().shape({
+const registerSchema = Yup.object().shape({
     email_phone: Yup.string().required(),
     password: Yup.string().required(),
 });
 
-export const LoginForm: React.FC = () => {
+export const RegisterForm: React.FC = () => {
     const {
         register,
         handleSubmit,
         formState: {errors},
     } = useForm({
-        resolver: yupResolver(loginSchema),
+        resolver: yupResolver(registerSchema),
     });
 
     const onSubmit = (data: any) => {
         console.log(data);
     };
-
-    const [rememberMe, setRememberMe] = React.useState(false);
 
     return (
         <div id='login-form' className='flex h-full w-full flex-col items-center justify-around'>
@@ -80,7 +78,7 @@ export const LoginForm: React.FC = () => {
                             </cap>
                         </div>
 
-                        <div className='mt-1 flex items-center justify-between'>
+                        <div className='mt-5 flex items-center justify-between'>
                             <div className='flex items-center focus:underline focus:outline-none'>
                                 <Switch
                                     checked={rememberMe}
