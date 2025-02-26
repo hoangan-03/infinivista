@@ -14,8 +14,12 @@ import {Switch} from '@/components/ui/switch';
 import GoogleSignInButton from '../../_components/GoogleSignInButton';
 
 const registerSchema = Yup.object().shape({
-    email_phone: Yup.string().required(),
-    password: Yup.string().required(),
+    fullName: Yup.string().required('Please enter your full name'),
+    email_phone: Yup.string().required('Please enter an email or phone number'),
+    password: Yup.string().required('Please enter a password'),
+    confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password'), undefined], 'Passwords must match')
+        .required('Please re-enter the password'),
 });
 
 export const RegisterForm: React.FC = () => {
@@ -32,12 +36,30 @@ export const RegisterForm: React.FC = () => {
     };
 
     return (
-        <div id='login-form' className='flex h-full w-full flex-col items-center justify-around'>
+        <div id='register-form' className='flex h-full w-full flex-col items-center justify-around gap-5 py-5'>
             <LogoName />
             <div className='w-full'>
                 <h4 className='mb-4 font-bold md:text-heading5'>Nice to see you again</h4>
-                <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-8'>
+                <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
                     <div className='flex flex-col gap-0'>
+                        <div>
+                            <label htmlFor='fullName' className='pl-3 text-paragraph1 text-gray-900 md:text-caption'>
+                                Full name
+                            </label>
+                            <Input
+                                type='text'
+                                placeholder='Enter full name'
+                                fontSize='text-paragraph1'
+                                variant='outline'
+                                borderRadius='square'
+                                {...register('fullName')}
+                            />
+
+                            <cap className={cn('w-full pl-3 text-blue-500', errors.fullName ? 'visible' : 'invisible')}>
+                                {errors.fullName?.message}
+                            </cap>
+                        </div>
+
                         <div>
                             <label htmlFor='email_phone' className='pl-3 text-paragraph1 text-gray-900 md:text-caption'>
                                 Email or phone number
@@ -57,7 +79,7 @@ export const RegisterForm: React.FC = () => {
                                     errors.email_phone ? 'visible' : 'invisible'
                                 )}
                             >
-                                Please enter an email or phone number
+                                {errors.email_phone?.message}
                             </cap>
                         </div>
 
@@ -74,47 +96,50 @@ export const RegisterForm: React.FC = () => {
                             />
 
                             <cap className={cn('w-full pl-3 text-blue-500', errors.password ? 'visible' : 'invisible')}>
-                                Please enter a password
+                                {errors.password?.message}
                             </cap>
                         </div>
 
-                        <div className='mt-5 flex items-center justify-between'>
-                            <div className='flex items-center focus:underline focus:outline-none'>
-                                <Switch
-                                    checked={rememberMe}
-                                    onClick={() => setRememberMe((rememberMe) => !rememberMe)}
-                                />
-                                <label
-                                    htmlFor='remember-me'
-                                    className='ml-2 text-paragraph1 text-black md:text-caption'
-                                >
-                                    Remember me
-                                </label>
-                            </div>
-                            <Link
-                                id='forgot-password-link'
-                                href='/auth/login/forgot-password'
-                                className='text-nowrap text-paragraph1 text-blue-500 hover:underline md:text-caption'
+                        <div>
+                            <label
+                                htmlFor='confirmPassword'
+                                className='pl-3 text-paragraph1 text-gray-900 md:text-caption'
                             >
-                                Forgot password?
-                            </Link>
+                                Retype password
+                            </label>
+                            <PasswordInput
+                                placeholder='Enter password again'
+                                fontSize='text-paragraph1'
+                                variant='outline'
+                                borderRadius='square'
+                                {...register('confirmPassword')}
+                            />
+
+                            <cap
+                                className={cn(
+                                    'w-full pl-3 text-blue-500',
+                                    errors.confirmPassword ? 'visible' : 'invisible'
+                                )}
+                            >
+                                {errors.confirmPassword?.message}
+                            </cap>
                         </div>
                     </div>
 
                     <div className='button-group flex flex-col gap-8'>
                         <Button type='submit' className='bg-blue-700 text-caption font-bold text-white'>
-                            Sign in
+                            Register
                         </Button>
                         <hr />
                         <div className='flex flex-col gap-4'>
-                            <GoogleSignInButton text='Or Sign in with Google' />
+                            <GoogleSignInButton text='Or Register with Google' />
                             <div className='flex items-center justify-center gap-2'>
-                                <p className='text-paragraph1 text-black md:text-caption'>Don't have an account?</p>
+                                <p className='text-paragraph1 text-black md:text-caption'>Already had an account?</p>
                                 <Link
                                     href='/auth/register'
                                     className='text-nowrap text-paragraph1 text-blue-500 hover:underline md:text-caption'
                                 >
-                                    Sign up now
+                                    Sign in now
                                 </Link>
                             </div>
                         </div>

@@ -14,8 +14,8 @@ import {Switch} from '@/components/ui/switch';
 import GoogleSignInButton from '../../_components/GoogleSignInButton';
 
 const loginSchema = Yup.object().shape({
-    email_phone: Yup.string().required(),
-    password: Yup.string().required(),
+    email_phone: Yup.string().required('Please enter an email or phone number'),
+    password: Yup.string().required('Please enter the password'),
 });
 
 export const LoginForm: React.FC = () => {
@@ -59,7 +59,7 @@ export const LoginForm: React.FC = () => {
                                     errors.email_phone ? 'visible' : 'invisible'
                                 )}
                             >
-                                Please enter an email or phone number
+                                {errors.email_phone?.message}
                             </cap>
                         </div>
 
@@ -76,7 +76,7 @@ export const LoginForm: React.FC = () => {
                             />
 
                             <cap className={cn('w-full pl-3 text-blue-500', errors.password ? 'visible' : 'invisible')}>
-                                Please enter a password
+                                {errors.password?.message}
                             </cap>
                         </div>
 

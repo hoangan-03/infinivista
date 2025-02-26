@@ -47,6 +47,8 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
                     borderRadius={borderRadius}
                     fontSize={fontSize}
                     ref={ref}
+                    onCopy={(e) => e.preventDefault()}
+                    onPaste={(e) => e.preventDefault()}
                     {...props}
                 />
                 <div className='pointer-events-none absolute right-0 top-0 flex h-full w-full items-center justify-end pr-4'>

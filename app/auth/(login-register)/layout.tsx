@@ -1,12 +1,12 @@
-import { WallpaperRandomizer } from "./login/_components/WallpaperRandomizer";
+import {WallpaperRandomizer} from './login/_components/WallpaperRandomizer';
 
 export default function LoginRegisterLayout({children}: {children: React.ReactNode}) {
     return (
-        <div className="flex h-screen">
-            <aside className='hidden md:flex flex-2 w-250px bg-gray-100'>
+        <div className='flex h-screen'>
+            <aside className='w-250px hidden flex-2 bg-gray-100 md:flex'>
                 <WallpaperRandomizer />
             </aside>
-            <main className='flex-1 bg-white'>{children}</main>
+            <main className='min-w-[380px] flex-1 overflow-y-auto bg-white'>{children}</main>
         </div>
     );
 }
