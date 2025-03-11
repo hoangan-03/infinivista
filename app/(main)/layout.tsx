@@ -1,4 +1,4 @@
-import {Sidebar} from '@/app/(main)/communication/components/Sidebar';
+import {Sidebar} from '@/app/(main)/communication/_components/Sidebar';
 
 export default function MainAppLayout({children}: {children: React.ReactNode}) {
     return (

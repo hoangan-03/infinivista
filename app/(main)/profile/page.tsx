@@ -11,12 +11,12 @@
 
 import React from 'react';
 
-import AboutSection from './components/AboutSection';
-import FriendsSection from './components/FriendsSection';
-import Header from './components/Header';
-import PostsSection from './components/PostsSection';
-import ProfileCard from './components/ProfileCard';
-import Sidebar from './components/Sidebar';
+import AboutSection from './_components/AboutSection';
+import FriendsSection from './_components/FriendsSection';
+import Header from './_components/Header';
+import PostsSection from './_components/PostsSection';
+import ProfileCard from './_components/ProfileCard';
+import Sidebar from './_components/Sidebar';
 
 const Home: React.FC = () => {
     return (

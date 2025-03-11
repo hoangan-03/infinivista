@@ -13,7 +13,7 @@ const nextConfig = {
         return [
             {
                 source: '/connect',
-                destination: '/connect/for-you',
+                destination: '/connect/feed/for-you',
                 permanent: true,
             },
             {

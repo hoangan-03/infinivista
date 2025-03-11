@@ -3,9 +3,9 @@
 import React from 'react';
 
 import Image from 'next/image';
-import ConnectNavbar from './components/ConnectNavbar';
+import ConnectNavbar from './_components/ConnectNavbar';
 import {cn} from '@/lib/utils';
-import Button from './components/Button';
+import Button from './_components/Button';
 import {Icon} from '@/components/commons';
 
 import SuggestionList from './mockData/suggestionList';

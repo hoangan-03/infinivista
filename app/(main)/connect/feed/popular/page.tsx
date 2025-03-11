@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Connect_Popular = () => {
+const Connect_Feed_Popular = () => {
   return (
-    <div>Connect_Popular</div>
+    <div>Connect_Feed_Popular</div>
   )
 }
 
-export default Connect_Popular
+export default Connect_Feed_Popular
