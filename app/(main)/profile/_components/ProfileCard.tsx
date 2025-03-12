@@ -6,7 +6,7 @@ import {Button} from '../ui/button';
 
 const ProfileCard: React.FC = () => {
     return (
-        <div className='flex h-[440px] w-fill flex-row items-center gap-4'>
+        <div className='w-fill flex h-[440px] flex-row items-center gap-4'>
             <div className='relative h-full w-[770px] rounded-3xl bg-white shadow-lg'>
                 <Image
                     src='/assets/images/back_image.png'
@@ -32,7 +32,13 @@ const ProfileCard: React.FC = () => {
                             <h2 className='text-2xl font-bold'>John Nguyen</h2>
                             <p className='text-gray-500'>Lead Project Manager at NVIDIA</p>
                             <div className='flex flex-row gap-1'>
-                                <Image src='/assets/icons/vietnam.png' alt='Profile Picture' width={25} height={25}  unoptimized={true}/>
+                                <Image
+                                    src='/assets/icons/vietnam.png'
+                                    alt='Profile Picture'
+                                    width={25}
+                                    height={25}
+                                    unoptimized={true}
+                                />
                                 <p className='text-gray-400'>Ho Chi Minh City, Vietnam</p>
                             </div>
                         </div>
