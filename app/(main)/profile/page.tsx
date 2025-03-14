@@ -1,22 +1,10 @@
-// import {Icon} from '@/components/commons';
-
-// export default function Home() {
-//     return (
-//         <div>
-//             <h1 className='text-display1'>Infinivista</h1>
-//             <Icon name='Search' width={200} height={200} />
-//         </div>
-//     );
-// }
-
 import React from 'react';
 
 import AboutSection from './_components/AboutSection';
 import FriendsSection from './_components/FriendsSection';
-import Header from './_components/Header';
+// import Header from './_components/Header';
 import PostsSection from './_components/PostsSection';
 import ProfileCard from './_components/ProfileCard';
-import Sidebar from './_components/Sidebar';
 
 const Home: React.FC = () => {
     return (
