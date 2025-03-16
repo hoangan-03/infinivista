@@ -1,12 +1,12 @@
-import {Sidebar} from '@/components/commons/Sidebar';
+import {Sidebar} from '@/components/commons/sidebar';
 
 export default function MainAppLayout({children}: {children: React.ReactNode}) {
     return (
-        <>
-            <aside className='w-[250px]'>
+        <div className='flex w-full'>
+            <aside className='w-fit'>
                 <Sidebar />
             </aside>
-            <main className='w-[calc(100%-250px)] bg-white'>{children}</main>
-        </>
+            <main className='bg-white'>{children}</main>
+        </div>
     );
 }

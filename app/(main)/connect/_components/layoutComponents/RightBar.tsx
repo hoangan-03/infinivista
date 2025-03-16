@@ -190,7 +190,7 @@ const RightBarContent: React.FC = () => {
     return (
         <div
             id='right-bar'
-            className='custom-scrollbar-hidden sticky bottom-0 top-0 z-20 -mx-4 -mb-8 h-screen flex-1 justify-between overflow-y-auto px-4 py-8'
+            className='custom-scrollbar-hidden sticky bottom-0 top-0 z-20 -mx-4 -mb-8 h-screen //flex-1 justify-between overflow-y-auto px-4 py-8'
         >
             <div id='rightbar-content' className='flex h-fit flex-col gap-5'>
                 <Suggestions />

@@ -80,3 +80,5 @@ const Icon: React.FC<IconProps> = ({width = 20, height = 20, name, className}) =
 };
 
 export default Icon;
+
+export type {IconProps};
