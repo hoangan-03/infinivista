@@ -1,14 +1,14 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 export interface UserState {
-    displayName: string;
+    name: string;
     email: string;
     phone: string;
     profilePic: string;
 }
 
 const initialState: UserState = {
-    displayName: '',
+    name: '',
     email: '',
     phone: '',
     profilePic: '',
@@ -19,7 +19,7 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, action: PayloadAction<UserState>) => {
-            state.displayName = action.payload.displayName;
+            state.name = action.payload.name;
             state.email = action.payload.email;
             state.phone = action.payload.phone;
             state.profilePic = action.payload.profilePic;

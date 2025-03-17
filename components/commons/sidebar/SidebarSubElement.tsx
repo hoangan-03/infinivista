@@ -9,7 +9,7 @@ interface SidebarSubElementProps {
     className?: string;
 }
 
-export const SidebarSubElement: React.FC<SidebarSubElementProps> = ({name, href = '', selected, className}) => {
+const SidebarSubElement: React.FC<SidebarSubElementProps> = ({name, href = '', selected, className}) => {
     return (
         <div className={cn(className)}>
             <Link href={href}>
@@ -25,3 +25,5 @@ export const SidebarSubElement: React.FC<SidebarSubElementProps> = ({name, href 
         </div>
     );
 };
+
+export default SidebarSubElement;
