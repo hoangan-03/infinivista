@@ -14,6 +14,7 @@ interface SidebarElementProps {
     onClick?: () => void;
     className?: string;
     children?: React.ReactNode;
+    childSelected?: boolean;
 }
 
 const SidebarElement: React.FC<SidebarElementProps> = ({
@@ -27,16 +28,34 @@ const SidebarElement: React.FC<SidebarElementProps> = ({
     className,
     numericalDataClassName,
     children,
+    childSelected,
 }) => {
     const [dropdownExpanded, setDropdownExpanded] = React.useState(true);
 
+    /*
+    If no children => based on the value of selected
+    If children => only selected when one of the children is selected and the dropdown is collapsed
+    */
+    const hasNoChildrenAndSelected = !children && selected;
+    const hasChildrenAndChildSelected = children && childSelected && !dropdownExpanded;
+    const realSelected = hasNoChildrenAndSelected || hasChildrenAndChildSelected;
+
     return (
         <div className={cn('mb-5', className)}>
-            <div className='relative rounded-xs px-3 py-2 hover:bg-gray-100'>
-                <button className={cn('flex w-full items-center gap-2', selected && 'bg-gray-200')} onClick={onClick}>
+            <div className={cn('relative rounded-xs px-3 py-2 hover:bg-gray-100', realSelected && 'bg-gray-200')}>
+                <button
+                    className={cn('flex w-full items-center', !sidebarExpanded && 'justify-center')}
+                    onClick={onClick}
+                >
                     <Icon name={iconName} width={24} height={24} className='text-black' />
-                    <span className='flex flex-grow items-center justify-between'>
-                        <div className={cn('sidebar-transition', !sidebarExpanded && 'text-collapsed')}>
+                    <div
+                        className={cn(
+                            'flex flex-grow items-center justify-between',
+                            'sidebar-transition',
+                            sidebarExpanded ? 'w-40' : 'w-0'
+                        )}
+                    >
+                        <div className={cn('sidebar-transition', sidebarExpanded ? 'mx-2' : 'text-collapsed')}>
                             <p className='font-bold text-black'>{name}</p>
                         </div>
 
@@ -45,29 +64,25 @@ const SidebarElement: React.FC<SidebarElementProps> = ({
                                 className={cn(
                                     'rounded-xs px-2 text-white',
                                     'sidebar-transition',
-                                    !sidebarExpanded &&
-                                        'origin-bottom-left -translate-x-32 translate-y-2 scale-75 transform',
+                                    !sidebarExpanded && 'origin-bottom-left -translate-x-3 translate-y-2 scale-75',
                                     numericalDataClassName
                                 )}
                             >
                                 {numericalData}
                             </p>
                         )}
-                    </span>
+                    </div>
                 </button>
                 {children && (
                     <span
-                        className='absolute right-1 top-1/2 -translate-y-1/2 cursor-pointer'
+                        className='absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer'
                         onClick={() => setDropdownExpanded(!dropdownExpanded)}
                     >
                         <Icon
                             name='CaretDown'
                             width={16}
                             height={16}
-                            className={cn(
-                                'transition-transform duration-300 ease-in-out',
-                                dropdownExpanded && '-scale-y-100'
-                            )}
+                            className={cn('sidebar-transition', dropdownExpanded && '-scale-y-100')}
                         />
                     </span>
                 )}
@@ -75,12 +90,25 @@ const SidebarElement: React.FC<SidebarElementProps> = ({
             {children && (
                 <div
                     className={cn(
-                        'mb-5 flex overflow-hidden pl-6 transition-all duration-300 ease-in-out',
-                        dropdownExpanded ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'
+                        'mb-5 flex overflow-hidden',
+                        'sidebar-transition',
+                        dropdownExpanded ? 'max-h-[200px]' : 'max-h-0',
+                        sidebarExpanded && 'pl-6'
                     )}
                 >
-                    <Separator orientation='vertical' className='h-[90px] bg-gray-200' />
-                    <div className='flex w-full flex-col gap-2 pl-2'>{children}</div>
+                    <Separator
+                        orientation='vertical'
+                        className={cn('h-22 bg-gray-200', 'sidebar-transition', !sidebarExpanded && 'opacity-0')}
+                    />
+                    <div
+                        className={cn(
+                            'mt-2 flex w-full flex-col gap-2',
+                            'sidebar-transition',
+                            sidebarExpanded ? 'pl-2' : '-translate-x-0'
+                        )}
+                    >
+                        {children}
+                    </div>
                 </div>
             )}
         </div>

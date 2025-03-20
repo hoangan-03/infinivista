@@ -6,12 +6,19 @@ interface SidebarSubElementProps {
     name: string;
     href?: string;
     selected?: boolean;
+    sidebarExpanded: boolean;
     className?: string;
 }
 
-const SidebarSubElement: React.FC<SidebarSubElementProps> = ({name, href = '', selected, className}) => {
+const SidebarSubElement: React.FC<SidebarSubElementProps> = ({
+    name,
+    href = '',
+    selected,
+    sidebarExpanded,
+    className,
+}) => {
     return (
-        <div className={cn(className)}>
+        <div className={cn('sidebar-transition', sidebarExpanded ? 'max-w-[250px]' : 'max-w-[90px]', className)}>
             <Link href={href}>
                 <button
                     className={cn(
@@ -19,7 +26,7 @@ const SidebarSubElement: React.FC<SidebarSubElementProps> = ({name, href = '', s
                         selected && 'bg-gray-200'
                     )}
                 >
-                    {name}
+                    <div>{name}</div>
                 </button>
             </Link>
         </div>

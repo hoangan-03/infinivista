@@ -2,12 +2,14 @@
 
 import React from 'react';
 
-import Logo from '@/public/assets/images/logo.svg';
+import LogoIcon from '@/public/assets/images/logo_icon.svg';
+import LogoText from '@/public/assets/images/logo_text.svg';
 import placeholderImage from '@/public/assets/images/placeholder.png';
 import {Icon} from '@/components/commons';
 import {Separator} from '@/components/ui';
 import {usePathname, useRouter} from 'next/navigation';
 import {cn} from '@/lib/utils';
+import Image from 'next/image';
 
 import SidebarElement from './SidebarElement';
 import SidebarSubElement from './SidebarSubElement';
@@ -54,13 +56,20 @@ const Sidebar: React.FC = () => {
     return (
         <div
             id='sidebar-wrapper'
-            className={cn('h-full overflow-hidden', 'sidebar-transition', sidebarExpanded ? 'w-[250px]' : 'w-[80px]')}
+            className={cn('h-full overflow-hidden', 'sidebar-transition', sidebarExpanded ? 'w-64' : 'w-20')}
         >
-            <div className='shadow-sidebar custom-scrollbar-hidden fixed left-0 top-0 z-50 h-screen overflow-auto p-6'>
-                <div className='relative mb-5 h-[33px] w-[202px]'>
-                    <Logo />
+            <div
+                className={cn(
+                    'custom-scrollbar-hidden fixed left-0 top-0 z-50 h-screen overflow-auto bg-white py-6 shadow-sm',
+                    'sidebar-transition',
+                    sidebarExpanded ? 'w-64 px-6' : 'w-20 px-3'
+                )}
+            >
+                <div className='relative mb-5 h-[33px] flex-center'>
+                    <LogoIcon />
+                    <LogoText className={cn('sidebar-transition', sidebarExpanded ? 'ml-2' : 'w-0')} />
                 </div>
-                <div className='mb-5'>
+                <div className='mb-5 flex-center'>
                     <button
                         className={cn(
                             'flex h-12 w-full items-center justify-center gap-2 rounded-[50px] bg-primary px-3 py-2 text-white',
@@ -71,7 +80,13 @@ const Sidebar: React.FC = () => {
                         <span>
                             <Icon name='Plus' width={16} height={16} />
                         </span>
-                        <p className={cn('font-bold', 'sidebar-transition', !sidebarExpanded && 'text-collapsed absolute')}>
+                        <p
+                            className={cn(
+                                'font-bold',
+                                'sidebar-transition',
+                                !sidebarExpanded && 'text-collapsed absolute'
+                            )}
+                        >
                             New Post
                         </p>
                     </button>
@@ -84,16 +99,20 @@ const Sidebar: React.FC = () => {
                             iconName='Globe'
                             selected={updatedPageList[0].selected}
                             sidebarExpanded={sidebarExpanded}
+                            onClick={() => router.push('/connect')}
+                            childSelected={updatedPageList[1].selected || updatedPageList[2].selected}
                         >
                             <SidebarSubElement
                                 name='Feed'
                                 href='/connect/feed'
                                 selected={updatedPageList[1].selected}
+                                sidebarExpanded={sidebarExpanded}
                             />
                             <SidebarSubElement
                                 name='Story'
                                 href='/connect/story'
                                 selected={updatedPageList[2].selected}
+                                sidebarExpanded={sidebarExpanded}
                             />
                         </SidebarElement>
                         <SidebarElement
