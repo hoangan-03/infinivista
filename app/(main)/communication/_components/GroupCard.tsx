@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import placeholderImage from '@/assets/images/placeholder.png';
+import placeholderImage from '@/public/assets/images/placeholder.png';
 import {cn} from '@/lib/utils';
 
 interface GroupCardProps {

@@ -36,17 +36,22 @@ const SidebarElement: React.FC<SidebarElementProps> = ({
                 <button className={cn('flex w-full items-center gap-2', selected && 'bg-gray-200')} onClick={onClick}>
                     <Icon name={iconName} width={24} height={24} className='text-black' />
                     <span className='flex flex-grow items-center justify-between'>
-                        <div
-                            className={cn(
-                                'transition-opacity duration-500',
-                                sidebarExpanded ? 'opacity-100' : 'opacity-0'
-                            )}
-                        >
+                        <div className={cn('sidebar-transition', !sidebarExpanded && 'text-collapsed')}>
                             <p className='font-bold text-black'>{name}</p>
                         </div>
 
                         {withNumericalData && (
-                            <p className={cn('rounded-xs px-2 text-white', numericalDataClassName)}>{numericalData}</p>
+                            <p
+                                className={cn(
+                                    'rounded-xs px-2 text-white',
+                                    'sidebar-transition',
+                                    !sidebarExpanded &&
+                                        'origin-bottom-left -translate-x-32 translate-y-2 scale-75 transform',
+                                    numericalDataClassName
+                                )}
+                            >
+                                {numericalData}
+                            </p>
                         )}
                     </span>
                 </button>

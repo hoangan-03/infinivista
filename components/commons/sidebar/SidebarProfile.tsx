@@ -25,7 +25,7 @@ const SidebarProfile: React.FC<SidebarProfileProps> = ({href, imgSrc, name, emai
                         className='absolute inset-0 left-0 top-0 h-full w-full object-cover'
                     />
                 </div>
-                <div className={cn('transition-opacity duration-500', sidebarExpanded ? 'opacity-100' : 'opacity-0')}>
+                <div className={cn('w-fit', 'sidebar-transition', !sidebarExpanded && 'text-collapsed')}>
                     <p className='font-bold'>{name}</p>
                     <p className='max-w-[140px] truncate text-[#A0ABBB]'>{email}</p>
                 </div>

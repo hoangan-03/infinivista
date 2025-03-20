@@ -17,6 +17,7 @@ import SendArrow from '@/public/assets/icons/send-arrow.svg';
 import SettingsGear from '@/public/assets/icons/settings-gear.svg';
 import ShopCart from '@/public/assets/icons/shop-cart.svg';
 import Smiley from '@/public/assets/icons/smiley.svg';
+import ZoomIn from '@/public/assets/icons/zoom-in.svg';
 import ZoomOut from '@/public/assets/icons/zoom-out.svg';
 import Search from '@/public/assets/icons/search.svg';
 import Plus from '@/public/assets/icons/icon-plus.svg';
@@ -53,6 +54,7 @@ const Icons = {
     SettingsGear,
     LeftRight,
     Logout,
+    ZoomIn,
     ZoomOut,
     Plus,
     Like,

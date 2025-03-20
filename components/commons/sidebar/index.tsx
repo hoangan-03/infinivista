@@ -1,10 +1,9 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 
-import Logo from '@/assets/images/logo.svg';
-import placeholderImage from '@/assets/images/placeholder.png';
+import Logo from '@/public/assets/images/logo.svg';
+import placeholderImage from '@/public/assets/images/placeholder.png';
 import {Icon} from '@/components/commons';
 import {Separator} from '@/components/ui';
 import {usePathname, useRouter} from 'next/navigation';
@@ -13,6 +12,8 @@ import {cn} from '@/lib/utils';
 import SidebarElement from './SidebarElement';
 import SidebarSubElement from './SidebarSubElement';
 import SidebarProfile from './SidebarProfile';
+
+import './sidebar.css';
 
 const pageList = [
     {id: 1, pageName: 'Connect', pathname: 'connect', selected: false},
@@ -53,21 +54,26 @@ const Sidebar: React.FC = () => {
     return (
         <div
             id='sidebar-wrapper'
-            className={cn(
-                'h-full overflow-hidden transition-all duration-500',
-                sidebarExpanded ? 'w-[250px]' : 'w-[80px]'
-            )}
+            className={cn('h-full overflow-hidden', 'sidebar-transition', sidebarExpanded ? 'w-[250px]' : 'w-[80px]')}
         >
             <div className='shadow-sidebar custom-scrollbar-hidden fixed left-0 top-0 z-50 h-screen overflow-auto p-6'>
                 <div className='relative mb-5 h-[33px] w-[202px]'>
                     <Logo />
                 </div>
                 <div className='mb-5'>
-                    <button className='flex h-12 w-full items-center justify-center gap-2 rounded-[50px] bg-primary px-3 py-2 text-white'>
+                    <button
+                        className={cn(
+                            'flex h-12 w-full items-center justify-center gap-2 rounded-[50px] bg-primary px-3 py-2 text-white',
+                            'sidebar-transition',
+                            !sidebarExpanded && 'flex w-12 flex-center'
+                        )}
+                    >
                         <span>
                             <Icon name='Plus' width={16} height={16} />
                         </span>
-                        <p className='font-bold'>New Post</p>
+                        <p className={cn('font-bold', 'sidebar-transition', !sidebarExpanded && 'text-collapsed absolute')}>
+                            New Post
+                        </p>
                     </button>
                 </div>
                 <div>
@@ -162,8 +168,8 @@ const Sidebar: React.FC = () => {
                         <Separator className='bg-gray-200' />
                     </div>
                     <SidebarElement
-                        name={sidebarExpanded ? 'Collapse' : 'Expand'}
-                        iconName='ZoomOut'
+                        name='Collapse'
+                        iconName={sidebarExpanded ? 'ZoomOut' : 'ZoomIn'}
                         sidebarExpanded={sidebarExpanded}
                         onClick={() => setSidebarExpanded(!sidebarExpanded)}
                         className='mb-0'

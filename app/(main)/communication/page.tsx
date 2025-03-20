@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import placeholderImage from '@/assets/images/placeholder.png';
+import placeholderImage from '@/public/assets/images/placeholder.png';
 import {Icon} from '@/components/commons';
 import {ScrollArea, Separator} from '@/components/ui';
 import {cn} from '@/lib/utils';

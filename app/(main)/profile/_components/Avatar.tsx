@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
-import DefaultAvatar from '@/assets/images/avatar-default.png';
+import DefaultAvatar from '@/public/assets/images/avatar-default.png';
 import {cn} from '@/lib/utils';
 
 interface AvatarProps {
