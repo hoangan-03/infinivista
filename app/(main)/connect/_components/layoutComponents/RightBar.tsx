@@ -10,9 +10,9 @@ import {cn} from '@/lib/utils';
 import Button from '../Button';
 import {Icon} from '@/components/commons';
 
-import suggestionList from '../../mockData/suggestionList';
-import trendingList from '../../mockData/trendingList';
-import friendList from '../../mockData/friendList';
+import suggestionList from '../../../_mock_data/suggestionList';
+import trendingList from '../../../_mock_data/trendingList';
+import friendList from '../../../_mock_data/friendList';
 
 const RightBarElement: React.FC<{title: string; children: React.ReactNode; className?: string}> = ({
     title,

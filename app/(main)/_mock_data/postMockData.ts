@@ -47,12 +47,12 @@ const postMockData = {
             count: 5,
             people: [
                 {
-                    id: 8,
+                    username: '@alice',
                     name: 'Alice',
                     profilePic: 'alice.jpg',
                 },
                 {
-                    id: 9,
+                    username: '@bob',
                     name: 'Bob',
                     profilePic: 'bob.jpg',
                 },
@@ -64,7 +64,7 @@ const postMockData = {
             count: 3,
             people: [
                 {
-                    id: 11,
+                    username: '@charlie',
                     name: 'Charlie',
                     profilePic: 'charlie.jpg',
                 },
@@ -76,7 +76,7 @@ const postMockData = {
             count: 2,
             people: [
                 {
-                    id: 13,
+                    username: '@david',
                     name: 'David',
                     profilePic: 'david.jpg',
                 },
@@ -87,7 +87,7 @@ const postMockData = {
     commentList: [
         {
             id: 14,
-            userId: 100,
+            username: '@jane-smith',
             created_by: 'Jane Smith',
             profilePic: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408640/samples/landscapes/nature-mountains.jpg',
             created_at: new Date(),
@@ -95,7 +95,7 @@ const postMockData = {
         },
         {
             id: 15,
-            userId: 101,
+            username: '@bob-johnson',
             created_by: 'Bob Johnson',
             profilePic: '',
             created_at: new Date(),

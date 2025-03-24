@@ -1,10 +1,11 @@
 import {ArrowRightIcon} from '@heroicons/react/solid';
 import React from 'react';
 
-import PostObj from '@/app/(main)/profile/mock_data/postMockData';
+import Post from '@/app/(main)/_components/Post';
+import PostObj from '@/app/(main)/_mock_data/postMockData';
 
-import {Button} from '../ui';
-import Post from './Post';
+import {Button} from '@/components/ui';
+
 const PostsSection: React.FC = () => {
     return (
         <div className='flex w-full flex-col gap-4'>

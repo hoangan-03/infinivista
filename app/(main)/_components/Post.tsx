@@ -1,17 +1,17 @@
 'use client';
 
 import React from 'react';
-
-import {Icon} from '@/components/commons';
 import {cn} from '@/lib/utils';
 
-import CurrentUser from '../mock_data/self';
-import {getSumReactions, getTimeStamp} from '../utils/utils';
 import Avatar from './Avatar';
+import {Icon} from '@/components/commons';
 import CommentInput from './CommentInput';
+
+import CurrentUser from '../_mock_data/self';
 import CommentSection from './CommentSection';
-import MultimediaSection from './MultimediaSection';
 import ReactButton from './ReactButton';
+import {getSumReactions, getTimeStamp} from '@/lib/utils';
+import MultimediaSection from './MultimediaSection';
 
 type AttachmentType = 'image' | 'video';
 type ReactionType = 'like' | 'love' | 'sad';
@@ -24,7 +24,7 @@ interface Attachment {
 }
 
 interface Person {
-    id: number;
+    username: string;
     name: string;
     profilePic: string;
 }
@@ -38,7 +38,7 @@ interface Reaction {
 
 interface Comment {
     id: number;
-    userId: number;
+    username: string;
     created_by: string;
     profilePic: string;
     created_at: Date;
@@ -81,7 +81,7 @@ const Post: React.FC<PostProps> = ({postObj, className}) => {
 
         if (liked) {
             if (reaction) {
-                reaction.people = reaction.people.filter((person) => person.id !== CurrentUser.id);
+                reaction.people = reaction.people.filter((person) => person.username !== CurrentUser.username);
                 reaction.count--;
                 if (reaction.count === 0) {
                     postObj.reactionList.splice(postObj.reactionList.indexOf(reaction), 1);
@@ -110,7 +110,7 @@ const Post: React.FC<PostProps> = ({postObj, className}) => {
 
         const newCommentObj: Comment = {
             id: Math.max(...postObj.commentList.map((comment) => comment.id)) + 1,
-            userId: CurrentUser.id,
+            username: CurrentUser.username,
             created_by: CurrentUser.name,
             profilePic: CurrentUser.profilePic,
             created_at: new Date(),
@@ -132,87 +132,32 @@ const Post: React.FC<PostProps> = ({postObj, className}) => {
 
     return (
         <div
-            id='post-frame'
             className={cn(
-                'flex min-w-fit flex-col gap-5 rounded-[1.5rem] border-[1px] border-gray-100 bg-white p-7 shadow-lg',
+                'post-frame',
+                'flex min-w-fit flex-col gap-5 rounded-[1.5rem] border border-gray-100 bg-white p-7 shadow-lg',
                 className
             )}
         >
-            <section id='post-author' className='flex items-center gap-3'>
+            <section className='post-author flex items-center gap-3'>
                 <Avatar src={postObj?.avatar} />
                 <div>
-                    <h6 id='post-author-name' className='font-bold'>
-                        {postObj?.author}
-                    </h6>
-                    <cap id='post-author-time' className='font-medium text-gray-500'>
+                    <h6 className='post-author-name font-bold'>{postObj?.author}</h6>
+                    <cap className='post-author-time font-medium text-gray-500'>
                         {getTimeStamp(postObj?.created_at)}
                     </cap>
                 </div>
             </section>
-            <section id='post-text'>
-                <p1 className='text-justify font-medium'>{postObj?.description}</p1>
+            <section>
+                <p1 className='post-text text-justify font-medium'>{postObj?.description}</p1>
             </section>
 
             <MultimediaSection attachmentList={postObj.attachmentList} maxNumberOfDisplays={maxNumberOfDisplays} />
-            {/* <section
-                id='post-multimedia'
-                className='grid auto-rows-fr grid-cols-[repeat(auto-fill,_minmax(188px,_1fr))] gap-3'
-            >
-                {postObj?.attachmentList.map((media, index) => {
-                    const length = postObj?.attachmentList.length;
-                    const overflow = length > maxNumberOfDisplays;
-                    const lastDisplayIndex = maxNumberOfDisplays - 1;
 
-                    return (
-                        index < maxNumberOfDisplays && (
-                            <div
-                                id={media.type + '-' + media.id}
-                                key={media.id}
-                                className='relative h-full w-full rounded-xl object-cover shadow-sm'
-                            >
-                                {index === lastDisplayIndex && overflow && (
-                                    // <Icon
-                                    //     name='Plus'
-                                    //     width='30%'
-                                    //     height='30%'
-                                    //     className='absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transform select-none text-[4rem] text-white'
-                                    // />
-                                    <div className='absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transform select-none text-[4rem] text-white'>
-                                        {length - 2}+
-                                    </div>
-                                )}
-                                <div
-                                    className={cn(
-                                        'h-full w-full',
-                                        index === lastDisplayIndex && overflow && 'brightness-[10%] filter'
-                                    )}
-                                >
-                                    {media.type === 'image' && (
-                                        <img
-                                            src={media.src}
-                                            alt={media.alt}
-                                            className='h-full w-full rounded-xl object-cover'
-                                        />
-                                    )}
-                                    {media.type === 'video' && (
-                                        <video
-                                            controls={!(lastDisplayIndex && overflow)}
-                                            className='h-full w-full rounded-xl object-cover'
-                                        >
-                                            <source src={media.src} type='video/mp4' />
-                                        </video>
-                                    )}
-                                </div>
-                            </div>
-                        )
-                    );
-                })}
-            </section> */}
-            <section id='post-comments'>
-                <div id='button-bar' className='flex flex-col gap-2'>
+            <section className='post-comments'>
+                <div className='button-bar flex flex-col gap-2'>
                     <hr />
                     <div className='flex items-center justify-between gap-3'>
-                        <div id='react-container' className='flex gap-4'>
+                        <div className='reaction-container flex gap-4'>
                             <ReactButton reactionList={postObj?.reactionList} handleClickReact={handleClickReact} />
                             <CommentSection
                                 reactionList={postObj?.reactionList}
@@ -224,7 +169,7 @@ const Post: React.FC<PostProps> = ({postObj, className}) => {
                                 <Icon name='Repost' width={24} height={24} />
                             </button>
                         </div>
-                        <div id='share-container' className='flex gap-4'>
+                        <div className='share-container flex gap-4'>
                             <button>
                                 <Icon name='Share' width={24} height={24} className='text-[1.5rem]' />
                             </button>
@@ -236,7 +181,7 @@ const Post: React.FC<PostProps> = ({postObj, className}) => {
                     <hr />
                 </div>
             </section>
-            <section id='post-counters' className='flex items-center justify-between gap-3 whitespace-nowrap'>
+            <section className='post-counters flex items-center justify-between gap-3 whitespace-nowrap'>
                 <subtitle2 className='w-fit font-bold'>{getSumReactions(postObj?.reactionList)} Reactions</subtitle2>
                 <div className='flex gap-3 text-gray-600'>
                     <p2 className='w-fit'>{postObj?.viewCount} Views</p2>
@@ -245,7 +190,7 @@ const Post: React.FC<PostProps> = ({postObj, className}) => {
                     <p2 className='w-fit'>{postObj?.shareCount} Shares</p2>
                 </div>
             </section>
-            <section id='post-textbox'>
+            <section className='post-textbox'>
                 <CommentInput onSubmit={handleSaveComment} placeholder='Add a comment...' variant='with-icon' />
                 {/* <p className={cn('text-heading5 text-white')}>kjfhasdjklfhlkjfjklasf</p> */}
                 {/* <p className={`text-heading5 text-white`}>kjfhasdjklfhlkjfjklasf</p> */}

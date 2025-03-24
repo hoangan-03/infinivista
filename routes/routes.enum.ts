@@ -18,7 +18,7 @@ export enum ENUM_ROUTES {
     CONNECT_STORY_FOLLOWING = '/connect/story/following',
     CONNECT_STORY_POPULAR = '/connect/story/popular',
 
-    PROFILE = '/profile/[userId]',
+    PROFILE = '/profile/[username]',
 
     COMMUNICATION = '/communication',
     COMMUNICATION_CHANNEL = '/communication/[channelId]',
