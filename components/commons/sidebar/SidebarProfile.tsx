@@ -26,7 +26,7 @@ const SidebarProfile: React.FC<SidebarProfileProps> = ({href, imgSrc, name, emai
                     />
                 </div>
                 <div className={cn('sidebar-transition', sidebarExpanded ? 'ml-4 w-36' : 'text-collapsed')}>
-                    <p className='font-bold'>{name}</p>
+                    <p className='font-bold text-black'>{name}</p>
                     <p className='max-w-[140px] truncate text-[#A0ABBB]'>{email}</p>
                 </div>
             </Link>

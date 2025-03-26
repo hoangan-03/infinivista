@@ -1,7 +1,8 @@
 const userData = {
-    username: '@john-nguyen-03',
+    username: 'john-nguyen-03',
     name: 'John Nguyen',
     email: 'john12052003@gmail.com',
+    about: `With over 20 years of experience leading cross-functional teams, I've consistently driven both brand elevation and customer acquisition across digital channels. From designing omnichannel marketing strategies to implementing data-driven approaches that improve ROI, my expertise is in creating integrated campaigns that resonate with consumers, amplify brand presence, and drive sustainable business growth. I thrive in dynamic environments and am passionate about staying at the forefront of marketing innovations, leveraging everything from AI and machine learning to social media platforms to reach and engage audiences.`,
     details: {
         displayedJobNo: 0, // index of the job (in introduction/jobTitles) to be displayed
     },
@@ -23,7 +24,6 @@ const userData = {
         hometown: 'Dong Nai',
         marritalStatus: 'Single',
     },
-    about: `With over 20 years of experience leading cross-functional teams, I've consistently driven both brand elevation and customer acquisition across digital channels. From designing omnichannel marketing strategies to implementing data-driven approaches that improve ROI, my expertise is in creating integrated campaigns that resonate with consumers, amplify brand presence, and drive sustainable business growth. I thrive in dynamic environments and am passionate about staying at the forefront of marketing innovations, leveraging everything from AI and machine learning to social media platforms to reach and engage audiences.`,
     profilePic: '/assets/images/avatar.jpg',
     backgroundPic: '/assets/images/back_image.png',
     followerNumber: 100,
@@ -33,4 +33,4 @@ const userData = {
 };
 
 export default userData;
-export type userDataType = typeof userData;
+export type UserDataType = typeof userData;

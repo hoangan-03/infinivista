@@ -82,7 +82,7 @@ const SidebarElement: React.FC<SidebarElementProps> = ({
                             name='CaretDown'
                             width={16}
                             height={16}
-                            className={cn('sidebar-transition', dropdownExpanded && '-scale-y-100')}
+                            className={cn('text-black', 'sidebar-transition', dropdownExpanded && '-scale-y-100')}
                         />
                     </span>
                 )}
@@ -92,7 +92,7 @@ const SidebarElement: React.FC<SidebarElementProps> = ({
                     className={cn(
                         'mb-5 flex overflow-hidden',
                         'sidebar-transition',
-                        dropdownExpanded ? 'max-h-[200px]' : 'max-h-0',
+                        dropdownExpanded ? 'max-h-52' : 'max-h-0',
                         sidebarExpanded && 'pl-6'
                     )}
                 >

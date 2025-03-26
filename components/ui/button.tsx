@@ -5,26 +5,27 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-    'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-bold text-sm ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300',
+    'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-bold text-sm ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300 hover:translate-y-[-1px] active:translate-y-0.5 hover:shadow-md active:shadow-lg',
     {
         variants: {
             variant: {
-                default: 'bg-[#0369A1] text-slate-50 hover:bg-slate-900/90',
+                default: 'bg-blue-700 text-slate-50 hover:bg-slate-900/90',
                 destructive: 'bg-red-500 text-slate-50 hover:bg-red-500/90',
-                outline: 'border border-slate-200 bg-white hover:bg-slate-100 hover:text-slate-900',
-                secondary: 'bg-white text-[#0369A1] border-[#0369A1] border-2 hover:bg-slate-100/80',
+                outline: 'border border-black bg-white hover:bg-blue-300 active:bg-blue-300 text-black',
+                secondary: 'bg-white text-blue-700 border-blue-700 border-2 hover:bg-slate-100/80',
                 shadow: 'bg-white text-slate-900 shadow-sm hover:shadow-md',
                 ghost: 'hover:bg-slate-100 hover:text-slate-900',
                 link: 'text-slate-900 underline-offset-4 hover:underline',
-                iconBeforeSecondary: 'flex-row-reverse bg-white text-[#0369A1] border-[#0369A1] border-2 hover:bg-slate-100/80',
-                iconAfterSecondary: 'flex-row bg-white text-[#0369A1] border-[#0369A1] border-2 hover:bg-slate-100/80', 
+                iconBeforeSecondary: 'flex-row-reverse bg-white text-blue-700 border-blue-700 border-2 hover:bg-slate-100/80',
+                iconAfterSecondary: 'flex-row bg-white text-blue-700 border-blue-700 border-2 hover:bg-slate-100/80', 
                 iconBeforeShadow: 'flex-row-reverse bg-white text-slate-900 shadow-md hover:shadow-lg',
                 iconAfterShadow: 'flex-row bg-white text-slate-900 shadow-md hover:shadow-lg', 
-                iconBeforeDefault: 'flex-row-reverse bg-[#0369A1] text-slate-50 hover:bg-slate-900/90',
-                iconAfterDefault: 'flex-row bg-[#0369A1] text-slate-50 hover:bg-slate-900/90',
+                iconBeforeDefault: 'flex-row-reverse bg-blue-700 text-slate-50 hover:bg-slate-900/90',
+                iconAfterDefault: 'flex-row bg-blue-700 text-slate-50 hover:bg-slate-900/90',
             },
             size: {
                 default: 'h-10 px-4 py-2',
+                ssm: 'h-8 rounded-sm px-1',
                 sm: 'h-9 rounded-md px-3',
                 lg: 'h-11 rounded-md px-8',
                 icon: 'h-fit w-fit',

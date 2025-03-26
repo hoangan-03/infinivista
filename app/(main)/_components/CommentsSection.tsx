@@ -17,7 +17,7 @@ import CommentInput from './CommentInput';
 
 type ReactionType = 'like' | 'love' | 'sad';
 
-interface CommentSectionProps {
+interface CommentsSectionProps {
     reactionList: any[];
     commentList: any[];
     handleClickReact: (event: React.MouseEvent<HTMLButtonElement>, reactionType: ReactionType) => void;
@@ -25,7 +25,7 @@ interface CommentSectionProps {
     className?: string;
 }
 
-const CommentSection: React.FC<CommentSectionProps> = ({
+const CommentsSection: React.FC<CommentsSectionProps> = ({
     reactionList,
     commentList,
     handleClickReact,
@@ -72,4 +72,4 @@ const CommentSection: React.FC<CommentSectionProps> = ({
     );
 };
 
-export default CommentSection;
+export default CommentsSection;

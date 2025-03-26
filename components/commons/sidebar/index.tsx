@@ -73,7 +73,7 @@ const Sidebar: React.FC = () => {
                 <div className='mb-5 flex-center'>
                     <button
                         className={cn(
-                            'flex h-12 w-full items-center justify-center gap-2 rounded-[50px] bg-primary px-3 py-2 text-white',
+                            'flex h-12 w-full items-center justify-center gap-2 rounded-full bg-primary px-3 py-2 text-white',
                             'sidebar-transition',
                             !sidebarExpanded && 'flex w-12 flex-center'
                         )}

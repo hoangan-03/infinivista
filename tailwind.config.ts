@@ -115,6 +115,8 @@ const config: Config = {
             },
             flex: {
                 2: '2 2 0%', // Grow 2 times compared to others
+                3: '3 3 0%', // Grow 3 times compared to others
+                4: '4 4 0%', // Grow 4 times compared to others
             },
             boxShadow: {
 				sm: '0 4px 4px 0 rgba(0, 0, 0, 0.25)',

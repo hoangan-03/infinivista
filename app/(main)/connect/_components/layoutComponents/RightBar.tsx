@@ -4,11 +4,12 @@ import React, {useEffect} from 'react';
 import {Provider, useSelector} from 'react-redux';
 import {store} from '@/store';
 import {setMaxSuggestions, SettingsState} from '@/slices/settingsSlice';
-
 import Image from 'next/image';
 import {cn} from '@/lib/utils';
+
 import Button from '../Button';
 import {Icon} from '@/components/commons';
+import FriendListItem from '@/app/(main)/_components/FriendListItem';
 
 import suggestionList from '@/mock_data/suggestionList';
 import trendingList from '@/mock_data/trendingList';
@@ -56,7 +57,7 @@ const Suggestions: React.FC = () => {
                     suggestionList.slice(0, displayNumber).map((person) => (
                         <a
                             key={person.username}
-                            className='friend-tag flex w-full cursor-pointer items-center justify-between gap-5 rounded-full hover:bg-gray-200'
+                            className='friend-tag flex w-full cursor-pointer items-center justify-between gap-5 rounded-full p-1 hover:bg-gray-200'
                         >
                             <div className='flex w-full items-center gap-3'>
                                 <Image
@@ -154,28 +155,17 @@ const Contacts: React.FC = () => {
         <RightBarElement title='Contacts'>
             <div className='flex flex-col gap-4 rounded-xl p-4 shadow-md'>
                 {mounted &&
-                    friendList.slice(0, displayNumber).map((person) => (
-                        <a
-                            key={person.username}
-                            className='friend-tag flex w-full cursor-pointer justify-between gap-5 rounded-l-3xl rounded-r-lg hover:bg-gray-200'
-                        >
-                            <div className='flex w-full items-center gap-3'>
-                                <div className='relative h-fit w-fit'>
-                                    <Image
-                                        src={person.profilePic}
-                                        alt={'Avatar of ' + person.name}
-                                        width={40}
-                                        height={40}
-                                        className='rounded-full'
-                                    />
-                                    {person.isOnline && (
-                                        <div className='online-circle absolute bottom-0 right-0 box-border h-4 w-4 translate-x-[20%] translate-y-[20%] rounded-full border-[2px] bg-green-600' />
-                                    )}
-                                </div>
-                                <subtitle2 className='font-bold text-gray-700'>{person.name}</subtitle2>
-                            </div>
-                        </a>
-                    ))}
+                    friendList
+                        .slice(0, displayNumber)
+                        .map((person) => (
+                            <FriendListItem
+                                key={person.username}
+                                username={person.username}
+                                name={person.name}
+                                profilePic={person.profilePic}
+                                isOnline={person.isOnline}
+                            />
+                        ))}
                 <div className='flex-center'>
                     <button className='w-fit' onClick={handleToggleExpand}>
                         <cap className='text-blue-700'>{!expanded ? 'See more' : 'See less'}</cap>

@@ -8,7 +8,7 @@ import {Icon} from '@/components/commons';
 import CommentInput from './CommentInput';
 
 import currentUser from '@/mock_data/self';
-import CommentSection from './CommentSection';
+import CommentSection from './CommentsSection';
 import ReactButton from './ReactButton';
 import {getSumReactions, getTimeStamp} from '@/lib/utils';
 import MultimediaSection from './MultimediaSection';
@@ -60,31 +60,31 @@ interface PostInterface {
 }
 
 interface PostProps {
-    postObj: PostInterface | null;
+    postObject: PostInterface | null;
     className?: string;
 }
 
-const Post: React.FC<PostProps> = ({postObj, className}) => {
+const Post: React.FC<PostProps> = ({postObject, className}) => {
     const [, forceRerender] = React.useReducer((x) => x + 1, 0);
 
     const [liked, toggleLiked] = React.useState<boolean>(false);
-    // const liked = postObj?.reactionList.some((reaction) => reaction.people.some((person) => person.username === currentUser.username));
+    // const liked = postObject?.reactionList.some((reaction) => reaction.people.some((person) => person.username === currentUser.username));
 
     const maxNumberOfDisplays = 3;
 
     const handleClickReact = (event: React.MouseEvent<HTMLButtonElement>, reactionType: ReactionType) => {
         console.log('Reacted');
 
-        if (!postObj) return;
+        if (!postObject) return;
 
-        const reaction = postObj.reactionList.find((reaction) => reaction.type === reactionType);
+        const reaction = postObject.reactionList.find((reaction) => reaction.type === reactionType);
 
         if (liked) {
             if (reaction) {
                 reaction.people = reaction.people.filter((person) => person.username !== currentUser.username);
                 reaction.count--;
                 if (reaction.count === 0) {
-                    postObj.reactionList.splice(postObj.reactionList.indexOf(reaction), 1);
+                    postObject.reactionList.splice(postObject.reactionList.indexOf(reaction), 1);
                 }
             }
         } else {
@@ -92,8 +92,8 @@ const Post: React.FC<PostProps> = ({postObj, className}) => {
                 reaction.people.push(currentUser);
                 reaction.count++;
             } else {
-                postObj.reactionList.push({
-                    id: Math.max(...postObj.reactionList.map((reaction) => reaction.id)) + 1,
+                postObject.reactionList.push({
+                    id: Math.max(...postObject.reactionList.map((reaction) => reaction.id)) + 1,
                     type: reactionType,
                     count: 1,
                     people: [currentUser],
@@ -105,23 +105,23 @@ const Post: React.FC<PostProps> = ({postObj, className}) => {
     };
 
     const handleSaveComment = (commentText: string) => {
-        if (!postObj) return;
+        if (!postObject) return;
         if (commentText.trim() === '') return;
 
         const newCommentObj: Comment = {
-            id: Math.max(...postObj.commentList.map((comment) => comment.id)) + 1,
+            id: Math.max(...postObject.commentList.map((comment) => comment.id)) + 1,
             username: currentUser.username,
             created_by: currentUser.name,
             profilePic: currentUser.profilePic,
             created_at: new Date(),
             commentText,
         };
-        postObj.commentList.push(newCommentObj);
+        postObject.commentList.push(newCommentObj);
         forceRerender(); // To update the comment count in the parent component without re-rendering the whole component
-        console.log(postObj.commentList);
+        console.log(postObject.commentList);
     };
 
-    if (!postObj) {
+    if (!postObject) {
         // Show loading indicator or placeholder
         return (
             <div className='flex h-40 items-center justify-center'>
@@ -139,29 +139,29 @@ const Post: React.FC<PostProps> = ({postObj, className}) => {
             )}
         >
             <section className='post-author flex items-center gap-3'>
-                <Avatar src={postObj?.avatar} />
+                <Avatar src={postObject?.avatar} />
                 <div>
-                    <h6 className='post-author-name font-bold'>{postObj?.author}</h6>
+                    <h6 className='post-author-name font-bold'>{postObject?.author}</h6>
                     <cap className='post-author-time font-medium text-gray-500'>
-                        {getTimeStamp(postObj?.created_at)}
+                        {getTimeStamp(postObject?.created_at)}
                     </cap>
                 </div>
             </section>
             <section>
-                <p1 className='post-text text-justify font-medium'>{postObj?.description}</p1>
+                <p1 className='post-text text-justify font-medium'>{postObject?.description}</p1>
             </section>
 
-            <MultimediaSection attachmentList={postObj.attachmentList} maxNumberOfDisplays={maxNumberOfDisplays} />
+            <MultimediaSection attachmentList={postObject.attachmentList} maxNumberOfDisplays={maxNumberOfDisplays} />
 
             <section className='post-comments'>
                 <div className='button-bar flex flex-col gap-2'>
                     <hr />
                     <div className='flex items-center justify-between gap-3'>
                         <div className='reaction-container flex gap-4'>
-                            <ReactButton reactionList={postObj?.reactionList} handleClickReact={handleClickReact} />
+                            <ReactButton reactionList={postObject?.reactionList} handleClickReact={handleClickReact} />
                             <CommentSection
-                                reactionList={postObj?.reactionList}
-                                commentList={postObj?.commentList}
+                                reactionList={postObject?.reactionList}
+                                commentList={postObject?.commentList}
                                 handleClickReact={handleClickReact}
                                 handleSaveComment={handleSaveComment}
                             />
@@ -182,12 +182,12 @@ const Post: React.FC<PostProps> = ({postObj, className}) => {
                 </div>
             </section>
             <section className='post-counters flex items-center justify-between gap-3 whitespace-nowrap'>
-                <subtitle2 className='w-fit font-bold'>{getSumReactions(postObj?.reactionList)} Reactions</subtitle2>
+                <subtitle2 className='w-fit font-bold'>{getSumReactions(postObject?.reactionList)} Reactions</subtitle2>
                 <div className='flex gap-3 text-gray-600'>
-                    <p2 className='w-fit'>{postObj?.viewCount} Views</p2>
-                    <p2 className='w-fit'>{postObj?.commentList.length} Comments</p2>
-                    <p2 className='w-fit'>{postObj?.repostCount} Reposts</p2>
-                    <p2 className='w-fit'>{postObj?.shareCount} Shares</p2>
+                    <p2 className='w-fit'>{postObject?.viewCount} Views</p2>
+                    <p2 className='w-fit'>{postObject?.commentList.length} Comments</p2>
+                    <p2 className='w-fit'>{postObject?.repostCount} Reposts</p2>
+                    <p2 className='w-fit'>{postObject?.shareCount} Shares</p2>
                 </div>
             </section>
             <section className='post-textbox'>

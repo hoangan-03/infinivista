@@ -22,7 +22,7 @@ const SidebarSubElement: React.FC<SidebarSubElementProps> = ({
             <Link href={href}>
                 <button
                     className={cn(
-                        'w-full rounded-xs p-2 text-left text-[14px] hover:bg-gray-100',
+                        'w-full rounded-xs p-2 text-left text-[14px] text-black hover:bg-gray-100',
                         selected && 'bg-gray-200'
                     )}
                 >

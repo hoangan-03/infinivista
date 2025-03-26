@@ -5,7 +5,7 @@ const AboutSection: React.FC<{text?: string}> = ({text}) => {
 
     return (
         <div className='flex flex-row rounded-lg bg-white shadow-md'>
-            <div className='h-[50px] w-[200px] flex-shrink-0 border-b-2 border-[#2563EB] py-3 pl-6'>
+            <div className='h-12 w-52 flex-shrink-0 border-b-2 border-[#2563EB] py-3 pl-6'>
                 <h2 className='text-2xl font-bold text-[#2563EB]'>About</h2>
             </div>
             <div className='flex flex-grow items-center justify-center p-6 text-justify'>
