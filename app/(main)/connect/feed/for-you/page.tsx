@@ -2,7 +2,7 @@ import React from 'react';
 import Post from '@/app/(main)/_components/Post';
 import _ from 'lodash';
 
-import PostObj from '@/app/(main)/_mock_data/postMockData';
+import PostObj from '@/mock_data/postMockData';
 
 const Connect_Feed_ForYou = () => {
     return (

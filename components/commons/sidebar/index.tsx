@@ -9,11 +9,12 @@ import {Icon} from '@/components/commons';
 import {Separator} from '@/components/ui';
 import {usePathname, useRouter} from 'next/navigation';
 import {cn} from '@/lib/utils';
-import Image from 'next/image';
 
 import SidebarElement from './SidebarElement';
 import SidebarSubElement from './SidebarSubElement';
 import SidebarProfile from './SidebarProfile';
+
+import currentUser from '@/mock_data/self';
 
 import './sidebar.css';
 
@@ -166,10 +167,10 @@ const Sidebar: React.FC = () => {
                     <div className='mb-5'>
                         <p className='mb-5 font-bold text-gray-500'>Profile</p>
                         <SidebarProfile
-                            href='/profile'
-                            imgSrc={placeholderImage}
-                            name='John Nguyen'
-                            email='john12052003@gmail.com'
+                            href={`/profile/${currentUser.username}`}
+                            imgSrc={currentUser.profilePic}
+                            name={currentUser.name}
+                            email={currentUser.email}
                             sidebarExpanded={sidebarExpanded}
                         />
                         <SidebarElement

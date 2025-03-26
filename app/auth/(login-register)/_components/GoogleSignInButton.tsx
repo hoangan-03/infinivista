@@ -8,7 +8,7 @@ const GoogleSignInButton: React.FC<{text: string}> = ({text}) => {
         <Button
             type='button'
             onClick={() => signIn('google')}
-            className='flex w-full gap-2 text-caption font-bold text-white'
+            className='flex w-full gap-2 rounded-sm bg-gray-900 text-caption font-bold text-white'
         >
             <FcGoogle />
             {text}

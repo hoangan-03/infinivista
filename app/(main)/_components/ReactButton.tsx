@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import CurrentUser from '../_mock_data/self';
+import currentUser from '@/mock_data/self';
 import {Icon} from '@/components/commons';
 import {cn} from '@/lib/utils';
 
@@ -16,7 +16,7 @@ interface ReactButtonProps {
 
 const ReactButton: React.FC<ReactButtonProps> = ({reactionList, handleClickReact, className}) => {
     const liked = reactionList.some((reaction) =>
-        reaction.people.some((person) => person.username === CurrentUser.username)
+        reaction.people.some((person) => person.username === currentUser.username)
     );
 
     return (

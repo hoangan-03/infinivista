@@ -22,7 +22,7 @@ const SidebarProfile: React.FC<SidebarProfileProps> = ({href, imgSrc, name, emai
                         alt='User Avatar'
                         width={40}
                         height={40}
-                        className='absolute inset-0 left-0 top-0 h-full w-full object-cover'
+                        className='absolute inset-0 left-0 top-0 h-full w-full rounded-full object-cover'
                     />
                 </div>
                 <div className={cn('sidebar-transition', sidebarExpanded ? 'ml-4 w-36' : 'text-collapsed')}>

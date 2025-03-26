@@ -1,6 +1,7 @@
 const userData = {
     username: '@john-nguyen-03',
     name: 'John Nguyen',
+    email: 'john12052003@gmail.com',
     details: {
         displayedJobNo: 0, // index of the job (in introduction/jobTitles) to be displayed
     },

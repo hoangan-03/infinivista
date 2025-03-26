@@ -12,7 +12,7 @@ import {Icon} from '@/components/commons';
 import {cn} from '@/lib/utils';
 import Comment from './Comment';
 import ReactButton from './ReactButton';
-import {getSumReactions} from '../utils/utils';
+import {getSumReactions} from '@/lib/utils';
 import CommentInput from './CommentInput';
 
 type ReactionType = 'like' | 'love' | 'sad';

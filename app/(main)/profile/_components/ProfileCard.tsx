@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 
 import {Button} from '@/components/ui/button';
-import {userDataType} from '../../_mock_data/self';
+import {userDataType} from '@/mock_data/self';
 
 interface ProfileCardProps {
     userObject: userDataType;

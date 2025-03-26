@@ -6,8 +6,8 @@ import FriendsSection from '../_components/FriendsSection';
 import PostsSection from '../_components/PostsSection';
 import ProfileCard from '../_components/ProfileCard';
 
-import currentUser from '../../_mock_data/self';
-import otherUsers from '../../_mock_data/userMockData';
+import currentUser from '@/mock_data/self';
+import otherUsers from '@/mock_data/userMockData';
 
 const Home: React.FC = () => {
     return (

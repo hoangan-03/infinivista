@@ -7,7 +7,7 @@ import Avatar from './Avatar';
 import {Icon} from '@/components/commons';
 import CommentInput from './CommentInput';
 
-import CurrentUser from '../_mock_data/self';
+import currentUser from '@/mock_data/self';
 import CommentSection from './CommentSection';
 import ReactButton from './ReactButton';
 import {getSumReactions, getTimeStamp} from '@/lib/utils';
@@ -68,7 +68,7 @@ const Post: React.FC<PostProps> = ({postObj, className}) => {
     const [, forceRerender] = React.useReducer((x) => x + 1, 0);
 
     const [liked, toggleLiked] = React.useState<boolean>(false);
-    // const liked = postObj?.reactionList.some((reaction) => reaction.people.some((person) => person.id === CurrentUser.id));
+    // const liked = postObj?.reactionList.some((reaction) => reaction.people.some((person) => person.username === currentUser.username));
 
     const maxNumberOfDisplays = 3;
 
@@ -81,7 +81,7 @@ const Post: React.FC<PostProps> = ({postObj, className}) => {
 
         if (liked) {
             if (reaction) {
-                reaction.people = reaction.people.filter((person) => person.username !== CurrentUser.username);
+                reaction.people = reaction.people.filter((person) => person.username !== currentUser.username);
                 reaction.count--;
                 if (reaction.count === 0) {
                     postObj.reactionList.splice(postObj.reactionList.indexOf(reaction), 1);
@@ -89,14 +89,14 @@ const Post: React.FC<PostProps> = ({postObj, className}) => {
             }
         } else {
             if (reaction) {
-                reaction.people.push(CurrentUser);
+                reaction.people.push(currentUser);
                 reaction.count++;
             } else {
                 postObj.reactionList.push({
                     id: Math.max(...postObj.reactionList.map((reaction) => reaction.id)) + 1,
                     type: reactionType,
                     count: 1,
-                    people: [CurrentUser],
+                    people: [currentUser],
                 });
             }
         }
@@ -110,9 +110,9 @@ const Post: React.FC<PostProps> = ({postObj, className}) => {
 
         const newCommentObj: Comment = {
             id: Math.max(...postObj.commentList.map((comment) => comment.id)) + 1,
-            username: CurrentUser.username,
-            created_by: CurrentUser.name,
-            profilePic: CurrentUser.profilePic,
+            username: currentUser.username,
+            created_by: currentUser.name,
+            profilePic: currentUser.profilePic,
             created_at: new Date(),
             commentText,
         };

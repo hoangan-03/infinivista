@@ -10,9 +10,9 @@ import {cn} from '@/lib/utils';
 import Button from '../Button';
 import {Icon} from '@/components/commons';
 
-import suggestionList from '../../../_mock_data/suggestionList';
-import trendingList from '../../../_mock_data/trendingList';
-import friendList from '../../../_mock_data/friendList';
+import suggestionList from '@/mock_data/suggestionList';
+import trendingList from '@/mock_data/trendingList';
+import friendList from '@/mock_data/friendList';
 
 const RightBarElement: React.FC<{title: string; children: React.ReactNode; className?: string}> = ({
     title,
@@ -55,7 +55,7 @@ const Suggestions: React.FC = () => {
                 {mounted &&
                     suggestionList.slice(0, displayNumber).map((person) => (
                         <a
-                            key={person.id}
+                            key={person.username}
                             className='friend-tag flex w-full cursor-pointer items-center justify-between gap-5 rounded-full hover:bg-gray-200'
                         >
                             <div className='flex w-full items-center gap-3'>
@@ -156,7 +156,7 @@ const Contacts: React.FC = () => {
                 {mounted &&
                     friendList.slice(0, displayNumber).map((person) => (
                         <a
-                            key={person.id}
+                            key={person.username}
                             className='friend-tag flex w-full cursor-pointer justify-between gap-5 rounded-l-3xl rounded-r-lg hover:bg-gray-200'
                         >
                             <div className='flex w-full items-center gap-3'>
@@ -190,7 +190,7 @@ const RightBarContent: React.FC = () => {
     return (
         <div
             id='right-bar'
-            className='custom-scrollbar-hidden sticky bottom-0 top-0 z-20 -mx-4 -mb-8 h-screen //flex-1 justify-between overflow-y-auto px-4 py-8'
+            className='custom-scrollbar-hidden //flex-1 sticky bottom-0 top-0 z-20 -mx-4 -mb-8 h-screen justify-between overflow-y-auto px-4 py-8'
         >
             <div id='rightbar-content' className='flex h-fit flex-col gap-5'>
                 <Suggestions />

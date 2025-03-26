@@ -127,7 +127,7 @@ export const RegisterForm: React.FC = () => {
                     </div>
 
                     <div className='button-group flex flex-col gap-8'>
-                        <Button type='submit' className='bg-blue-700 text-caption font-bold text-white'>
+                        <Button type='submit' className='rounded-sm bg-blue-700 text-caption font-bold text-white'>
                             Register
                         </Button>
                         <hr />
