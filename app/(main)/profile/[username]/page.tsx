@@ -26,11 +26,11 @@ const UserProfile: React.FC<{params: {username: string}}> = ({params}) => {
         <div className='flex min-h-screen flex-col bg-gray-100'>
             {/* <Header /> */}
             <div className='flex flex-col space-y-6 p-6'>
-                <div className='w-fill flex h-[440px] items-center gap-4'>
-                    <ProfileCard userObject={displayedUser} />
-                    <IntroductionSection userObject={displayedUser} />
+                <div className='flex h-[27.5rem] items-center gap-4'>
+                    <ProfileCard userObject={displayedUser} isOwner={isOwner} className='flex-2' />
+                    <IntroductionSection userObject={displayedUser} className='flex-1' />
                 </div>
-                
+
                 <AboutSection text={displayedUser.about} />
 
                 <div className='flex gap-4'>

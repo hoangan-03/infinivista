@@ -19,7 +19,7 @@ const PostsSection: React.FC<PostsSectionProps> = ({postList, className}) => {
                 <Button variant='default'>Post</Button>
                 <Button variant='secondary'>Photos</Button>
                 <Button variant='secondary'>Videos</Button>
-                <Button variant='iconAfterShadow' size='default'>
+                <Button variant='iconShadow' size='default'>
                     More
                     <ArrowRightIcon className='h-4 w-4' />
                 </Button>

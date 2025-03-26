@@ -11,14 +11,14 @@ interface IntroductionSectionProps {
 
 const IntroductionSection: React.FC<IntroductionSectionProps> = ({userObject, className}) => {
     return (
-        <div className={cn('flex h-full w-[320px] flex-col items-start rounded-3xl bg-white shadow-lg', className)}>
+        <div className={cn('flex h-full w-80 flex-col items-start rounded-3xl bg-white shadow-lg', className)}>
             <div className='h-auto w-52 border-b-2 border-[#2563EB] py-3 pl-6'>
                 <h2 className='text-2xl font-bold text-[#2563EB]'>Introduction</h2>
             </div>
             <div className='flex h-full w-full flex-col items-start justify-start gap-4 px-6 py-3'>
                 {userObject.introduction.jobTitles.map((jobTitle, idx) => (
                     <div key={idx} className='flex flex-row items-center justify-center gap-2'>
-                        <Icon name='Work' width={20} height={18} className='text-gray-500' />
+                        <Icon name='Work' width={24} height={24} className='text-gray-500' />
                         <h2 className='text-base font-medium'>
                             {jobTitle.job} at {jobTitle.company}
                         </h2>
@@ -27,28 +27,28 @@ const IntroductionSection: React.FC<IntroductionSectionProps> = ({userObject, cl
 
                 {userObject.introduction.academic.map((school, idx) => (
                     <div key={idx} className='flex flex-row items-center justify-center gap-2'>
-                        <Icon name='Study' width={21} height={19} className='text-gray-500' />
+                        <Icon name='Study' width={24} height={24} className='text-gray-500' />
                         <h2 className='text-base font-medium'>Went to {school}</h2>
                     </div>
                 ))}
 
                 {userObject.introduction.city && (
                     <div className='flex flex-row items-center justify-center gap-2'>
-                        <Icon name='Home' width={22} height={20} className='text-gray-500' />
+                        <Icon name='Home' width={24} height={24} className='text-gray-500' />
                         <h2 className='text-base font-medium'>Lives in {userObject.introduction.city}</h2>
                     </div>
                 )}
 
                 {userObject.introduction.hometown && (
                     <div className='flex flex-row items-center justify-center gap-2'>
-                        <Icon name='Locate' width={14} height={20} className='text-gray-500' />
+                        <Icon name='Locate' width={24} height={24} className='text-gray-500' />
                         <h2 className='text-base font-medium'>Comes from {userObject.introduction.hometown}</h2>
                     </div>
                 )}
 
                 {userObject.introduction.marritalStatus && (
                     <div className='flex flex-row items-center justify-center gap-2'>
-                        <Icon name='Love' width={20} height={20} className='text-gray-500' />
+                        <Icon name='Love' width={24} height={24} className='text-gray-500' />
                         <h2 className='text-base font-medium'>{userObject.introduction.marritalStatus}</h2>
                     </div>
                 )}

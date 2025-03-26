@@ -23,15 +23,21 @@ const AddFriendButton: React.FC<AddFriendButtonProps> = ({variant, onClick, clas
         //     <Icon name='UserAdd' width={24} height={24} />
         //     {variant === 'full' && <p1>Add Friend</p1>}
         // </button>
-        <Button
-            className={cn('add-friend-button rounded-lg aspect-square p-1', className)}
-            variant='outline'
-            size='ssm'
-            onClick={onClick}
-        >
-            <Icon name='UserAdd' width={24} height={24} />
-            {variant === 'full' && <p1>Add Friend</p1>}
-        </Button>
+        variant === 'icon' ? (
+            <Button
+                className={cn('add-friend-button aspect-square rounded-lg p-1', className)}
+                variant='outline'
+                size='ssm'
+                onClick={onClick}
+            >
+                <Icon name='UserAdd' width={24} height={24} />
+            </Button>
+        ) : (
+            <Button variant='iconSecondary'>
+                <Icon name='UserAdd' width={24} height={24} />
+                Add friend
+            </Button>
+        )
     );
 };
 

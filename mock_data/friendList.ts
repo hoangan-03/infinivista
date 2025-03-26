@@ -1,5 +1,12 @@
 const friendList = [
     {
+        username: 'janedoe42',
+        name: 'Jane Doe',
+        profilePic: '/assets/images/avatar.jpg',
+        isOnline: true,
+        mutualFriends: 0,
+    },
+    {
         username: 'sophiawang',
         name: 'Sophia Wang',
         profilePic: '/assets/images/avatar.jpg',
