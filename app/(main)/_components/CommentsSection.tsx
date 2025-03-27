@@ -64,7 +64,7 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
                             })}
                             <div className='flex w-full flex-col items-center gap-2'>
                                 <hr className='w-1/2' />
-                                <p2 className='text-gray-200'>No more comments</p2>
+                                <p className='text-paragraph2 text-gray-200'>No more comments</p>
                             </div>
                         </div>
                         <CommentInput onSubmit={handleSaveComment} placeholder='Add a comment...' variant='with-icon' />

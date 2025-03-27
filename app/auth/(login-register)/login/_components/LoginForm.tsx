@@ -56,14 +56,14 @@ export const LoginForm: React.FC = () => {
                                 {...register('email_phone')}
                             />
 
-                            <cap
+                            <p
                                 className={cn(
-                                    'w-full pl-3 text-blue-500',
+                                    'w-full pl-3 text-caption text-blue-500',
                                     errors.email_phone ? 'visible' : 'invisible'
                                 )}
                             >
                                 {errors.email_phone?.message}
-                            </cap>
+                            </p>
                         </div>
 
                         <div>
@@ -78,9 +78,9 @@ export const LoginForm: React.FC = () => {
                                 {...register('password')}
                             />
 
-                            <cap className={cn('w-full pl-3 text-blue-500', errors.password ? 'visible' : 'invisible')}>
+                            <p className={cn('w-full pl-3 text-caption text-blue-500', errors.password ? 'visible' : 'invisible')}>
                                 {errors.password?.message}
-                            </cap>
+                            </p>
                         </div>
 
                         <div className='mt-1 flex items-center justify-between'>

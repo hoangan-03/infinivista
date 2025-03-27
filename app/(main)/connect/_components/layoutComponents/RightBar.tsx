@@ -67,16 +67,16 @@ const Suggestions: React.FC = () => {
                                     height={40}
                                     className='rounded-full'
                                 />
-                                <cap className='font-bold text-gray-700'>{person.name}</cap>
+                                <p className='font-bold text-caption text-gray-700'>{person.name}</p>
                             </div>
                             <Button className='add-friend-button h-fit p-1'>
-                                <cap>Add Friend</cap>
+                                <p className='text-caption'>Add Friend</p>
                             </Button>
                         </a>
                     ))}
                 <div className='flex-center'>
                     <button className='w-fit' onClick={handleToggleExpand}>
-                        <cap className='text-blue-700'>{!expanded ? 'See more' : 'See less'}</cap>
+                        <p className='text-caption text-blue-700'>{!expanded ? 'See more' : 'See less'}</p>
                     </button>
                 </div>
             </div>
@@ -113,10 +113,10 @@ const Trending: React.FC = () => {
                             className='friend-tag -mx-2 flex w-[calc(100%+1rem)] cursor-pointer items-center justify-between gap-5 rounded-lg px-2 hover:bg-gray-200'
                         >
                             <div className='flex w-full flex-col'>
-                                <cap className='font-bold'>{trend.topic}</cap>
-                                <overline className=''>
+                                <p className='text-caption font-bold'>{trend.topic}</p>
+                                <p className='text-overline'>
                                     {trend.postCount < 1000 ? trend.postCount : trend.postCount / 1000 + 'k'} posts
-                                </overline>
+                                </p>
                             </div>
                             <button className='option-button'>
                                 <Icon name='Ellipsis' width={24} height={24} />
@@ -124,7 +124,7 @@ const Trending: React.FC = () => {
                         </a>
                     ))}
                 <button className='w-fit' onClick={handleToggleExpand}>
-                    <cap className='text-blue-700'>{!expanded ? 'See more' : 'See less'}</cap>
+                    <p className='text-caption text-blue-700'>{!expanded ? 'See more' : 'See less'}</p>
                 </button>
             </div>
         </RightBarElement>
@@ -168,7 +168,7 @@ const Contacts: React.FC = () => {
                         ))}
                 <div className='flex-center'>
                     <button className='w-fit' onClick={handleToggleExpand}>
-                        <cap className='text-blue-700'>{!expanded ? 'See more' : 'See less'}</cap>
+                        <p className='text-caption text-blue-700'>{!expanded ? 'See more' : 'See less'}</p>
                     </button>
                 </div>
             </div>

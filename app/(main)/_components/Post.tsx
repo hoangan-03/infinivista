@@ -142,13 +142,13 @@ const Post: React.FC<PostProps> = ({postObject, className}) => {
                 <Avatar src={postObject?.avatar} />
                 <div>
                     <h6 className='post-author-name font-bold'>{postObject?.author}</h6>
-                    <cap className='post-author-time font-medium text-gray-500'>
+                    <p className='post-author-time text-caption font-medium text-gray-500'>
                         {getTimeStamp(postObject?.created_at)}
-                    </cap>
+                    </p>
                 </div>
             </section>
             <section>
-                <p1 className='post-text text-justify font-medium'>{postObject?.description}</p1>
+                <p className='post-text text-paragraph1 text-justify font-medium'>{postObject?.description}</p>
             </section>
 
             <MultimediaSection attachmentList={postObject.attachmentList} maxNumberOfDisplays={maxNumberOfDisplays} />
@@ -182,12 +182,12 @@ const Post: React.FC<PostProps> = ({postObject, className}) => {
                 </div>
             </section>
             <section className='post-counters flex items-center justify-between gap-3 whitespace-nowrap'>
-                <subtitle2 className='w-fit font-bold'>{getSumReactions(postObject?.reactionList)} Reactions</subtitle2>
+                <p className='w-fit text-subtitle2 font-bold'>{getSumReactions(postObject?.reactionList)} Reactions</p>
                 <div className='flex gap-3 text-gray-600'>
-                    <p2 className='w-fit'>{postObject?.viewCount} Views</p2>
-                    <p2 className='w-fit'>{postObject?.commentList.length} Comments</p2>
-                    <p2 className='w-fit'>{postObject?.repostCount} Reposts</p2>
-                    <p2 className='w-fit'>{postObject?.shareCount} Shares</p2>
+                    <p className='w-fit text-paragraph2'>{postObject?.viewCount} Views</p>
+                    <p className='w-fit text-paragraph2'>{postObject?.commentList.length} Comments</p>
+                    <p className='w-fit text-paragraph2'>{postObject?.repostCount} Reposts</p>
+                    <p className='w-fit text-paragraph2'>{postObject?.shareCount} Shares</p>
                 </div>
             </section>
             <section className='post-textbox'>

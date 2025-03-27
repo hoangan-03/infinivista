@@ -24,10 +24,10 @@ const Comment: React.FC<CommentProps> = ({comment, className}) => {
             <Avatar src={comment.profilePic} alt={'Avatar of ' + comment.created_by} className='min-w-10' />
             <div className={cn('comment-content', 'w-full', className)}>
                 <div className='flex items-center justify-between gap-2'>
-                    <p1 className='comment-username font-bold'>{comment.created_by}</p1>
-                    <cap className='comment-date'>{getTimeStamp(comment.created_at)}</cap>
+                    <p className='comment-username text-paragraph1 font-bold'>{comment.created_by}</p>
+                    <p className='comment-date text-caption'>{getTimeStamp(comment.created_at)}</p>
                 </div>
-                <p2 className='comment-text'>{comment.commentText}</p2>
+                <p className='comment-text text-paragraph2'>{comment.commentText}</p>
             </div>
         </div>
     );

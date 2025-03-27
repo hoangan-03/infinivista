@@ -50,11 +50,11 @@ const FriendListItem: React.FC<FriendListItemProps> = ({
                     )}
                 </div>
                 <div className='flex min-w-0 flex-col gap-1'>
-                    <subtitle2 className='truncate font-bold text-gray-700'>{name}</subtitle2>
+                    <p className='truncate text-subtitle2 font-bold text-gray-700'>{name}</p>
                     {withMutualFriends && (
-                        <p1 className='truncate text-gray-400'>
+                        <p className='truncate text-paragraph1 text-gray-400'>
                             {mutualFriends} mutual friend{mutualFriends !== 1 && 's'}
-                        </p1>
+                        </p>
                     )}
                 </div>
             </div>
