@@ -1,10 +1,11 @@
 'use client';
 
-import React from 'react';
-import {cn} from '@/lib/utils';
 import {useRouter} from 'next/navigation';
+import React from 'react';
 
+import {cn} from '@/lib/utils';
 import {FriendListType} from '@/mock_data/friendList';
+
 import FriendListItem from '../../_components/FriendListItem';
 
 interface FriendsSectionProps {

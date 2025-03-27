@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const Connect_Feed_Following = () => {
-  return (
-    <div>Connect_Feed_Following</div>
-  )
-}
+    return <div>Connect_Feed_Following</div>;
+};
 
-export default Connect_Feed_Following
+export default Connect_Feed_Following;

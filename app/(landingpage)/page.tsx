@@ -1,10 +1,9 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
-import {cn} from '@/lib/utils';
-
 import {Button} from '@/components/ui/button';
-import Link from 'next/link';
+import {cn} from '@/lib/utils';
 
 const Home: React.FC = () => {
     return (
@@ -51,7 +50,9 @@ const Home: React.FC = () => {
                     <Link href='/connect/feed'>
                         <Button
                             variant='default'
-                            className={cn('w-auto bg-blue-300 px-[80px] py-[30px] text-2xl text-black hover:bg-blue-400')}
+                            className={cn(
+                                'w-auto bg-blue-300 px-[80px] py-[30px] text-2xl text-black hover:bg-blue-400'
+                            )}
                         >
                             Join the beta
                         </Button>

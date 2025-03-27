@@ -1,7 +1,8 @@
 'use client';
 
-import React from 'react';
 import {usePathname} from 'next/navigation';
+import React from 'react';
+
 import {cn} from '@/lib/utils';
 
 const defaultTabList = [

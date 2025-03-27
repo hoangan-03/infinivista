@@ -1,17 +1,17 @@
-import React from 'react';
 import {notFound} from 'next/navigation';
+import React from 'react';
+
+import friendList from '@/mock_data/friendList';
+import postList from '@/mock_data/postMockData';
+import currentUser from '@/mock_data/self';
+import otherUsers from '@/mock_data/userMockData';
 
 import AboutSection from '../_components/AboutSection';
 import FriendsSection from '../_components/FriendsSection';
+import IntroductionSection from '../_components/IntroductionSection';
 // import Header from '@/components/commons/Header';
 import PostsSection from '../_components/PostsSection';
 import ProfileCard from '../_components/ProfileCard';
-
-import currentUser from '@/mock_data/self';
-import otherUsers from '@/mock_data/userMockData';
-import friendList from '@/mock_data/friendList';
-import postList from '@/mock_data/postMockData';
-import IntroductionSection from '../_components/IntroductionSection';
 
 const UserProfile: React.FC<{params: {username: string}}> = ({params}) => {
     // display current user profile if the username is the same as the current user, otherwise display the matched user profile

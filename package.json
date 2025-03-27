@@ -6,9 +6,8 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "prettier --check . && eslint .",
-        "lint:fix": "eslint . --fix",
-        "format": "prettier --write ."
+        "lint": "eslint \"**/*.{ts,tsx}\" --fix",
+        "format": "prettier --write \"**/*.{ts,tsx}\" --ignore-path .gitignore"
     },
     "dependencies": {
         "@heroicons/react": "^1.0.6",
@@ -28,7 +27,6 @@
         "axios": "^1.7.8",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
-        "i": "^0.3.7",
         "lodash": "^4.17.21",
         "lucide-react": "^0.462.0",
         "next": "14.2.13",

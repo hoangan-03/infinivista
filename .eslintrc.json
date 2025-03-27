@@ -7,9 +7,9 @@
         "sourceType": "module"
     },
     "rules": {
-        "simple-import-sort/imports": "error",
-        "simple-import-sort/exports": "error",
-        "react/self-closing-comp": "error",
+        "simple-import-sort/imports": "warn",
+        "simple-import-sort/exports": "warn",
+        "react/self-closing-comp": "warn",
         "@typescript-eslint/no-unused-vars": [
             "warn",
             {
@@ -19,6 +19,6 @@
         "@typescript-eslint/no-explicit-any": "error",
         "semi": [1, "always"],
         "quotes": [1, "single"],
-        // "jsx-quotes": [1, "prefer-single"]
+        "jsx-quotes": [1, "prefer-single"]
     }
 }

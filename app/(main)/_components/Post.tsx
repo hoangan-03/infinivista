@@ -1,17 +1,17 @@
 'use client';
 
 import React from 'react';
+
+import {Icon} from '@/components/commons';
 import {cn} from '@/lib/utils';
+import {getSumReactions, getTimeStamp} from '@/lib/utils';
+import currentUser from '@/mock_data/self';
 
 import Avatar from './Avatar';
-import {Icon} from '@/components/commons';
 import CommentInput from './CommentInput';
-
-import currentUser from '@/mock_data/self';
 import CommentSection from './CommentsSection';
-import ReactButton from './ReactButton';
-import {getSumReactions, getTimeStamp} from '@/lib/utils';
 import MultimediaSection from './MultimediaSection';
+import ReactButton from './ReactButton';
 
 type AttachmentType = 'image' | 'video';
 type ReactionType = 'like' | 'love' | 'sad';

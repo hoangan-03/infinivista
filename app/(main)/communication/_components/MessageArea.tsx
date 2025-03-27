@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
-import placeholderImage from '@/public/assets/images/placeholder.png';
 import {cn} from '@/lib/utils';
+import placeholderImage from '@/public/assets/images/placeholder.png';
 
 interface MessageAreaProps {
     username: string;

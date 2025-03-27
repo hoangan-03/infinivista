@@ -1,19 +1,19 @@
 'use client';
 
+import Image from 'next/image';
 import React, {useEffect} from 'react';
 import {Provider, useSelector} from 'react-redux';
-import {store} from '@/store';
-import {setMaxSuggestions, SettingsState} from '@/slices/settingsSlice';
-import Image from 'next/image';
-import {cn} from '@/lib/utils';
 
-import Button from '../Button';
-import {Icon} from '@/components/commons';
 import FriendListItem from '@/app/(main)/_components/FriendListItem';
-
+import {Icon} from '@/components/commons';
+import {cn} from '@/lib/utils';
+import friendList from '@/mock_data/friendList';
 import suggestionList from '@/mock_data/suggestionList';
 import trendingList from '@/mock_data/trendingList';
-import friendList from '@/mock_data/friendList';
+import {SettingsState} from '@/slices/settingsSlice';
+import {store} from '@/store';
+
+import Button from '../Button';
 
 const RightBarElement: React.FC<{title: string; children: React.ReactNode; className?: string}> = ({
     title,
@@ -48,7 +48,7 @@ const Suggestions: React.FC = () => {
         setDisplayNumber(Math.min(minSuggestions, suggestionList.length));
         setExpanded(false);
         setMounted(true);
-    }, []);
+    }, [minSuggestions]);
 
     return (
         <RightBarElement title='Suggestions'>
@@ -101,7 +101,7 @@ const Trending: React.FC = () => {
         setDisplayNumber(Math.min(minTrending, trendingList.length));
         setExpanded(false);
         setMounted(true);
-    }, []);
+    }, [minTrending]);
 
     return (
         <RightBarElement title='Trending'>
@@ -149,7 +149,7 @@ const Contacts: React.FC = () => {
         setExpanded(false);
         setMounted(true);
         console.log(minContacts);
-    }, []);
+    }, [minContacts]);
 
     return (
         <RightBarElement title='Contacts'>

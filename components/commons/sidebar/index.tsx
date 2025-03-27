@@ -1,22 +1,20 @@
 'use client';
 
+import './sidebar.css';
+
+import {usePathname, useRouter} from 'next/navigation';
 import React from 'react';
 
-import LogoIcon from '@/public/assets/images/logo_icon.svg';
-import LogoText from '@/public/assets/images/logo_text.svg';
-import placeholderImage from '@/public/assets/images/placeholder.png';
 import {Icon} from '@/components/commons';
 import {Separator} from '@/components/ui';
-import {usePathname, useRouter} from 'next/navigation';
 import {cn} from '@/lib/utils';
+import currentUser from '@/mock_data/self';
+import LogoIcon from '@/public/assets/images/logo_icon.svg';
+import LogoText from '@/public/assets/images/logo_text.svg';
 
 import SidebarElement from './SidebarElement';
-import SidebarSubElement from './SidebarSubElement';
 import SidebarProfile from './SidebarProfile';
-
-import currentUser from '@/mock_data/self';
-
-import './sidebar.css';
+import SidebarSubElement from './SidebarSubElement';
 
 const pageList = [
     {id: 1, pageName: 'Connect', pathname: 'connect', selected: false},

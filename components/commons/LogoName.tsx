@@ -1,8 +1,8 @@
-import React from 'react';
 import Image from 'next/image';
-import logo from '@/public/assets/images/logo_transparent.png';
+import React from 'react';
 
 import {cn} from '@/lib/utils';
+import logo from '@/public/assets/images/logo_transparent.png';
 
 type LogoNameProps = {
     fontSize?: string; // string like '1.75rem' to set the height of the container div

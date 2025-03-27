@@ -1,8 +1,8 @@
 import React from 'react';
-import {cn} from '@/lib/utils';
 
-import {UserDataType} from '@/mock_data/self';
 import Icon from '@/components/commons/Icon';
+import {cn} from '@/lib/utils';
+import {UserDataType} from '@/mock_data/self';
 
 interface IntroductionSectionProps {
     userObject: UserDataType;

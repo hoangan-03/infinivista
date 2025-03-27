@@ -2,7 +2,7 @@ const userData = {
     username: 'john-nguyen-03',
     name: 'John Nguyen',
     email: 'john12052003@gmail.com',
-    about: `With over 20 years of experience leading cross-functional teams, I've consistently driven both brand elevation and customer acquisition across digital channels. From designing omnichannel marketing strategies to implementing data-driven approaches that improve ROI, my expertise is in creating integrated campaigns that resonate with consumers, amplify brand presence, and drive sustainable business growth. I thrive in dynamic environments and am passionate about staying at the forefront of marketing innovations, leveraging everything from AI and machine learning to social media platforms to reach and engage audiences.`,
+    about: "With over 20 years of experience leading cross-functional teams, I've consistently driven both brand elevation and customer acquisition across digital channels. From designing omnichannel marketing strategies to implementing data-driven approaches that improve ROI, my expertise is in creating integrated campaigns that resonate with consumers, amplify brand presence, and drive sustainable business growth. I thrive in dynamic environments and am passionate about staying at the forefront of marketing innovations, leveraging everything from AI and machine learning to social media platforms to reach and engage audiences.",
     details: {
         displayedJobNo: 0, // index of the job (in introduction/jobTitles) to be displayed
     },
