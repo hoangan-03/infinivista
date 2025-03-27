@@ -44,7 +44,6 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
                 <Icon name='Comment' width={24} height={24} />
             </DialogTrigger>
             <DialogContent className={cn('dialog-content', className)}>
-                {/* FIX THIS DIALOGHEADER (height not fit to parent) */}
                 <DialogHeader>
                     <DialogTitle className='commentsection-header flex gap-4'>
                         <div className='flex items-center gap-1'>
@@ -57,19 +56,20 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
                             {commentCount}
                         </div>
                     </DialogTitle>
-                    <DialogDescription className='commentsection-content flex h-[calc(90vh-4.5rem)] flex-col justify-between gap-5 pt-5'>
-                        <div className='commentsection-content-comments custom-scrollbar flex h-full flex-col items-center gap-5 overflow-y-auto'>
-                            {commentList.map((comment) => {
-                                return <Comment key={comment.id} comment={comment} />;
-                            })}
-                            <div className='flex w-full flex-col items-center gap-2'>
-                                <hr className='w-1/2' />
-                                <p className='text-paragraph2 text-gray-200'>No more comments</p>
-                            </div>
-                        </div>
-                        <CommentInput onSubmit={handleSaveComment} placeholder='Add a comment...' variant='with-icon' />
-                    </DialogDescription>
                 </DialogHeader>
+                <DialogDescription />
+                <div className='commentsection-content flex h-[calc(90vh-4.5rem)] flex-col justify-between gap-5'>
+                    <div className='commentsection-content-comments custom-scrollbar flex h-full flex-col items-center gap-5 overflow-y-auto'>
+                        {commentList.map((comment) => {
+                            return <Comment key={comment.id} comment={comment} />;
+                        })}
+                        <div className='flex w-full flex-col items-center gap-2'>
+                            <hr className='w-1/2' />
+                            <p className='text-paragraph2 text-gray-200'>No more comments</p>
+                        </div>
+                    </div>
+                    <CommentInput onSubmit={handleSaveComment} placeholder='Add a comment...' variant='with-icon' />
+                </div>
             </DialogContent>
         </Dialog>
     );

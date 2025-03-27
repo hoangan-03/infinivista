@@ -65,9 +65,12 @@ const MultimediaSection: React.FC<MultimediaSectionProps> = ({attachmentList, ma
                                             )}
                                         >
                                             {media.type === 'image' && (
-                                                <img
+                                                <Image
                                                     src={media.src}
                                                     alt={media.alt}
+                                                    width={0}
+                                                    height={0}
+                                                    sizes='100vw'
                                                     className='h-full w-full rounded-xl object-cover'
                                                 />
                                             )}
@@ -95,23 +98,31 @@ const MultimediaSection: React.FC<MultimediaSectionProps> = ({attachmentList, ma
                             {imageCount && videoCount && <div className='divider h-full w-[2px] bg-black' />}
                             {videoCount && videoCount.toString() + ' Videos'}
                         </DialogTitle>
-                        <DialogDescription className='flex h-full flex-col justify-between gap-5 pt-5'>
-                            {attachmentList.map((media) => {
-                                return (
-                                    <div key={media.id}>
-                                        {media.type === 'image' && (
-                                            <img src={media.src} alt={media.alt} className='h-fit w-full rounded-xl' />
-                                        )}
-                                        {media.type === 'video' && (
-                                            <video controls className='h-fit w-full rounded-xl'>
-                                                <source src={media.src} type='video/mp4' />
-                                            </video>
-                                        )}
-                                    </div>
-                                );
-                            })}
-                        </DialogDescription>
                     </DialogHeader>
+                    <DialogDescription />
+                    <div className='flex h-full flex-col justify-between gap-5'>
+                        {attachmentList.map((media) => {
+                            return (
+                                <div key={media.id}>
+                                    {media.type === 'image' && (
+                                        <Image
+                                            src={media.src}
+                                            alt={media.alt}
+                                            width={0}
+                                            height={0}
+                                            sizes='100vw'
+                                            className='h-auto w-full rounded-xl object-cover'
+                                        />
+                                    )}
+                                    {media.type === 'video' && (
+                                        <video controls className='h-fit w-full rounded-xl'>
+                                            <source src={media.src} type='video/mp4' />
+                                        </video>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
                 </DialogContent>
             </Dialog>
         </div>

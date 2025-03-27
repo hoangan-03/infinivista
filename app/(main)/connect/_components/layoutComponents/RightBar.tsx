@@ -148,7 +148,7 @@ const Contacts: React.FC = () => {
         setDisplayNumber(Math.min(minContacts, friendList.length));
         setExpanded(false);
         setMounted(true);
-        console.log(minContacts);
+        // console.log(minContacts);
     }, [minContacts]);
 
     return (

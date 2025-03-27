@@ -18,13 +18,13 @@ const Avatar: React.FC<AvatarProps> = ({size = 40 /* 40px */, src, alt = 'Avatar
         <>
             <div
                 className={cn(
-                    'relative aspect-square overflow-hidden rounded-full flex-center',
+                    'relative overflow-hidden rounded-full flex-center',
                     variant === 'border' && 'border-radial-gradient border-2',
                     className
                 )}
-                style={{width: size}}
+                style={{width: size, height: size}}
             >
-                <Image fill src={resolvedSrc} alt={alt} style={{objectFit: 'cover'}} />
+                <Image fill sizes={`${size}px`} src={resolvedSrc} alt={alt} className='object-cover' />
             </div>
         </>
     );
