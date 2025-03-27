@@ -2,9 +2,9 @@
 
 import React from 'react';
 
-import currentUser from '@/mock_data/self';
 import {Icon} from '@/components/commons';
 import {cn} from '@/lib/utils';
+import currentUser from '@/mock_data/self';
 
 type ReactionType = 'like' | 'love' | 'sad';
 

@@ -1,7 +1,9 @@
 import React from 'react';
-import {cn} from '@/lib/utils';
-import Icon, {IconProps} from '../Icon';
+
 import {Separator} from '@/components/ui';
+import {cn} from '@/lib/utils';
+
+import Icon, {IconProps} from '../Icon';
 
 interface SidebarElementProps {
     name: string;

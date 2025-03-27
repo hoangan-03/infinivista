@@ -1,5 +1,6 @@
 import React from 'react';
 
+import {Icon} from '@/components/commons';
 import {
     Dialog,
     DialogContent,
@@ -8,17 +9,19 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import {Icon} from '@/components/commons';
 import {cn} from '@/lib/utils';
-import Comment from './Comment';
-import ReactButton from './ReactButton';
 import {getSumReactions} from '@/lib/utils';
+
+import Comment from './Comment';
 import CommentInput from './CommentInput';
+import ReactButton from './ReactButton';
 
 type ReactionType = 'like' | 'love' | 'sad';
 
 interface CommentsSectionProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     reactionList: any[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     commentList: any[];
     handleClickReact: (event: React.MouseEvent<HTMLButtonElement>, reactionType: ReactionType) => void;
     handleSaveComment: (commentText: string) => void;
@@ -56,7 +59,7 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
                     </DialogTitle>
                     <DialogDescription className='commentsection-content flex h-[calc(90vh-4.5rem)] flex-col justify-between gap-5 pt-5'>
                         <div className='commentsection-content-comments custom-scrollbar flex h-full flex-col items-center gap-5 overflow-y-auto'>
-                            {commentList.map((comment, index) => {
+                            {commentList.map((comment) => {
                                 return <Comment key={comment.id} comment={comment} />;
                             })}
                             <div className='flex w-full flex-col items-center gap-2'>

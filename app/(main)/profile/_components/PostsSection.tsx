@@ -1,11 +1,10 @@
+import {ArrowRightIcon} from '@heroicons/react/solid';
 import React from 'react';
-import {cn} from '@/lib/utils';
 
 import Post from '@/app/(main)/_components/Post';
-import {PostObjectType} from '@/mock_data/postMockData';
-
-import {ArrowRightIcon} from '@heroicons/react/solid';
 import {Button} from '@/components/ui';
+import {cn} from '@/lib/utils';
+import {PostObjectType} from '@/mock_data/postMockData';
 
 interface PostsSectionProps {
     postList: PostObjectType[];

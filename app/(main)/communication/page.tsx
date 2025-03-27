@@ -1,9 +1,9 @@
 import Image from 'next/image';
 
-import placeholderImage from '@/public/assets/images/placeholder.png';
 import {Icon} from '@/components/commons';
 import {ScrollArea, Separator} from '@/components/ui';
 import {cn} from '@/lib/utils';
+import placeholderImage from '@/public/assets/images/placeholder.png';
 
 import {GroupCard} from './_components/GroupCard';
 import {MessageArea} from './_components/MessageArea';
@@ -198,7 +198,7 @@ export default function Communication() {
                         <Icon name='More' width={18} height={3} />
                     </div>
                 </div>
-                <div className='relative flex h-[90vh] flex-col gap-2 rounded-b-xl bg-white p-4 shadow-custom-1'>
+                <div className='shadow-custom-1 relative flex h-[90vh] flex-col gap-2 rounded-b-xl bg-white p-4'>
                     <ScrollArea className='h-[93%] pr-4'>
                         {messages.map((message, index) => (
                             <div

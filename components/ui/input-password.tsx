@@ -1,11 +1,11 @@
 'use client';
 
 import * as React from 'react';
-import {cva, type VariantProps} from 'class-variance-authority';
-import {Input} from './input';
 
 import {Icon} from '@/components/commons';
 import {cn} from '@/lib/utils';
+
+import {Input} from './input';
 
 // const passwordInputVariants = cva(
 //     'flex h-auto w-full border px-3 py-3 text-paragraph2 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-slate-950 placeholder:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:file:text-slate-50 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300',

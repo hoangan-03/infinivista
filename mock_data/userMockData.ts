@@ -25,8 +25,7 @@ const userData = [
             hometown: 'Los Angeles',
             marritalStatus: 'Married',
         },
-        profilePic:
-            '/assets/images/avatar.jpg',
+        profilePic: '/assets/images/avatar.jpg',
         backgroundPic:
             'https://res.cloudinary.com/dght74v9o/image/upload/v1735408640/samples/landscapes/nature-mountains.jpg',
         followerNumber: 250,

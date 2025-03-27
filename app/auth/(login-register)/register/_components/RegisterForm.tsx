@@ -1,16 +1,17 @@
 'use client';
 
+import {yupResolver} from '@hookform/resolvers/yup';
+import Link from 'next/link';
 import React from 'react';
 import {useForm} from 'react-hook-form';
 import * as Yup from 'yup';
-import {yupResolver} from '@hookform/resolvers/yup';
+
 import {LogoName} from '@/components/commons';
+import {Button} from '@/components/ui';
 import {Input} from '@/components/ui/input';
 import {PasswordInput} from '@/components/ui/input-password';
-import Link from 'next/link';
-import {Button} from '@/components/ui';
 import {cn} from '@/lib/utils';
-import {Switch} from '@/components/ui/switch';
+
 import GoogleSignInButton from '../../_components/GoogleSignInButton';
 
 const registerSchema = Yup.object().shape({
@@ -31,6 +32,7 @@ export const RegisterForm: React.FC = () => {
         resolver: yupResolver(registerSchema),
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const onSubmit = (data: any) => {
         console.log(data);
     };

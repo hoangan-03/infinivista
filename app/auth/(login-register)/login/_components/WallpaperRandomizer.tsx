@@ -1,5 +1,6 @@
-import React from 'react';
 import Image from 'next/image';
+import React from 'react';
+
 import * as LoginWallpapers from '@/public/assets/images/login_wallpapers';
 
 export const WallpaperRandomizer: React.FC = () => {

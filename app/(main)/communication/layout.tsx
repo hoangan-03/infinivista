@@ -1,5 +1,3 @@
 export default function CommunicationLayout({children}: {children: React.ReactNode}) {
-    return (
-        <div className='px-10 py-8'>{children}</div>
-    );
+    return <div className='px-10 py-8'>{children}</div>;
 }

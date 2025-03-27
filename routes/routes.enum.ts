@@ -12,7 +12,7 @@ export enum ENUM_ROUTES {
     CONNECT_FEED_FRIENDS = '/connect/feed/friends',
     CONNECT_FEED_FOLLOWING = '/connect/feed/following',
     CONNECT_FEED_POPULAR = '/connect/feed/popular',
-    
+
     'CONNECT_STORY_FOR-YOU' = '/connect/story' + '/connect/story/for-you',
     CONNECT_STORY_FRIENDS = '/connect/story/friends',
     CONNECT_STORY_FOLLOWING = '/connect/story/following',

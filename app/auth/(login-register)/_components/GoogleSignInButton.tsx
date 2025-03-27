@@ -1,7 +1,8 @@
-import React from 'react';
 import {signIn} from 'next-auth/react';
-import {Button} from '@/components/ui';
+import React from 'react';
 import {FcGoogle} from 'react-icons/fc';
+
+import {Button} from '@/components/ui';
 
 const GoogleSignInButton: React.FC<{text: string}> = ({text}) => {
     return (

@@ -1,16 +1,18 @@
 'use client';
 
+import {yupResolver} from '@hookform/resolvers/yup';
+import Link from 'next/link';
 import React from 'react';
 import {useForm} from 'react-hook-form';
 import * as Yup from 'yup';
-import {yupResolver} from '@hookform/resolvers/yup';
+
 import {LogoName} from '@/components/commons';
+import {Button} from '@/components/ui';
 import {Input} from '@/components/ui/input';
 import {PasswordInput} from '@/components/ui/input-password';
-import Link from 'next/link';
-import {Button} from '@/components/ui';
-import {cn} from '@/lib/utils';
 import {Switch} from '@/components/ui/switch';
+import {cn} from '@/lib/utils';
+
 import GoogleSignInButton from '../../_components/GoogleSignInButton';
 
 const loginSchema = Yup.object().shape({
@@ -27,6 +29,7 @@ export const LoginForm: React.FC = () => {
         resolver: yupResolver(loginSchema),
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const onSubmit = (data: any) => {
         console.log(data);
     };
@@ -111,7 +114,7 @@ export const LoginForm: React.FC = () => {
                         <div className='flex flex-col gap-4'>
                             <GoogleSignInButton text='Or Sign in with Google' />
                             <div className='flex items-center justify-center gap-2'>
-                                <p className='text-paragraph1 text-black md:text-caption'>Don't have an account?</p>
+                                <p className='text-paragraph1 text-black md:text-caption'>Don&#39;t have an account?</p>
                                 <Link
                                     href='/auth/register'
                                     className='text-nowrap text-paragraph1 text-blue-500 hover:underline md:text-caption'

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import ConnectNavbar from '../ConnectNavbar';
 
 const MainContent: React.FC<{children: React.ReactNode}> = ({children}) => {

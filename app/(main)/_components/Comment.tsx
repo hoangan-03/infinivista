@@ -1,7 +1,9 @@
 import React from 'react';
+
 import {cn} from '@/lib/utils';
-import Avatar from './Avatar';
 import {getTimeStamp} from '@/lib/utils';
+
+import Avatar from './Avatar';
 
 interface Comment {
     id: number;

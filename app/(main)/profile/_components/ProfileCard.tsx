@@ -1,12 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import React from 'react';
-import Link from 'next/link';
-import {cn} from '@/lib/utils';
-
-import {Button} from '@/components/ui/button';
-import {UserDataType} from '@/mock_data/self';
-import {Icon} from '@/components/commons';
 import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
+
+import {Icon} from '@/components/commons';
+import {Button} from '@/components/ui/button';
+import {cn} from '@/lib/utils';
+import {UserDataType} from '@/mock_data/self';
+
 import AddFriendButton from '../../_components/AddFriendButton';
 
 interface ProfileCardProps {
@@ -95,6 +96,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({userObject, isOwner, className
                     ].map((social) => (
                         <div key={social.name} className='flex flex-row items-center gap-3'>
                             <div className='flex h-6 w-6 items-center justify-center'>
+                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                 <Icon name={social.name as any} width={24} height={24} />
                             </div>
                             <Link href={social.link}>

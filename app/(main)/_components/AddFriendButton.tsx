@@ -1,8 +1,8 @@
 import React from 'react';
-import {cn} from '@/lib/utils';
-import {UserPlus} from 'lucide-react';
+
 import {Icon} from '@/components/commons';
 import {Button} from '@/components/ui';
+import {cn} from '@/lib/utils';
 
 interface AddFriendButtonProps {
     variant: 'full' | 'icon';

@@ -1,4 +1,4 @@
-export default [
+const trendingList = [
     {id: 1, topic: 'AI and Machine Learning', postCount: 1200},
     {id: 2, topic: 'Climate Change', postCount: 950},
     {id: 3, topic: 'Cryptocurrency Market', postCount: 870},
@@ -10,3 +10,5 @@ export default [
     {id: 9, topic: 'Web3 and Blockchain', postCount: 630},
     {id: 10, topic: 'Gaming Industry Updates', postCount: 600},
 ];
+
+export default trendingList;
