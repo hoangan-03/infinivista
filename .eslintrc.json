@@ -18,7 +18,7 @@
         ],
         "@typescript-eslint/no-explicit-any": "error",
         "semi": [1, "always"],
-        "quotes": [1, "single"],
+        "quotes": [1, "single", { "avoidEscape": true }],
         "jsx-quotes": [1, "prefer-single"]
     }
 }

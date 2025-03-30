@@ -49,7 +49,7 @@ const SidebarElement: React.FC<SidebarElementProps> = ({
                     className={cn('flex w-full items-center', !sidebarExpanded && 'justify-center')}
                     onClick={onClick}
                 >
-                    <Icon name={iconName} width={24} height={24} className='text-black' />
+                    <Icon name={iconName} className='text-black' />
                     <div
                         className={cn(
                             'flex flex-grow items-center justify-between',

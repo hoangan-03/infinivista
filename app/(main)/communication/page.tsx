@@ -220,16 +220,11 @@ export default function Communication() {
                     <div className='flex h-[7%] items-center gap-2 rounded-xl bg-primary px-5 py-3'>
                         <div className='flex gap-2'>
                             <div className='relative h-6 w-6'>
-                                <Icon
-                                    name='Image'
-                                    width={24}
-                                    height={24}
-                                    className='absolute inset-0 h-full w-full text-white'
-                                />
+                                <Icon name='Picture' className='absolute inset-0 h-full w-full text-white' />
                             </div>
-                            <Icon name='Attachment' width={24} height={24} className='text-white' />
-                            <Icon name='Smiley' width={24} height={24} className='text-white' />
-                            <Icon name='Mention' width={24} height={24} className='text-white' />
+                            <Icon name='Attachment' className='text-white' />
+                            <Icon name='Smiley' className='text-white' />
+                            <Icon name='Mention' className='text-white' />
                         </div>
                         <div className='flex h-5 flex-grow items-center gap-2'>
                             <Separator className='h-full bg-white' orientation='vertical' />

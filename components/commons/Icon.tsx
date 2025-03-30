@@ -3,19 +3,22 @@ import Image, {StaticImageData} from 'next/image';
 import React from 'react';
 import {IoMdEye as EyeOpen} from 'react-icons/io';
 import {IoMdEyeOff as EyeClose} from 'react-icons/io';
-import {RiShareForwardLine as Share} from 'react-icons/ri';
 
 import {cn} from '@/lib/utils';
+import Share from '@/public/assets/icons/Arrow-share-forward.svg';
+import Share_filled from '@/public/assets/icons/Arrow-share-forward-filled.svg';
 import Attachment from '@/public/assets/icons/attachment.svg';
 import CaretDown from '@/public/assets/icons/caret-down.svg';
 import Chat from '@/public/assets/icons/chat.svg';
-import Comment from '@/public/assets/icons/chat_bubble.svg';
-import Repost from '@/public/assets/icons/Direct Right.svg';
+import Comment from '@/public/assets/icons/chat-4.svg';
+import Comment_filled from '@/public/assets/icons/chat-4-filled.svg';
 import emojiHappy from '@/public/assets/icons/emoji/Emoji Happy.svg';
 import Facebook from '@/public/assets/icons/facebook.png';
+import Repost from '@/public/assets/icons/file-copy.svg';
+import Repost_filled from '@/public/assets/icons/file-copy-filled.svg';
 import Globe from '@/public/assets/icons/globe.svg';
 import Like from '@/public/assets/icons/heart-3.svg';
-import FilledLike from '@/public/assets/icons/heart-3-filled.svg';
+import Like_filled from '@/public/assets/icons/heart-3-filled.svg';
 import Home from '@/public/assets/icons/home.svg';
 import Plus from '@/public/assets/icons/icon-plus.svg';
 import Picture from '@/public/assets/icons/image.svg';
@@ -30,7 +33,8 @@ import Mention from '@/public/assets/icons/mention.svg';
 import More from '@/public/assets/icons/more.svg';
 import Navigation from '@/public/assets/icons/navigation.svg';
 import NotificationBell from '@/public/assets/icons/notification-bell.svg';
-import Save from '@/public/assets/icons/Save Archive.svg';
+import Save from '@/public/assets/icons/save.svg';
+import Save_filled from '@/public/assets/icons/save-filled.svg';
 import Search from '@/public/assets/icons/search.svg';
 import SendArrow from '@/public/assets/icons/send-arrow.svg';
 import SettingsGear from '@/public/assets/icons/settings-gear.svg';
@@ -65,11 +69,15 @@ const Icons = {
     ZoomOut,
     Plus,
     Like,
-    FilledLike,
+    Like_filled,
     Comment,
+    Comment_filled,
     Repost,
+    Repost_filled,
     Share,
+    Share_filled,
     Save,
+    Save_filled,
     EyeOpen,
     EyeClose,
     Ellipsis,
@@ -96,7 +104,7 @@ interface IconProps {
     className?: string;
 }
 
-const Icon: React.FC<IconProps> = ({width = 20, height = 20, name, className}) => {
+const Icon: React.FC<IconProps> = ({width = 24, height = 24, name, className}) => {
     const IconComponent = name in Icons ? Icons[name as keyof typeof Icons] : Emojis[name as keyof typeof Emojis];
 
     // Determine if it's an image or an SVG/React component

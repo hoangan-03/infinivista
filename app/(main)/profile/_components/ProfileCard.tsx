@@ -49,7 +49,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({userObject, isOwner, className
                             {displayedJobTitle.job} at {displayedJobTitle.company}
                         </p>
                         <div className='flex flex-row gap-1'>
-                            <Icon name='Work' width={24} height={24} />
+                            <Icon name='Work' />
                             <p className='text-gray-400'>
                                 {userObject.introduction.city}, {userObject.introduction.country}
                             </p>
@@ -74,7 +74,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({userObject, isOwner, className
                             <Button variant='default'>Add to story</Button>
                             <Button variant='secondary'>Edit profile</Button>
                             <button>
-                                <Icon name='More' width={24} height={24} />
+                                <Icon name='More' />
                             </button>
                         </div>
                     ) : (
@@ -82,7 +82,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({userObject, isOwner, className
                             <AddFriendButton variant='full' />
                             <Button variant='secondary'>Message</Button>
                             <button>
-                                <Icon name='More' width={24} height={24} />
+                                <Icon name='More' />
                             </button>
                         </div>
                     )}
@@ -97,7 +97,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({userObject, isOwner, className
                         <div key={social.name} className='flex flex-row items-center gap-3'>
                             <div className='flex h-6 w-6 items-center justify-center'>
                                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                <Icon name={social.name as any} width={24} height={24} />
+                                <Icon name={social.name as any} />
                             </div>
                             <Link href={social.link}>
                                 <h3 className='text-base text-black'>{social.link.split('/').pop()}</h3>

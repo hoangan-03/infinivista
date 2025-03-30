@@ -17,6 +17,8 @@ const buttonVariants = cva(
                 destructive: 'bg-red-500 text-slate-50 hover:bg-red-500/90',
                 ghost: 'hover:bg-slate-100 hover:text-slate-900',
                 link: 'text-slate-900 underline-offset-4 hover:underline',
+                iconOnly:
+                    '[&_svg]:fill-white hover:translate-y-0 active:translate-y-0 hover:shadow-none active:shadow-none',
                 iconDefault: 'flex-row bg-blue-700 text-slate-50 hover:bg-slate-900/90',
                 iconSecondary:
                     'flex-row bg-white text-blue-700 border-blue-700 border-2 hover:bg-blue-700 hover:text-white [&_svg]:fill-blue-700 [&_svg]:hover:fill-white',

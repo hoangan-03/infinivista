@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import {Icon} from '@/components/commons';
+import IconButton from '@/components/commons/IconButton';
+import {Separator} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import {getSumReactions, getTimeStamp} from '@/lib/utils';
 import currentUser from '@/mock_data/self';
@@ -69,6 +70,7 @@ const Post: React.FC<PostProps> = ({postObject, className}) => {
 
     const [liked, toggleLiked] = React.useState<boolean>(false);
     // const liked = postObject?.reactionList.some((reaction) => reaction.people.some((person) => person.username === currentUser.username));
+    const [commentsSectionOpen, setCommentsSectionOpen] = React.useState<boolean>(false);
 
     const maxNumberOfDisplays = 3;
 
@@ -155,33 +157,32 @@ const Post: React.FC<PostProps> = ({postObject, className}) => {
 
             <section className='post-comments'>
                 <div className='button-bar flex flex-col gap-2'>
-                    <hr />
+                    <Separator className='bg-gray-200' />
                     <div className='flex items-center justify-between gap-3'>
-                        <div className='reaction-container flex gap-4'>
+                        <div className='reaction-container flex items-center gap-4'>
                             <ReactButton reactionList={postObject?.reactionList} handleClickReact={handleClickReact} />
                             <CommentSection
+                                dialogOpen={commentsSectionOpen}
+                                setDialogOpen={setCommentsSectionOpen}
                                 reactionList={postObject?.reactionList}
                                 commentList={postObject?.commentList}
                                 handleClickReact={handleClickReact}
                                 handleSaveComment={handleSaveComment}
                             />
-                            <button>
-                                <Icon name='Repost' width={24} height={24} />
-                            </button>
+                            <IconButton defaultName='Repost' hoverName='Repost_filled' />
                         </div>
                         <div className='share-container flex gap-4'>
-                            <button>
-                                <Icon name='Share' width={24} height={24} className='text-[1.5rem]' />
-                            </button>
-                            <button>
-                                <Icon name='Save' width={24} height={24} />
-                            </button>
+                            <IconButton defaultName='Share' hoverName='Share_filled' />
+                            <IconButton defaultName='Save' hoverName='Save_filled' />
                         </div>
                     </div>
-                    <hr />
+                    <Separator className='bg-gray-200' />
                 </div>
             </section>
-            <section className='post-counters flex items-center justify-between gap-3 whitespace-nowrap'>
+            <section
+                className='post-counters flex cursor-pointer items-center justify-between gap-3 whitespace-nowrap'
+                onClick={() => setCommentsSectionOpen(true)}
+            >
                 <p className='w-fit text-subtitle2 font-bold'>{getSumReactions(postObject?.reactionList)} Reactions</p>
                 <div className='flex gap-3 text-gray-600'>
                     <p className='w-fit text-paragraph2'>{postObject?.viewCount} Views</p>

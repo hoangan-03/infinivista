@@ -119,7 +119,7 @@ const Trending: React.FC = () => {
                                 </p>
                             </div>
                             <button className='option-button'>
-                                <Icon name='Ellipsis' width={24} height={24} />
+                                <Icon name='Ellipsis' />
                             </button>
                         </a>
                     ))}

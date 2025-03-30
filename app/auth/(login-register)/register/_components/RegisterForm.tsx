@@ -7,7 +7,7 @@ import {useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 
 import {LogoName} from '@/components/commons';
-import {Button} from '@/components/ui';
+import {Button, Separator} from '@/components/ui';
 import {Input} from '@/components/ui/input';
 import {PasswordInput} from '@/components/ui/input-password';
 import {cn} from '@/lib/utils';
@@ -142,7 +142,7 @@ export const RegisterForm: React.FC = () => {
                         <Button type='submit' className='rounded-sm bg-blue-700 text-caption font-bold text-white'>
                             Register
                         </Button>
-                        <hr />
+                        <Separator className='bg-gray-200' />
                         <div className='flex flex-col gap-4'>
                             <GoogleSignInButton text='Or Register with Google' />
                             <div className='flex items-center justify-center gap-2'>

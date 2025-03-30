@@ -31,7 +31,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
             <Input type='text' name='comment' placeholder={placeholder} fontSize='text-paragraph2' />
             {variant === 'with-icon' && (
                 <button type='button' className='absolute right-3 top-1/2 -translate-y-1/2'>
-                    <Icon name='emojiHappy' width={24} height={24} />
+                    <Icon name='emojiHappy' />
                     <span className='sr-only'>Add emoji</span>
                 </button>
             )}

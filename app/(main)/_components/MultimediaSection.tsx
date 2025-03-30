@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
+import {Separator} from '@/components/ui';
 import {
     Dialog,
     DialogContent,
@@ -95,7 +96,9 @@ const MultimediaSection: React.FC<MultimediaSectionProps> = ({attachmentList, ma
                     <DialogHeader>
                         <DialogTitle className='sticky top-0 z-10 flex items-center justify-center gap-4 bg-white py-2'>
                             {imageCount && imageCount.toString() + ' Images'}
-                            {imageCount && videoCount && <div className='divider h-full w-[2px] bg-black' />}
+                            {imageCount && videoCount && (
+                                <Separator orientation='vertical' className='w-[2px] bg-black' />
+                            )}
                             {videoCount && videoCount.toString() + ' Videos'}
                         </DialogTitle>
                     </DialogHeader>

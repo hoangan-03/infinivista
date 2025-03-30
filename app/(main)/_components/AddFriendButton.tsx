@@ -20,7 +20,7 @@ const AddFriendButton: React.FC<AddFriendButtonProps> = ({variant, onClick, clas
         //         className
         //     )}
         // >
-        //     <Icon name='UserAdd' width={24} height={24} />
+        //     <Icon name='UserAdd'   />
         //     {variant === 'full' && <p1>Add Friend</p1>}
         // </button>
         variant === 'icon' ? (
@@ -30,11 +30,11 @@ const AddFriendButton: React.FC<AddFriendButtonProps> = ({variant, onClick, clas
                 size='ssm'
                 onClick={onClick}
             >
-                <Icon name='UserAdd' width={24} height={24} />
+                <Icon name='UserAdd' />
             </Button>
         ) : (
             <Button variant='iconSecondary'>
-                <Icon name='UserAdd' width={24} height={24} />
+                <Icon name='UserAdd' />
                 Add friend
             </Button>
         )

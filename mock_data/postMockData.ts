@@ -63,12 +63,12 @@ const postMockData: Post[] = [
                 src: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408639/samples/landscapes/beach-boat.jpg',
                 alt: 'Image 2',
             },
-            {
-                id: 4,
-                type: 'video',
-                src: 'https://res.cloudinary.com/dght74v9o/video/upload/v1735408640/samples/elephants.mp4',
-                alt: 'Video 1',
-            },
+            // {
+            //     id: 4,
+            //     type: 'video',
+            //     src: 'https://res.cloudinary.com/dght74v9o/video/upload/v1735408640/samples/elephants.mp4',
+            //     alt: 'Video 1',
+            // },
             {
                 id: 5,
                 type: 'video',
