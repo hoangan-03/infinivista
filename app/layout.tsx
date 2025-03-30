@@ -3,7 +3,7 @@ import './globals.css';
 import type {Metadata, Viewport} from 'next';
 import localFont from 'next/font/local';
 
-import Provider from '@/components/commons/Provider';
+// import Provider from '@/components/commons/Provider';
 
 const geistSans = localFont({
     src: './_fonts/GeistVF.woff',

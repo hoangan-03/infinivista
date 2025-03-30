@@ -57,7 +57,12 @@ export const RegisterForm: React.FC = () => {
                                 {...register('fullName')}
                             />
 
-                            <p className={cn('w-full pl-3 text-caption text-blue-500', errors.fullName ? 'visible' : 'invisible')}>
+                            <p
+                                className={cn(
+                                    'w-full pl-3 text-caption text-blue-500',
+                                    errors.fullName ? 'visible' : 'invisible'
+                                )}
+                            >
                                 {errors.fullName?.message}
                             </p>
                         </div>
@@ -97,7 +102,12 @@ export const RegisterForm: React.FC = () => {
                                 {...register('password')}
                             />
 
-                            <p className={cn('w-full pl-3 text-caption text-blue-500', errors.password ? 'visible' : 'invisible')}>
+                            <p
+                                className={cn(
+                                    'w-full pl-3 text-caption text-blue-500',
+                                    errors.password ? 'visible' : 'invisible'
+                                )}
+                            >
                                 {errors.password?.message}
                             </p>
                         </div>

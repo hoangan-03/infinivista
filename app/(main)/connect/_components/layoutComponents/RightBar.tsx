@@ -67,7 +67,7 @@ const Suggestions: React.FC = () => {
                                     height={40}
                                     className='rounded-full'
                                 />
-                                <p className='font-bold text-caption text-gray-700'>{person.name}</p>
+                                <p className='text-caption font-bold text-gray-700'>{person.name}</p>
                             </div>
                             <Button className='add-friend-button h-fit p-1'>
                                 <p className='text-caption'>Add Friend</p>

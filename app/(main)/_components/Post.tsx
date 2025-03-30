@@ -148,7 +148,7 @@ const Post: React.FC<PostProps> = ({postObject, className}) => {
                 </div>
             </section>
             <section>
-                <p className='post-text text-paragraph1 text-justify font-medium'>{postObject?.description}</p>
+                <p className='post-text text-justify text-paragraph1 font-medium'>{postObject?.description}</p>
             </section>
 
             <MultimediaSection attachmentList={postObject.attachmentList} maxNumberOfDisplays={maxNumberOfDisplays} />

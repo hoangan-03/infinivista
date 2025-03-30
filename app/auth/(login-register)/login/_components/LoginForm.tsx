@@ -78,7 +78,12 @@ export const LoginForm: React.FC = () => {
                                 {...register('password')}
                             />
 
-                            <p className={cn('w-full pl-3 text-caption text-blue-500', errors.password ? 'visible' : 'invisible')}>
+                            <p
+                                className={cn(
+                                    'w-full pl-3 text-caption text-blue-500',
+                                    errors.password ? 'visible' : 'invisible'
+                                )}
+                            >
                                 {errors.password?.message}
                             </p>
                         </div>
