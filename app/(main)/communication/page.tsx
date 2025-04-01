@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import {Icon} from '@/components/commons';
-import {ScrollArea, Separator} from '@/components/ui';
+import {Button, ScrollArea, Separator} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import placeholderImage from '@/public/assets/images/placeholder.png';
 
@@ -199,7 +199,7 @@ export default function Communication() {
                     </div>
                 </div>
                 <div className='shadow-custom-1 relative flex h-[90vh] flex-col gap-2 rounded-b-xl bg-white p-4'>
-                    <ScrollArea className='h-[93%] pr-4'>
+                    <ScrollArea className='h-[90%] pr-4'>
                         {messages.map((message, index) => (
                             <div
                                 key={index}
@@ -217,7 +217,7 @@ export default function Communication() {
                             </div>
                         ))}
                     </ScrollArea>
-                    <div className='flex h-[7%] items-center gap-2 rounded-xl bg-primary px-5 py-3'>
+                    <div className='flex h-[10%] items-center gap-2 rounded-xl bg-primary px-5 py-3'>
                         <div className='flex gap-2'>
                             <div className='relative h-6 w-6'>
                                 <Icon name='Picture' className='absolute inset-0 h-full w-full text-white' />
@@ -233,9 +233,13 @@ export default function Communication() {
                                 className='w-full border-none bg-primary pl-2 text-white placeholder:text-white focus:outline-1 focus:outline-white'
                                 placeholder='Start typing...'
                             />
-                            <button className='h-10 w-10 rounded-sm bg-white flex-center'>
-                                <Icon name='SendArrow' className='text-primary' />
-                            </button>
+                            <Button
+                                variant='secondary'
+                                size='square'
+                                className='h-10 w-10 rounded-sm bg-white flex-center'
+                            >
+                                <Icon name='SendArrow' width={20} height={20} />
+                            </Button>
                         </div>
                     </div>
                 </div>

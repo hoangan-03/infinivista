@@ -6,7 +6,7 @@ import {usePathname, useRouter} from 'next/navigation';
 import React from 'react';
 
 import {Icon} from '@/components/commons';
-import {Separator} from '@/components/ui';
+import {Button, Separator} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import currentUser from '@/mock_data/self';
 import LogoIcon from '@/public/assets/images/logo_icon.svg';
@@ -69,11 +69,12 @@ const Sidebar: React.FC = () => {
                     <LogoText className={cn('sidebar-transition', sidebarExpanded ? 'ml-2' : 'w-0')} />
                 </div>
                 <div className='mb-5 flex-center'>
-                    <button
+                    <Button
+                        variant='iconDefault'
                         className={cn(
-                            'flex h-12 w-full items-center justify-center gap-2 rounded-full bg-primary px-3 py-2 text-white',
-                            'sidebar-transition',
-                            !sidebarExpanded && 'flex w-12 flex-center'
+                            'h-12 w-full gap-2 px-3 py-2 text-white',
+                            'text-nowrap transition-all duration-500 ease-in-out', // sidebar-transition
+                            !sidebarExpanded && 'flex w-12'
                         )}
                     >
                         <span>
@@ -88,7 +89,7 @@ const Sidebar: React.FC = () => {
                         >
                             New Post
                         </p>
-                    </button>
+                    </Button>
                 </div>
                 <div>
                     <p className='mb-5 font-bold text-gray-500'>Menu</p>

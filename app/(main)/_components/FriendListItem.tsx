@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import React from 'react';
 
+import {Icon} from '@/components/commons';
+import {Button} from '@/components/ui';
 import {cn} from '@/lib/utils';
-
-import AddFriendButton from './AddFriendButton';
 
 interface FriendListItemProps {
     username: string;
@@ -58,7 +58,17 @@ const FriendListItem: React.FC<FriendListItemProps> = ({
                     )}
                 </div>
             </div>
-            {withAddFriendButton && <AddFriendButton variant='icon' />}
+            {withAddFriendButton && (
+                <Button
+                    aria-label='Add friend'
+                    className='add-friend-button'
+                    variant='outline'
+                    size='square'
+                    onClick={onClick}
+                >
+                    <Icon name='UserAdd' />
+                </Button>
+            )}
         </div>
     );
 };

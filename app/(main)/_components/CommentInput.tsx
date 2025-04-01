@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import {Icon} from '@/components/commons';
+import IconButton from '@/components/commons/IconButton';
 import {Input} from '@/components/ui/input';
 
 interface CommentInputProps {
@@ -30,10 +30,9 @@ const CommentInput: React.FC<CommentInputProps> = ({
         <form onSubmit={handleSubmit} className='relative'>
             <Input type='text' name='comment' placeholder={placeholder} fontSize='text-paragraph2' />
             {variant === 'with-icon' && (
-                <button type='button' className='absolute right-3 top-1/2 -translate-y-1/2'>
-                    <Icon name='emojiHappy' />
-                    <span className='sr-only'>Add emoji</span>
-                </button>
+                <div className='absolute right-3 top-1/2 -translate-y-1/2 flex-center'>
+                    <IconButton label='Add emoji' defaultName='emojiHappy' hoverName='emojiHappy_filled' />
+                </div>
             )}
         </form>
     );

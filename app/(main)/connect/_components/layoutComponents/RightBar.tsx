@@ -5,15 +5,14 @@ import React, {useEffect} from 'react';
 import {Provider, useSelector} from 'react-redux';
 
 import FriendListItem from '@/app/(main)/_components/FriendListItem';
-import {Icon} from '@/components/commons';
+import IconButton from '@/components/commons/IconButton';
+import {Button} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import friendList from '@/mock_data/friendList';
 import suggestionList from '@/mock_data/suggestionList';
 import trendingList from '@/mock_data/trendingList';
 import {SettingsState} from '@/slices/settingsSlice';
 import {store} from '@/store';
-
-import Button from '../Button';
 
 const RightBarElement: React.FC<{title: string; children: React.ReactNode; className?: string}> = ({
     title,
@@ -69,15 +68,15 @@ const Suggestions: React.FC = () => {
                                 />
                                 <p className='text-caption font-bold text-gray-700'>{person.name}</p>
                             </div>
-                            <Button className='add-friend-button h-fit p-1'>
-                                <p className='text-caption'>Add Friend</p>
+                            <Button variant='iconDefault' className='add-friend-button h-fit p-2'>
+                                <p className='text-caption'>Add friend</p>
                             </Button>
                         </a>
                     ))}
                 <div className='flex-center'>
-                    <button className='w-fit' onClick={handleToggleExpand}>
-                        <p className='text-caption text-blue-700'>{!expanded ? 'See more' : 'See less'}</p>
-                    </button>
+                    <Button variant='link' size='icon' onClick={handleToggleExpand}>
+                        <p className='text-caption'>{!expanded ? 'See more' : 'See less'}</p>
+                    </Button>
                 </div>
             </div>
         </RightBarElement>
@@ -118,14 +117,12 @@ const Trending: React.FC = () => {
                                     {trend.postCount < 1000 ? trend.postCount : trend.postCount / 1000 + 'k'} posts
                                 </p>
                             </div>
-                            <button className='option-button'>
-                                <Icon name='Ellipsis' />
-                            </button>
+                            <IconButton label='More options' defaultName='More' />
                         </a>
                     ))}
-                <button className='w-fit' onClick={handleToggleExpand}>
-                    <p className='text-caption text-blue-700'>{!expanded ? 'See more' : 'See less'}</p>
-                </button>
+                <Button variant='link' size='icon' onClick={handleToggleExpand}>
+                    <p className='text-caption'>{!expanded ? 'See more' : 'See less'}</p>
+                </Button>
             </div>
         </RightBarElement>
     );
@@ -167,9 +164,9 @@ const Contacts: React.FC = () => {
                             />
                         ))}
                 <div className='flex-center'>
-                    <button className='w-fit' onClick={handleToggleExpand}>
-                        <p className='text-caption text-blue-700'>{!expanded ? 'See more' : 'See less'}</p>
-                    </button>
+                    <Button variant='link' size='icon' onClick={handleToggleExpand}>
+                        <p className='text-caption'>{!expanded ? 'See more' : 'See less'}</p>
+                    </Button>
                 </div>
             </div>
         </RightBarElement>

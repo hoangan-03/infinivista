@@ -3,6 +3,7 @@
 import {useRouter} from 'next/navigation';
 import React from 'react';
 
+import {Button} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import {FriendListType} from '@/mock_data/friendList';
 
@@ -15,7 +16,7 @@ interface FriendsSectionProps {
 
 const FriendsSection: React.FC<FriendsSectionProps> = ({friendList, className}) => {
     const router = useRouter();
-    const [showAll, setShowAll] = React.useState(false);
+    const [showAll, setShowAll] = React.useState<boolean>(false);
 
     // const friends = [
     //     'Alexandra Tan',
@@ -62,14 +63,9 @@ const FriendsSection: React.FC<FriendsSectionProps> = ({friendList, className}) 
                     />
                 ))}
             </div>
-            {!showAll && (
-                <button
-                    onClick={() => setShowAll(true)}
-                    className='mx-auto mb-4 text-base font-medium text-blue-700 hover:underline'
-                >
-                    Show more...
-                </button>
-            )}
+            <Button variant='link' size='icon' onClick={() => setShowAll(!showAll)} className='mx-auto'>
+                <p className='text-base'>{!showAll ? 'See more' : 'See less'}</p>
+            </Button>
         </div>
     );
 };

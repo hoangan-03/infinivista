@@ -29,6 +29,7 @@ const ReactButton: React.FC<ReactButtonProps> = ({
 
     return (
         <IconButton
+            label='React to post'
             defaultName={liked ? 'Like_filled' : 'Like'}
             hoverName='Like_filled'
             width={width}

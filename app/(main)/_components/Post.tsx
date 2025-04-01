@@ -169,11 +169,11 @@ const Post: React.FC<PostProps> = ({postObject, className}) => {
                                 handleClickReact={handleClickReact}
                                 handleSaveComment={handleSaveComment}
                             />
-                            <IconButton defaultName='Repost' hoverName='Repost_filled' />
+                            <IconButton label='Repost' defaultName='Repost' hoverName='Repost_filled' />
                         </div>
                         <div className='share-container flex gap-4'>
-                            <IconButton defaultName='Share' hoverName='Share_filled' />
-                            <IconButton defaultName='Save' hoverName='Save_filled' />
+                            <IconButton label='Share post' defaultName='Share' hoverName='Share_filled' />
+                            <IconButton label='Save post' defaultName='Save' hoverName='Save_filled' />
                         </div>
                     </div>
                     <Separator className='bg-gray-200' />

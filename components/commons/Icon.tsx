@@ -1,8 +1,5 @@
-import {Ellipsis} from 'lucide-react';
 import Image, {StaticImageData} from 'next/image';
 import React from 'react';
-import {IoMdEye as EyeOpen} from 'react-icons/io';
-import {IoMdEyeOff as EyeClose} from 'react-icons/io';
 
 import {cn} from '@/lib/utils';
 import Share from '@/public/assets/icons/Arrow-share-forward.svg';
@@ -12,7 +9,12 @@ import CaretDown from '@/public/assets/icons/caret-down.svg';
 import Chat from '@/public/assets/icons/chat.svg';
 import Comment from '@/public/assets/icons/chat-4.svg';
 import Comment_filled from '@/public/assets/icons/chat-4-filled.svg';
-import emojiHappy from '@/public/assets/icons/emoji/Emoji Happy.svg';
+import emojiHappy from '@/public/assets/icons/emoji/happy.svg';
+import emojiHappy_filled from '@/public/assets/icons/emoji/happy-filled.svg';
+import EyeOpen from '@/public/assets/icons/eye.svg';
+import EyeOpen_filled from '@/public/assets/icons/eye-filled.svg';
+import EyeClose from '@/public/assets/icons/eye-off.svg';
+import EyeClose_filled from '@/public/assets/icons/eye-off-filled.svg';
 import Facebook from '@/public/assets/icons/facebook.png';
 import Repost from '@/public/assets/icons/file-copy.svg';
 import Repost_filled from '@/public/assets/icons/file-copy-filled.svg';
@@ -79,8 +81,9 @@ const Icons = {
     Save,
     Save_filled,
     EyeOpen,
+    EyeOpen_filled,
     EyeClose,
-    Ellipsis,
+    EyeClose_filled,
     UserAdd,
     Work,
     Study,
@@ -95,6 +98,7 @@ const Icons = {
 
 const Emojis = {
     emojiHappy,
+    emojiHappy_filled,
 };
 
 interface IconProps {

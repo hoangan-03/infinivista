@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Separator} from '@/components/ui';
+import {Button, Separator} from '@/components/ui';
 import {cn} from '@/lib/utils';
 
 import Icon, {IconProps} from '../Icon';
@@ -45,7 +45,8 @@ const SidebarElement: React.FC<SidebarElementProps> = ({
     return (
         <div className={cn('mb-5', className)}>
             <div className={cn('relative rounded-xs px-3 py-2 hover:bg-gray-100', realSelected && 'bg-gray-200')}>
-                <button
+                <Button
+                    variant='raw'
                     className={cn('flex w-full items-center', !sidebarExpanded && 'justify-center')}
                     onClick={onClick}
                 >
@@ -74,7 +75,7 @@ const SidebarElement: React.FC<SidebarElementProps> = ({
                             </p>
                         )}
                     </div>
-                </button>
+                </Button>
                 {children && (
                     <span
                         className='absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer'

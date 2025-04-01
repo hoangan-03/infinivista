@@ -4,11 +4,11 @@ import Link from 'next/link';
 import React from 'react';
 
 import {Icon} from '@/components/commons';
+import {IconProps} from '@/components/commons/Icon';
+import IconButton from '@/components/commons/IconButton';
 import {Button} from '@/components/ui/button';
 import {cn} from '@/lib/utils';
 import {UserDataType} from '@/mock_data/self';
-
-import AddFriendButton from '../../_components/AddFriendButton';
 
 interface ProfileCardProps {
     userObject: UserDataType;
@@ -73,17 +73,16 @@ const ProfileCard: React.FC<ProfileCardProps> = ({userObject, isOwner, className
                         <div className='flex flex-row items-center justify-end gap-3'>
                             <Button variant='default'>Add to story</Button>
                             <Button variant='secondary'>Edit profile</Button>
-                            <button>
-                                <Icon name='More' />
-                            </button>
+                            <IconButton label='More options' defaultName='More' />
                         </div>
                     ) : (
                         <div className='flex flex-row items-center justify-end gap-3'>
-                            <AddFriendButton variant='full' />
+                            <Button variant='iconSecondary' className='add-friend-button'>
+                                <Icon name='UserAdd' />
+                                Add friend
+                            </Button>
                             <Button variant='secondary'>Message</Button>
-                            <button>
-                                <Icon name='More' />
-                            </button>
+                            <IconButton label='More options' defaultName='More' />
                         </div>
                     )}
                 </div>
@@ -96,8 +95,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({userObject, isOwner, className
                     ].map((social) => (
                         <div key={social.name} className='flex flex-row items-center gap-3'>
                             <div className='flex h-6 w-6 items-center justify-center'>
-                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                <Icon name={social.name as any} />
+                                <Icon name={social.name as IconProps['name']} />
                             </div>
                             <Link href={social.link}>
                                 <h3 className='text-base text-black'>{social.link.split('/').pop()}</h3>

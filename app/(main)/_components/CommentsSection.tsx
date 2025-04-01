@@ -39,7 +39,12 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
 
     return (
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <IconButton defaultName='Comment' hoverName='Comment_filled' onClick={() => setDialogOpen(true)} />
+            <IconButton
+                label='Open comments section'
+                defaultName='Comment'
+                hoverName='Comment_filled'
+                onClick={() => setDialogOpen(true)}
+            />
             <DialogContent className={cn('dialog-content', className)}>
                 <DialogHeader>
                     <DialogTitle className='comments-section-header flex gap-4'>

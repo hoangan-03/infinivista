@@ -7,9 +7,9 @@ import {useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 
 import {LogoName} from '@/components/commons';
+import {PasswordInput} from '@/components/commons/PasswordInput';
 import {Button, Separator} from '@/components/ui';
 import {Input} from '@/components/ui/input';
-import {PasswordInput} from '@/components/ui/input-password';
 import {cn} from '@/lib/utils';
 
 import GoogleSignInButton from '../../_components/GoogleSignInButton';
