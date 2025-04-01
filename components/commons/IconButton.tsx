@@ -4,7 +4,7 @@ import {Button} from '@/components/ui';
 import {ButtonProps} from '@/components/ui/button';
 import {cn} from '@/lib/utils';
 
-import Icon, {IconProps} from './Icon';
+import {Icon, IconProps} from './Icon';
 
 export interface IconButtonProps extends Omit<ButtonProps, 'aria-label'> {
     label: string;
@@ -40,4 +40,4 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
 );
 IconButton.displayName = 'IconButton';
 
-export default IconButton;
+export {IconButton};

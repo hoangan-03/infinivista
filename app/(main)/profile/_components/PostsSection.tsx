@@ -1,7 +1,7 @@
 import {ArrowRightIcon} from '@heroicons/react/solid';
 import React from 'react';
 
-import Post from '@/app/(main)/_components/Post';
+import {Post} from '@/app/(main)/_components';
 import {Button} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import {PostObjectType} from '@/mock_data/postMockData';
@@ -11,7 +11,7 @@ interface PostsSectionProps {
     className?: string;
 }
 
-const PostsSection: React.FC<PostsSectionProps> = ({postList, className}) => {
+export const PostsSection: React.FC<PostsSectionProps> = ({postList, className}) => {
     return (
         <div className={cn('flex min-w-0 flex-col gap-4', className)}>
             <div className='flex flex-row gap-3'>
@@ -37,5 +37,3 @@ const PostsSection: React.FC<PostsSectionProps> = ({postList, className}) => {
         </div>
     );
 };
-
-export default PostsSection;

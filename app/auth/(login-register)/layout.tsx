@@ -1,4 +1,4 @@
-import {WallpaperRandomizer} from './login/_components/WallpaperRandomizer';
+import {WallpaperRandomizer} from './_components/WallpaperRandomizer';
 
 export default function LoginRegisterLayout({children}: {children: React.ReactNode}) {
     return (

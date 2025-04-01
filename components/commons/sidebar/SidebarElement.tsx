@@ -1,9 +1,9 @@
 import React from 'react';
 
+import {Icon} from '@/components/commons';
+import {IconProps} from '@/components/commons/Icon';
 import {Button, Separator} from '@/components/ui';
 import {cn} from '@/lib/utils';
-
-import Icon, {IconProps} from '../Icon';
 
 interface SidebarElementProps {
     name: string;
@@ -19,7 +19,7 @@ interface SidebarElementProps {
     childSelected?: boolean;
 }
 
-const SidebarElement: React.FC<SidebarElementProps> = ({
+export const SidebarElement: React.FC<SidebarElementProps> = ({
     name,
     iconName,
     selected,
@@ -117,5 +117,3 @@ const SidebarElement: React.FC<SidebarElementProps> = ({
         </div>
     );
 };
-
-export default SidebarElement;

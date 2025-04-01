@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Icon from '@/components/commons/Icon';
+import {Icon} from '@/components/commons';
 import {cn} from '@/lib/utils';
 import {UserDataType} from '@/mock_data/self';
 
@@ -9,7 +9,7 @@ interface IntroductionSectionProps {
     className?: string;
 }
 
-const IntroductionSection: React.FC<IntroductionSectionProps> = ({userObject, className}) => {
+export const IntroductionSection: React.FC<IntroductionSectionProps> = ({userObject, className}) => {
     return (
         <div className={cn('flex h-full w-80 flex-col items-start rounded-3xl bg-white shadow-lg', className)}>
             <div className='h-auto w-52 border-b-2 border-[#2563EB] py-3 pl-6'>
@@ -56,5 +56,3 @@ const IntroductionSection: React.FC<IntroductionSectionProps> = ({userObject, cl
         </div>
     );
 };
-
-export default IntroductionSection;

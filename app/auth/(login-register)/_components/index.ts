@@ -1,0 +1,1 @@
+export {WallpaperRandomizer} from './WallpaperRandomizer';

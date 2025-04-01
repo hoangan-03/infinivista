@@ -6,14 +6,9 @@ import React from 'react';
 import {useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 
-import {LogoName} from '@/components/commons';
-import {PasswordInput} from '@/components/commons/PasswordInput';
-import {Button, Separator} from '@/components/ui';
-import {Input} from '@/components/ui/input';
-import {Switch} from '@/components/ui/switch';
+import {GoogleSignInButton, LogoName, PasswordInput} from '@/components/commons';
+import {Button, Input, Separator, Switch} from '@/components/ui';
 import {cn} from '@/lib/utils';
-
-import GoogleSignInButton from '../../_components/GoogleSignInButton';
 
 const loginSchema = Yup.object().shape({
     email_phone: Yup.string().required('Please enter an email or phone number'),

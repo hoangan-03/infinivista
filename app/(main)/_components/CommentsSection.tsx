@@ -1,15 +1,14 @@
 import React from 'react';
 
-import {Icon} from '@/components/commons';
-import IconButton from '@/components/commons/IconButton';
+import {Icon, IconButton} from '@/components/commons';
 import {Separator} from '@/components/ui';
 import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle} from '@/components/ui/dialog';
 import {cn} from '@/lib/utils';
 import {getSumReactions} from '@/lib/utils';
 
-import Comment from './Comment';
-import CommentInput from './CommentInput';
-import ReactButton from './ReactButton';
+import {Comment} from './Comment';
+import {CommentInput} from './CommentInput';
+import {ReactButton} from './ReactButton';
 
 type ReactionType = 'like' | 'love' | 'sad';
 
@@ -25,7 +24,7 @@ interface CommentsSectionProps {
     className?: string;
 }
 
-const CommentsSection: React.FC<CommentsSectionProps> = ({
+export const CommentsSection: React.FC<CommentsSectionProps> = ({
     dialogOpen,
     setDialogOpen,
     reactionList,
@@ -76,5 +75,3 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
         </Dialog>
     );
 };
-
-export default CommentsSection;

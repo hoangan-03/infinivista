@@ -4,7 +4,7 @@ import {FcGoogle} from 'react-icons/fc';
 
 import {Button} from '@/components/ui';
 
-const GoogleSignInButton: React.FC<{text: string}> = ({text}) => {
+export const GoogleSignInButton: React.FC<{text: string}> = ({text}) => {
     return (
         <Button
             type='button'
@@ -16,5 +16,3 @@ const GoogleSignInButton: React.FC<{text: string}> = ({text}) => {
         </Button>
     );
 };
-
-export default GoogleSignInButton;

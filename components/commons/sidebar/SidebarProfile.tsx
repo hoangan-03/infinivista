@@ -13,7 +13,14 @@ interface SidebarProfileProps {
     className?: string;
 }
 
-const SidebarProfile: React.FC<SidebarProfileProps> = ({href, imgSrc, name, email, sidebarExpanded, className}) => {
+export const SidebarProfile: React.FC<SidebarProfileProps> = ({
+    href,
+    imgSrc,
+    name,
+    email,
+    sidebarExpanded,
+    className,
+}) => {
     return (
         <div className={cn('mb-5', className)}>
             <Link href={href} className={cn('flex items-center', !sidebarExpanded && 'justify-center')}>
@@ -34,5 +41,3 @@ const SidebarProfile: React.FC<SidebarProfileProps> = ({href, imgSrc, name, emai
         </div>
     );
 };
-
-export default SidebarProfile;

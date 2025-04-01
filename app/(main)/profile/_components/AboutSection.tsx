@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AboutSection: React.FC<{text?: string}> = ({text}) => {
+export const AboutSection: React.FC<{text?: string}> = ({text}) => {
     const about = text || 'Hello, nice to meet you!';
 
     return (
@@ -14,5 +14,3 @@ const AboutSection: React.FC<{text?: string}> = ({text}) => {
         </div>
     );
 };
-
-export default AboutSection;

@@ -2,17 +2,17 @@
 
 import React from 'react';
 
-import IconButton from '@/components/commons/IconButton';
+import {IconButton} from '@/components/commons';
 import {Separator} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import {getSumReactions, getTimeStamp} from '@/lib/utils';
 import currentUser from '@/mock_data/self';
 
-import Avatar from './Avatar';
-import CommentInput from './CommentInput';
-import CommentSection from './CommentsSection';
-import MultimediaSection from './MultimediaSection';
-import ReactButton from './ReactButton';
+import {Avatar} from './Avatar';
+import {CommentInput} from './CommentInput';
+import {CommentsSection} from './CommentsSection';
+import {MultimediaSection} from './MultimediaSection';
+import {ReactButton} from './ReactButton';
 
 type AttachmentType = 'image' | 'video';
 type ReactionType = 'like' | 'love' | 'sad';
@@ -65,7 +65,7 @@ interface PostProps {
     className?: string;
 }
 
-const Post: React.FC<PostProps> = ({postObject, className}) => {
+export const Post: React.FC<PostProps> = ({postObject, className}) => {
     const [, forceRerender] = React.useReducer((x) => x + 1, 0);
 
     const [liked, toggleLiked] = React.useState<boolean>(false);
@@ -161,7 +161,7 @@ const Post: React.FC<PostProps> = ({postObject, className}) => {
                     <div className='flex items-center justify-between gap-3'>
                         <div className='reaction-container flex items-center gap-4'>
                             <ReactButton reactionList={postObject?.reactionList} handleClickReact={handleClickReact} />
-                            <CommentSection
+                            <CommentsSection
                                 dialogOpen={commentsSectionOpen}
                                 setDialogOpen={setCommentsSectionOpen}
                                 reactionList={postObject?.reactionList}
@@ -199,5 +199,3 @@ const Post: React.FC<PostProps> = ({postObject, className}) => {
         </div>
     );
 };
-
-export default Post;

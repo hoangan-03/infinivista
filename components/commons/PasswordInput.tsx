@@ -2,8 +2,9 @@
 
 import * as React from 'react';
 
-import IconButton from '@/components/commons/IconButton';
-import {Input, InputProps} from '@/components/ui/input';
+import {IconButton} from '@/components/commons';
+import {Input} from '@/components/ui';
+import {InputProps} from '@/components/ui/input';
 import {cn} from '@/lib/utils';
 
 const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(({className, ...props}, ref) => {

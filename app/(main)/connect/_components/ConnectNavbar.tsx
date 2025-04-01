@@ -44,7 +44,7 @@ interface ConnectNavbarProps {
     className?: string; // Additional CSS class name for the container div
 }
 
-const ConnectNavbar: React.FC<ConnectNavbarProps> = ({title, tabList = defaultTabList, className}) => {
+export const ConnectNavbar: React.FC<ConnectNavbarProps> = ({title, tabList = defaultTabList, className}) => {
     const currentURL = usePathname();
     const selection = currentURL.split('/').pop();
     tabList.forEach((tab) => {
@@ -68,5 +68,3 @@ const ConnectNavbar: React.FC<ConnectNavbarProps> = ({title, tabList = defaultTa
         </div>
     );
 };
-
-export default ConnectNavbar;

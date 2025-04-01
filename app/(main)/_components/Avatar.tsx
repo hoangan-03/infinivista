@@ -12,7 +12,13 @@ interface AvatarProps {
     className?: string;
 }
 
-const Avatar: React.FC<AvatarProps> = ({size = 40 /* 40px */, src, alt = 'Avatar', variant = 'default', className}) => {
+export const Avatar: React.FC<AvatarProps> = ({
+    size = 40 /* 40px */,
+    src,
+    alt = 'Avatar',
+    variant = 'default',
+    className,
+}) => {
     const resolvedSrc = src || DefaultAvatar;
     return (
         <>
@@ -29,5 +35,3 @@ const Avatar: React.FC<AvatarProps> = ({size = 40 /* 40px */, src, alt = 'Avatar
         </>
     );
 };
-
-export default Avatar;

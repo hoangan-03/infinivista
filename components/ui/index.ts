@@ -1,4 +1,12 @@
-export {Button, buttonVariants} from './button';
+export {Button} from './button';
 export {Collapsible, CollapsibleContent, CollapsibleTrigger} from './collapsible';
+export {Dialog} from './dialog';
+export {Input} from './input';
+export {Label} from './label';
 export {ScrollArea, ScrollBar} from './scroll-area';
 export {Separator} from './separator';
+export {Sheet} from './sheet';
+export {Sidebar} from './sidebar';
+export {Skeleton} from './skeleton';
+export {Switch} from './switch';
+export {Tooltip, TooltipContent, TooltipTrigger} from './tooltip';

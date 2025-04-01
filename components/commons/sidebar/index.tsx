@@ -12,9 +12,9 @@ import currentUser from '@/mock_data/self';
 import LogoIcon from '@/public/assets/images/logo_icon.svg';
 import LogoText from '@/public/assets/images/logo_text.svg';
 
-import SidebarElement from './SidebarElement';
-import SidebarProfile from './SidebarProfile';
-import SidebarSubElement from './SidebarSubElement';
+import {SidebarElement} from './SidebarElement';
+import {SidebarProfile} from './SidebarProfile';
+import {SidebarSubElement} from './SidebarSubElement';
 
 const pageList = [
     {id: 1, pageName: 'Connect', pathname: 'connect', selected: false},
@@ -28,7 +28,7 @@ const pageList = [
     {id: 9, pageName: 'Settings', pathname: 'settings', selected: false},
 ];
 
-const Sidebar: React.FC = () => {
+export const Sidebar: React.FC = () => {
     const router = useRouter();
     const [sidebarExpanded, setSidebarExpanded] = React.useState(true);
 
@@ -198,5 +198,3 @@ const Sidebar: React.FC = () => {
         </div>
     );
 };
-
-export default Sidebar;

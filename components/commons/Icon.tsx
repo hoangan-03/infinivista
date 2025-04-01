@@ -108,7 +108,7 @@ interface IconProps {
     className?: string;
 }
 
-const Icon: React.FC<IconProps> = ({width = 24, height = 24, name, className}) => {
+export const Icon: React.FC<IconProps> = ({width = 24, height = 24, name, className}) => {
     const IconComponent = name in Icons ? Icons[name as keyof typeof Icons] : Emojis[name as keyof typeof Emojis];
 
     // Determine if it's an image or an SVG/React component
@@ -127,7 +127,5 @@ const Icon: React.FC<IconProps> = ({width = 24, height = 24, name, className}) =
     // Otherwise, render the SVG or React icon
     return <IconComponent width={width} height={height} className={cn(className)} aria-label={name} />;
 };
-
-export default Icon;
 
 export type {IconProps};

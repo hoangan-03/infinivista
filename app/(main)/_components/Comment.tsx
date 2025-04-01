@@ -3,7 +3,7 @@ import React from 'react';
 import {cn} from '@/lib/utils';
 import {getTimeStamp} from '@/lib/utils';
 
-import Avatar from './Avatar';
+import {Avatar} from './Avatar';
 
 interface Comment {
     id: number;
@@ -18,7 +18,7 @@ interface CommentProps {
     className?: string;
 }
 
-const Comment: React.FC<CommentProps> = ({comment, className}) => {
+export const Comment: React.FC<CommentProps> = ({comment, className}) => {
     return (
         <div id={'comment-' + comment.id} className='flex w-full items-center gap-3 rounded-md bg-gray-100 px-3 py-2'>
             <Avatar src={comment.profilePic} alt={'Avatar of ' + comment.created_by} className='min-w-10' />
@@ -32,5 +32,3 @@ const Comment: React.FC<CommentProps> = ({comment, className}) => {
         </div>
     );
 };
-
-export default Comment;

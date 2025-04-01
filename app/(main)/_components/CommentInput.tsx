@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-import IconButton from '@/components/commons/IconButton';
-import {Input} from '@/components/ui/input';
+import {IconButton} from '@/components/commons';
+import {Input} from '@/components/ui';
 
 interface CommentInputProps {
     onSubmit?: (commentText: string) => void;
@@ -11,7 +11,7 @@ interface CommentInputProps {
     variant?: 'default' | 'with-icon';
 }
 
-const CommentInput: React.FC<CommentInputProps> = ({
+export const CommentInput: React.FC<CommentInputProps> = ({
     onSubmit,
     placeholder = 'Add a comment...',
     variant = 'default',
@@ -37,5 +37,3 @@ const CommentInput: React.FC<CommentInputProps> = ({
         </form>
     );
 };
-
-export default CommentInput;

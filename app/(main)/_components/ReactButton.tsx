@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import IconButton from '@/components/commons/IconButton';
+import {IconButton} from '@/components/commons';
 import {cn} from '@/lib/utils';
 import currentUser from '@/mock_data/self';
 
@@ -16,7 +16,7 @@ interface ReactButtonProps {
     className?: string;
 }
 
-const ReactButton: React.FC<ReactButtonProps> = ({
+export const ReactButton: React.FC<ReactButtonProps> = ({
     width = 24,
     height = 24,
     reactionList,
@@ -39,5 +39,3 @@ const ReactButton: React.FC<ReactButtonProps> = ({
         />
     );
 };
-
-export default ReactButton;

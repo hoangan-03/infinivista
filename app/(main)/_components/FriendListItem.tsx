@@ -17,7 +17,7 @@ interface FriendListItemProps {
     className?: string;
 }
 
-const FriendListItem: React.FC<FriendListItemProps> = ({
+export const FriendListItem: React.FC<FriendListItemProps> = ({
     username,
     name,
     profilePic,
@@ -72,5 +72,3 @@ const FriendListItem: React.FC<FriendListItemProps> = ({
         </div>
     );
 };
-
-export default FriendListItem;

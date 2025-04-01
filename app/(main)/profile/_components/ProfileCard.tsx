@@ -3,9 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-import {Icon} from '@/components/commons';
+import {Icon, IconButton} from '@/components/commons';
 import {IconProps} from '@/components/commons/Icon';
-import IconButton from '@/components/commons/IconButton';
 import {Button} from '@/components/ui/button';
 import {cn} from '@/lib/utils';
 import {UserDataType} from '@/mock_data/self';
@@ -16,7 +15,7 @@ interface ProfileCardProps {
     className?: string;
 }
 
-const ProfileCard: React.FC<ProfileCardProps> = ({userObject, isOwner, className}) => {
+export const ProfileCard: React.FC<ProfileCardProps> = ({userObject, isOwner, className}) => {
     const displayedJobTitle = userObject.introduction.jobTitles[userObject.details.displayedJobNo];
 
     return (
@@ -107,5 +106,3 @@ const ProfileCard: React.FC<ProfileCardProps> = ({userObject, isOwner, className
         </div>
     );
 };
-
-export default ProfileCard;

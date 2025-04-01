@@ -3,18 +3,17 @@
 import {useRouter} from 'next/navigation';
 import React from 'react';
 
+import {FriendListItem} from '@/app/(main)/_components';
 import {Button} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import {FriendListType} from '@/mock_data/friendList';
-
-import FriendListItem from '../../_components/FriendListItem';
 
 interface FriendsSectionProps {
     friendList: FriendListType;
     className?: string;
 }
 
-const FriendsSection: React.FC<FriendsSectionProps> = ({friendList, className}) => {
+export const FriendsSection: React.FC<FriendsSectionProps> = ({friendList, className}) => {
     const router = useRouter();
     const [showAll, setShowAll] = React.useState<boolean>(false);
 
@@ -69,5 +68,3 @@ const FriendsSection: React.FC<FriendsSectionProps> = ({friendList, className}) 
         </div>
     );
 };
-
-export default FriendsSection;

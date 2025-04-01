@@ -1,7 +1,8 @@
 import React from 'react';
 
-import MainContent from './_components/layoutComponents/MainContent';
-import RightBar from './_components/layoutComponents/RightBar';
+import {MainContent, RightBar} from '@/components/commons/layout';
+
+import {ConnectNavbar, Contacts, Suggestions, Trending} from './_components';
 
 export default function ConnectLayout({children}: {children: React.ReactNode}) {
     return (
@@ -9,8 +10,16 @@ export default function ConnectLayout({children}: {children: React.ReactNode}) {
             <div className='connect-container'>
                 <div className='flex min-h-screen w-full px-10 pb-8'>
                     <div id='connect' className='flex w-full gap-10'>
-                        <MainContent>{children}</MainContent>
-                        <RightBar />
+                        <MainContent>
+                            <ConnectNavbar title='Feed' className='sticky top-0 z-20 mb-6 h-[3.875rem] pt-8' />
+                            <div className='filler fixed left-0 top-0 z-10 h-[4.5rem] w-full bg-white' />
+                            {children}
+                        </MainContent>
+                        <RightBar>
+                            <Suggestions />
+                            <Trending />
+                            <Contacts />
+                        </RightBar>
                     </div>
                 </div>
             </div>

@@ -27,7 +27,11 @@ interface MultimediaSectionProps {
     className?: string;
 }
 
-const MultimediaSection: React.FC<MultimediaSectionProps> = ({attachmentList, maxNumberOfDisplays, className}) => {
+export const MultimediaSection: React.FC<MultimediaSectionProps> = ({
+    attachmentList,
+    maxNumberOfDisplays,
+    className,
+}) => {
     const imageCount = attachmentList.filter((attachment) => attachment.type === 'image').length;
     const videoCount = attachmentList.filter((attachment) => attachment.type === 'video').length;
 
@@ -131,5 +135,3 @@ const MultimediaSection: React.FC<MultimediaSectionProps> = ({attachmentList, ma
         </div>
     );
 };
-
-export default MultimediaSection;

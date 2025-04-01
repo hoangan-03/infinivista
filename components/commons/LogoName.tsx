@@ -10,7 +10,7 @@ type LogoNameProps = {
     className?: string;
 };
 
-const LogoName: React.FC<LogoNameProps> = ({fontSize = '1.75rem', color = 'text-blue-700', className}) => {
+export const LogoName: React.FC<LogoNameProps> = ({fontSize = '1.75rem', color = 'text-blue-700', className}) => {
     return (
         <div className='flex items-center' style={{height: fontSize}}>
             <div className='h-full scale-125'>
@@ -23,5 +23,3 @@ const LogoName: React.FC<LogoNameProps> = ({fontSize = '1.75rem', color = 'text-
         </div>
     );
 };
-
-export default LogoName;
