@@ -1,5 +1,9 @@
 import Image, {StaticImageData} from 'next/image';
 import React from 'react';
+import {AiOutlineFacebook as Facebook} from 'react-icons/ai';
+import {AiOutlineInstagram as Instagram} from 'react-icons/ai';
+import {AiFillLinkedin as LinkedIn} from 'react-icons/ai';
+import {AiOutlineTikTok as Tiktok} from 'react-icons/ai';
 
 import {cn} from '@/lib/utils';
 import Share from '@/public/assets/icons/Arrow-share-forward.svg';
@@ -15,7 +19,6 @@ import EyeOpen from '@/public/assets/icons/eye.svg';
 import EyeOpen_filled from '@/public/assets/icons/eye-filled.svg';
 import EyeClose from '@/public/assets/icons/eye-off.svg';
 import EyeClose_filled from '@/public/assets/icons/eye-off-filled.svg';
-import Facebook from '@/public/assets/icons/facebook.png';
 import Repost from '@/public/assets/icons/file-copy.svg';
 import Repost_filled from '@/public/assets/icons/file-copy-filled.svg';
 import Globe from '@/public/assets/icons/globe.svg';
@@ -24,9 +27,7 @@ import Like_filled from '@/public/assets/icons/heart-3-filled.svg';
 import Home from '@/public/assets/icons/home.svg';
 import Plus from '@/public/assets/icons/icon-plus.svg';
 import Picture from '@/public/assets/icons/image.svg';
-import Instagram from '@/public/assets/icons/instagram.png';
 import LeftRight from '@/public/assets/icons/left-right.svg';
-import LinkedIn from '@/public/assets/icons/linkedin.png';
 import Locate from '@/public/assets/icons/location.svg';
 import Logout from '@/public/assets/icons/logout.svg';
 import Love from '@/public/assets/icons/love.svg';
@@ -43,7 +44,6 @@ import SettingsGear from '@/public/assets/icons/settings-gear.svg';
 import ShopCart from '@/public/assets/icons/shop-cart.svg';
 import Smiley from '@/public/assets/icons/smiley.svg';
 import Study from '@/public/assets/icons/study.svg';
-import Tiktok from '@/public/assets/icons/tiktok.png';
 import UserAdd from '@/public/assets/icons/user-add.svg';
 import Work from '@/public/assets/icons/work.svg';
 import ZoomIn from '@/public/assets/icons/zoom-in.svg';
@@ -125,7 +125,15 @@ export const Icon: React.FC<IconProps> = ({width = 24, height = 24, name, classN
     }
 
     // Otherwise, render the SVG or React icon
-    return <IconComponent width={width} height={height} className={cn(className)} aria-label={name} />;
+    return (
+        <IconComponent
+            aria-label={name}
+            width={width}
+            height={height}
+            style={{fontSize: `${width}px`}} // for react-icons components
+            className={cn(className)}
+        />
+    );
 };
 
 export type {IconProps};

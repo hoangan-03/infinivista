@@ -11,8 +11,7 @@ const buttonVariants = cva(
             variant: {
                 raw: '',
                 default: 'bg-primary text-slate-50 hover:bg-slate-900/90',
-                secondary:
-                    'bg-white text-primary border-primary border-2 hover:bg-primary hover:text-white hover:border-white active:border-white',
+                secondary: 'bg-white text-primary border-primary border-2 hover:bg-primary hover:text-white',
                 outline: 'border border-black bg-white hover:bg-blue-300 active:bg-blue-300 text-black',
                 shadow: 'bg-white text-slate-900 shadow-sm hover:shadow-md',
                 destructive: 'bg-red-500 text-slate-50 hover:bg-red-500/90',
@@ -21,7 +20,7 @@ const buttonVariants = cva(
                 iconOnly: 'text-white hover:translate-y-0 active:translate-y-0 hover:shadow-none active:shadow-none',
                 iconDefault: 'flex-center bg-primary text-slate-50 hover:bg-slate-900/90',
                 iconSecondary:
-                    'flex-center bg-white text-primary border-primary border-2 hover:bg-primary hover:text-white hover:border-white active:border-white',
+                    'flex-center bg-white text-primary border-primary border-2 hover:bg-primary hover:text-white',
                 iconOutline: 'flex-center border border-black bg-white hover:bg-blue-300 active:bg-blue-300 text-black',
                 iconShadow: 'flex-center bg-white text-slate-900 shadow-md hover:shadow-lg',
             },

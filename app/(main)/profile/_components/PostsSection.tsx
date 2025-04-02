@@ -2,7 +2,7 @@ import {ArrowRightIcon} from '@heroicons/react/solid';
 import React from 'react';
 
 import {Post} from '@/app/(main)/_components';
-import {Button} from '@/components/ui';
+import {Button, ScrollArea} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import {PostObjectType} from '@/mock_data/postMockData';
 
@@ -24,15 +24,17 @@ export const PostsSection: React.FC<PostsSectionProps> = ({postList, className})
                 </Button>
             </div>
 
-            <div className='flex h-auto w-full flex-col rounded-3xl bg-white'>
-                <div className='h-12 w-52 flex-shrink-0 border-b-2 border-[#2563EB] py-3 pl-6'>
-                    <h2 className='text-2xl font-bold text-[#2563EB]'>Posts</h2>
+            <div className='flex min-h-0 w-full flex-col rounded-3xl bg-white'>
+                <div className='h-12 w-52 flex-shrink-0 border-b-2 border-blue-600 py-3 pl-6'>
+                    <h2 className='text-2xl font-bold text-blue-600'>Posts</h2>
                 </div>
-                <div className='post-list flex flex-col gap-7 px-7 pt-7'>
-                    {postList.map((post) => (
-                        <Post key={post.id} postObject={post} />
-                    ))}
-                </div>
+                <ScrollArea className='posts-scroll-area h-[calc(100%-3rem)]'>
+                    <div className='post-list flex flex-col gap-7 p-7'>
+                        {postList.map((post) => (
+                            <Post key={post.id} postObject={post} />
+                        ))}
+                    </div>
+                </ScrollArea>
             </div>
         </div>
     );

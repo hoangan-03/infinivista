@@ -5,9 +5,9 @@ import {Button, ScrollArea, Separator} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import placeholderImage from '@/public/assets/images/placeholder.png';
 
-import {GroupCard} from './_components/GroupCard';
-import {MessageArea} from './_components/MessageArea';
-import {MessageUserCard} from './_components/MessageUserCard';
+import {GroupCard} from '../_components/GroupCard';
+import {MessageArea} from '../_components/MessageArea';
+import {MessageUserCard} from '../_components/MessageUserCard';
 
 interface IMessage {
     username: string;

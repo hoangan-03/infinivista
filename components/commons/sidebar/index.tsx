@@ -1,7 +1,5 @@
 'use client';
 
-import './sidebar.css';
-
 import {usePathname, useRouter} from 'next/navigation';
 import React from 'react';
 
@@ -127,7 +125,7 @@ export const Sidebar: React.FC = () => {
                             iconName='Chat'
                             selected={updatedPageList[4].selected}
                             sidebarExpanded={sidebarExpanded}
-                            onClick={() => router.push('/communication')}
+                            onClick={() => router.push('/communication/1')}
                         />
                         <SidebarElement
                             name='Shop'

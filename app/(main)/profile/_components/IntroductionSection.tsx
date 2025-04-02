@@ -12,8 +12,8 @@ interface IntroductionSectionProps {
 export const IntroductionSection: React.FC<IntroductionSectionProps> = ({userObject, className}) => {
     return (
         <div className={cn('flex h-full w-80 flex-col items-start rounded-3xl bg-white shadow-lg', className)}>
-            <div className='h-auto w-52 border-b-2 border-[#2563EB] py-3 pl-6'>
-                <h2 className='text-2xl font-bold text-[#2563EB]'>Introduction</h2>
+            <div className='h-auto w-52 border-b-2 border-blue-600 py-3 pl-6'>
+                <h2 className='text-2xl font-bold text-blue-600'>Introduction</h2>
             </div>
             <div className='flex h-full w-full flex-col items-start justify-start gap-4 px-6 py-3'>
                 {userObject.introduction.jobTitles.map((jobTitle, idx) => (

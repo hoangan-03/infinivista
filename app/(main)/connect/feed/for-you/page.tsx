@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Post from '@/app/(main)/_components/Post';
+import {Post} from '@/app/(main)/_components';
 // import _ from 'lodash';
 import postList from '@/mock_data/postMockData';
 

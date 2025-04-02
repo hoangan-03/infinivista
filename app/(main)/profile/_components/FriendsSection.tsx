@@ -4,7 +4,7 @@ import {useRouter} from 'next/navigation';
 import React from 'react';
 
 import {FriendListItem} from '@/app/(main)/_components';
-import {Button} from '@/components/ui';
+import {Button, Input, ScrollArea} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import {FriendListType} from '@/mock_data/friendList';
 
@@ -15,6 +15,7 @@ interface FriendsSectionProps {
 
 export const FriendsSection: React.FC<FriendsSectionProps> = ({friendList, className}) => {
     const router = useRouter();
+    const [query, setQuery] = React.useState<string>('');
     const [showAll, setShowAll] = React.useState<boolean>(false);
 
     // const friends = [
@@ -30,39 +31,50 @@ export const FriendsSection: React.FC<FriendsSectionProps> = ({friendList, class
     //     'Daniel Rodriguez',
     // ];
 
-    const displayedFriends = showAll ? friendList : friendList.slice(0, 2);
+    const filteredFriends = friendList.filter(
+        (friend) =>
+            // Return true if query is empty string, otherwise compare
+            !query ||
+            friend.name.toLowerCase().includes(query.toLowerCase()) ||
+            friend.username.toLowerCase().includes(query.toLowerCase())
+    );
+    const displayedFriends = showAll ? filteredFriends : filteredFriends.slice(0, 2);
 
     return (
         <div className={cn('flex h-auto min-w-0 flex-col rounded-3xl bg-white shadow-md', className)}>
-            <div className='h-12 w-52 flex-shrink-0 border-b-2 border-[#2563EB] py-3 pl-6'>
-                <h2 className='text-2xl font-bold text-[#2563EB]'>Friends</h2>
+            <div className='h-12 w-52 flex-shrink-0 border-b-2 border-blue-600 py-3 pl-6'>
+                <h2 className='text-2xl font-bold text-blue-600'>Friends</h2>
             </div>
-            <div className='flex flex-col gap-4 p-6'>
-                {displayedFriends.map((friend) => (
-                    // <li key={index} className='flex flex-row items-center'>
-                    //     <Image
-                    //         src='/assets/images/avatar.jpg'
-                    //         alt='Avatar Icon'
-                    //         width={40}
-                    //         height={40}
-                    //         className='rounded-full'
-                    //         unoptimized={true}
-                    //     />
-                    //     <p className='ml-4 font-semibold text-gray-700'>{friend.name}</p>
-                    // </li>
-                    <FriendListItem
-                        key={friend.username}
-                        username={friend.username}
-                        name={friend.name}
-                        profilePic={friend.profilePic}
-                        withMutualFriends
-                        mutualFriends={friend.mutualFriends}
-                        withAddFriendButton
-                        onClick={() => router.push(`/profile/${friend.username}`)}
-                    />
-                ))}
+            <div className='p-3'>
+                <Input
+                    variant='outline'
+                    fontSize='text-paragraph1'
+                    placeholder='Find friends'
+                    value={query}
+                    onChange={(event) => {
+                        setQuery(event.target.value);
+                        console.log(query);
+                    }}
+                    className='search-input'
+                />
             </div>
-            <Button variant='link' size='icon' onClick={() => setShowAll(!showAll)} className='mx-auto'>
+            <ScrollArea className='friends-scroll-area'>
+                <div className='flex flex-col gap-4 px-6 pb-6'>
+                    {displayedFriends.map((friend) => (
+                        <FriendListItem
+                            key={friend.username}
+                            username={friend.username}
+                            name={friend.name}
+                            profilePic={friend.profilePic}
+                            withMutualFriends
+                            mutualFriends={friend.mutualFriends}
+                            withAddFriendButton
+                            onClick={() => router.push(`/profile/${friend.username}`)}
+                        />
+                    ))}
+                </div>
+            </ScrollArea>
+            <Button variant='link' size='icon' onClick={() => setShowAll(!showAll)} className='mx-auto py-2'>
                 <p className='text-base'>{!showAll ? 'See more' : 'See less'}</p>
             </Button>
         </div>

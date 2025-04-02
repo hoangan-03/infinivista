@@ -6,12 +6,8 @@ import postList from '@/mock_data/postMockData';
 import currentUser from '@/mock_data/self';
 import otherUsers from '@/mock_data/userMockData';
 
-import AboutSection from '../_components/AboutSection';
-import FriendsSection from '../_components/FriendsSection';
-import IntroductionSection from '../_components/IntroductionSection';
+import {AboutSection, FriendsSection, IntroductionSection, PostsSection, ProfileCard} from '../_components';
 // import Header from '@/components/commons/Header';
-import PostsSection from '../_components/PostsSection';
-import ProfileCard from '../_components/ProfileCard';
 
 const UserProfile: React.FC<{params: {username: string}}> = ({params}) => {
     // display current user profile if the username is the same as the current user, otherwise display the matched user profile
@@ -25,15 +21,15 @@ const UserProfile: React.FC<{params: {username: string}}> = ({params}) => {
     return (
         <div className='flex min-h-screen flex-col bg-gray-100'>
             {/* <Header /> */}
-            <div className='flex flex-col space-y-6 p-6'>
-                <div className='flex h-[27.5rem] items-center gap-4'>
+            <div className='flex flex-col px-6 pt-6'>
+                <div className='mb-6 flex h-[27.5rem] items-center gap-4'>
                     <ProfileCard userObject={displayedUser} isOwner={isOwner} className='flex-2' />
                     <IntroductionSection userObject={displayedUser} className='flex-1' />
                 </div>
 
                 <AboutSection text={displayedUser.about} />
 
-                <div className='flex gap-4'>
+                <div className='flex h-screen gap-4 py-6'>
                     <FriendsSection friendList={friendList} className='flex-1' />
                     <PostsSection postList={postList} className='flex-3' />
                 </div>

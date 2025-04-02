@@ -26,6 +26,22 @@
   }
 }
 
+@layer components {
+  /* .sidebar-transition and .text-collapsed define the animation properties of the sidebar */
+  .sidebar-transition {
+    @apply text-nowrap transition-all duration-500 ease-in-out;
+  }
+
+  .text-collapsed {
+      @apply w-0 opacity-0;
+  }
+
+  /* Ensuring the friends section of profile page does not overflow */
+  .friends-scroll-area [data-radix-scroll-area-viewport] > * {
+    @apply !block;
+  }
+}
+
 @layer utilities {
   .custom-scrollbar {
     /* For Webkit browsers like Chrome, Safari */

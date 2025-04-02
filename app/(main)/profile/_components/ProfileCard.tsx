@@ -25,9 +25,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({userObject, isOwner, cl
                     src={userObject.backgroundPic}
                     alt='Background Picture'
                     fill
-                    objectFit='cover'
                     unoptimized={true}
-                    className='rounded-tl-3xl rounded-tr-3xl'
+                    className='rounded-tl-3xl rounded-tr-3xl object-cover'
                 />
             </div>
             <div className='absolute left-6 top-36 h-32 w-32 rounded-full border-4 border-white bg-white'>

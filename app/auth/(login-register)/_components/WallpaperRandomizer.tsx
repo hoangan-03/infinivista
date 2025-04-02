@@ -18,7 +18,7 @@ export const WallpaperRandomizer: React.FC = () => {
 
     return (
         <div style={{position: 'relative', width: '100%', height: '100%'}}>
-            <Image src={randomWallpaper} alt='Login wallpaper' layout='fill' objectFit='cover' quality={100} />
+            <Image src={randomWallpaper} alt='Login wallpaper' layout='fill' className='object-cover' quality={100} />
         </div>
     );
 };
