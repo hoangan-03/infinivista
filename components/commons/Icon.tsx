@@ -40,10 +40,12 @@ import Save from '@/public/assets/icons/save.svg';
 import Save_filled from '@/public/assets/icons/save-filled.svg';
 import Search from '@/public/assets/icons/search.svg';
 import SendArrow from '@/public/assets/icons/send-arrow.svg';
+import SettingsBurger from '@/public/assets/icons/settings-burger.svg';
 import SettingsGear from '@/public/assets/icons/settings-gear.svg';
 import ShopCart from '@/public/assets/icons/shop-cart.svg';
 import Smiley from '@/public/assets/icons/smiley.svg';
 import Study from '@/public/assets/icons/study.svg';
+import Upload from '@/public/assets/icons/upload.svg';
 import UserAdd from '@/public/assets/icons/user-add.svg';
 import Work from '@/public/assets/icons/work.svg';
 import ZoomIn from '@/public/assets/icons/zoom-in.svg';
@@ -90,6 +92,8 @@ const Icons = {
     Home,
     Locate,
     Love,
+    Upload,
+    SettingsBurger,
     Facebook,
     Instagram,
     Tiktok,

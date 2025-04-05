@@ -135,7 +135,6 @@ export const Post: React.FC<PostProps> = ({postObject, className}) => {
     return (
         <div
             className={cn(
-                'post-frame',
                 'flex min-w-fit flex-col gap-5 rounded-[1.5rem] border border-gray-100 bg-white p-7 shadow-lg',
                 className
             )}

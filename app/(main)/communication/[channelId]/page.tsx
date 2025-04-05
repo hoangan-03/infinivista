@@ -230,7 +230,7 @@ export default function Communication() {
                             <Separator className='h-full bg-white' orientation='vertical' />
                             <input
                                 type='text'
-                                className='w-full border-none bg-primary pl-2 text-white placeholder:text-white focus:outline-1 focus:outline-white'
+                                className='w-full border-none bg-primary py-1 pl-2 text-white placeholder:text-white focus:outline-1 focus:outline-white'
                                 placeholder='Start typing...'
                             />
                             <Button

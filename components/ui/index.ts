@@ -1,3 +1,4 @@
+export {Badge, badgeVariants} from './badge';
 export {Button} from './button';
 export {Collapsible, CollapsibleContent, CollapsibleTrigger} from './collapsible';
 export {Dialog} from './dialog';
