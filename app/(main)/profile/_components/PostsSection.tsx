@@ -66,7 +66,7 @@ export const PostsSection: React.FC<PostsSectionProps> = ({postList, className})
                     </div>
                 </div>
                 <ScrollArea className='h-[650px]'>
-                    <div className='post-list flex flex-col gap-7 p-7'>
+                    <div className='flex flex-col gap-7 p-7'>
                         {postList.map((post) => (
                             <Post key={post.id} postObject={post} />
                         ))}

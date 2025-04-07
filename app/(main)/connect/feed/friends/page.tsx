@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Connect_Feed_Friends = () => {
-    return <div>Connect_Feed_Friends</div>;
+const ConnectFeedFriends = () => {
+    return <div>ConnectFeedFriends</div>;
 };
 
-export default Connect_Feed_Friends;
+export default ConnectFeedFriends;
