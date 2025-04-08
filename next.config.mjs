@@ -26,7 +26,7 @@ const nextConfig = {
                 destination: '/connect/story/for-you',
                 permanent: true,
             },
-        ]
+        ];
     },
     images: {
         remotePatterns: [
@@ -34,9 +34,9 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'res.cloudinary.com',
                 // pathname: '/res.cloudinary.com/**'
-            }
+            },
         ],
-    }
+    },
 };
 
 export default nextConfig;

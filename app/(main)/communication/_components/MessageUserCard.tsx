@@ -8,11 +8,12 @@ interface MessageUserCardProps {
     message: string;
     lastActive: number;
     className?: string;
+    onClick?: () => void;
 }
 
-export const MessageUserCard: React.FC<MessageUserCardProps> = ({name, message, lastActive, className}) => {
+export const MessageUserCard: React.FC<MessageUserCardProps> = ({name, message, lastActive, className, onClick}) => {
     return (
-        <div className={cn('flex gap-4', className)}>
+        <div className={cn('flex cursor-pointer gap-4 rounded-md p-1 hover:bg-gray-100', className)} onClick={onClick}>
             <div className='relative h-12 w-12 overflow-hidden rounded-lg'>
                 <Image
                     src={placeholderImage}
