@@ -1,7 +1,15 @@
 import Image from 'next/image';
 
 import {Icon} from '@/components/commons';
-import {Button, ScrollArea, Separator} from '@/components/ui';
+import {
+    Button,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+    ScrollArea,
+    Separator,
+} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import placeholderImage from '@/public/assets/images/placeholder.png';
 
@@ -194,9 +202,18 @@ export default function Communication() {
                         <p className='text-paragraph2'>Capstone Project Team</p>
                         <p className='text-caption text-gray-500'>last seen 12 minutes ago</p>
                     </div>
-                    <div>
-                        <Icon name='More' width={18} height={3} />
-                    </div>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild className='outline-none ring-0 focus-visible:ring-0'>
+                            <Button variant='raw' size='icon'>
+                                <Icon name='More' width={15} height={15} />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent alignOffset={16}>
+                            <DropdownMenuItem>Settings</DropdownMenuItem>
+                            <DropdownMenuItem>Invite Member</DropdownMenuItem>
+                            <DropdownMenuItem>Leave Group</DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
                 <div className='shadow-custom-1 relative flex h-[90vh] flex-col gap-2 rounded-b-xl bg-white p-4'>
                     <ScrollArea className='h-[90%] pr-4'>
@@ -220,17 +237,25 @@ export default function Communication() {
                     <div className='flex h-[10%] items-center gap-2 rounded-xl bg-primary px-5 py-3'>
                         <div className='flex gap-2'>
                             <div className='relative h-6 w-6'>
-                                <Icon name='Picture' className='absolute inset-0 h-full w-full text-white' />
+                                <Button variant='raw' size='icon'>
+                                    <Icon name='Picture' className='absolute inset-0 h-full w-full text-white' />
+                                </Button>
                             </div>
-                            <Icon name='Attachment' className='text-white' />
-                            <Icon name='Smiley' className='text-white' />
-                            <Icon name='Mention' className='text-white' />
+                            <Button variant='raw' size='icon'>
+                                <Icon name='Attachment' className='text-white' />
+                            </Button>
+                            <Button variant='raw' size='icon'>
+                                <Icon name='Smiley' className='text-white' />
+                            </Button>
+                            <Button variant='raw' size='icon'>
+                                <Icon name='Mention' className='text-white' />
+                            </Button>
                         </div>
                         <div className='flex h-5 flex-grow items-center gap-2'>
                             <Separator className='h-full bg-white' orientation='vertical' />
                             <input
                                 type='text'
-                                className='w-full border-none bg-primary pl-2 text-white placeholder:text-white focus:outline-1 focus:outline-white'
+                                className='w-full rounded-sm border border-white bg-primary py-1 pl-2 text-white placeholder:text-white focus:outline-1 focus:outline-white'
                                 placeholder='Start typing...'
                             />
                             <Button
@@ -258,7 +283,7 @@ export default function Communication() {
                                 name={user.name}
                                 message={user.message}
                                 lastActive={user.lastActive}
-                                className='mb-5'
+                                className='mb-2'
                             />
                         ))}
                     </div>
@@ -266,9 +291,11 @@ export default function Communication() {
                 <div>
                     <div className='mb-5 flex items-center justify-between'>
                         <h5 className='text-heading5 font-bold'>Groups</h5>
-                        <div className='flex h-8 w-8 items-center justify-center rounded-full bg-blue-100'>
-                            <Icon name='More' width={18} height={4} className='rotate-90' />
-                        </div>
+                        <Button variant='raw' size='icon'>
+                            <div className='flex h-8 w-8 items-center justify-center rounded-full bg-blue-100'>
+                                <Icon name='More' width={18} height={4} className='rotate-90' />
+                            </div>
+                        </Button>
                     </div>
                     <div>
                         {groupCards.map((group, index) => (
@@ -284,7 +311,6 @@ export default function Communication() {
                     </div>
                 </div>
             </div>
-            {/* <h1 className='text-display1'>Communication</h1> */}
         </div>
     );
 }

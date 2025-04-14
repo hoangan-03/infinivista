@@ -9,6 +9,7 @@ import {cn} from '@/lib/utils';
 import currentUser from '@/mock_data/self';
 import LogoIcon from '@/public/assets/images/logo_icon.svg';
 import LogoText from '@/public/assets/images/logo_text.svg';
+import {ROUTES} from '@/routes/routes.enum';
 
 import {SidebarElement} from './SidebarElement';
 import {SidebarProfile} from './SidebarProfile';
@@ -102,13 +103,13 @@ export const Sidebar: React.FC = () => {
                         >
                             <SidebarSubElement
                                 name='Feed'
-                                href='/connect/feed'
+                                href={ROUTES.CONNECT_FEED}
                                 selected={updatedPageList[1].selected}
                                 sidebarExpanded={sidebarExpanded}
                             />
                             <SidebarSubElement
                                 name='Story'
-                                href='/connect/story'
+                                href={ROUTES.CONNECT_STORY}
                                 selected={updatedPageList[2].selected}
                                 sidebarExpanded={sidebarExpanded}
                             />

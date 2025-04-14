@@ -4,7 +4,7 @@ import {useRouter} from 'next/navigation';
 import React from 'react';
 
 import {FriendListItem} from '@/app/(main)/_components';
-import {Button, Input, ScrollArea} from '@/components/ui';
+import {Badge, Button, Input, ScrollArea} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import {FriendListType} from '@/mock_data/friendList';
 
@@ -41,9 +41,15 @@ export const FriendsSection: React.FC<FriendsSectionProps> = ({friendList, class
     const displayedFriends = showAll ? filteredFriends : filteredFriends.slice(0, 2);
 
     return (
-        <div className={cn('flex h-auto min-w-0 flex-col rounded-3xl bg-white shadow-md', className)}>
-            <div className='h-12 w-52 flex-shrink-0 border-b-2 border-blue-600 py-3 pl-6'>
-                <h2 className='text-2xl font-bold text-blue-600'>Friends</h2>
+        // flex h-auto min-w-0 flex-col
+        <div className={cn('rounded-3xl bg-white pb-5 pt-7 shadow-md', className)}>
+            <div className='w-52 border-b border-blue-600 pb-4'>
+                <div className='flex items-center justify-between gap-6'>
+                    <h2 className='ml-6 text-[28px] font-bold text-blue-600'>Friends</h2>
+                    <Badge size='none' className='h-[20px] px-2'>
+                        20/101
+                    </Badge>
+                </div>
             </div>
             <div className='p-3'>
                 <Input
@@ -57,10 +63,9 @@ export const FriendsSection: React.FC<FriendsSectionProps> = ({friendList, class
                     }}
                     className='search-input'
                 />
-            </div>
-            <ScrollArea className='friends-scroll-area'>
-                <div className='flex flex-col gap-4 px-6 pb-6'>
-                    {displayedFriends.map((friend) => (
+                <ScrollArea className={cn('mt-6 pr-3', showAll ? 'h-[550px]' : 'h-fit')}>
+                    {/* <div className='flex flex-col gap-4 pb-6'> */}
+                    {displayedFriends.map((friend, index) => (
                         <FriendListItem
                             key={friend.username}
                             username={friend.username}
@@ -69,14 +74,17 @@ export const FriendsSection: React.FC<FriendsSectionProps> = ({friendList, class
                             withMutualFriends
                             mutualFriends={friend.mutualFriends}
                             withAddFriendButton
+                            className={cn('mb-4', index === displayedFriends.length - 1 && 'mb-0')}
                             onClick={() => router.push(`/profile/${friend.username}`)}
                         />
                     ))}
-                </div>
-            </ScrollArea>
-            <Button variant='link' size='icon' onClick={() => setShowAll(!showAll)} className='mx-auto py-2'>
-                <p className='text-base'>{!showAll ? 'See more' : 'See less'}</p>
-            </Button>
+                    {/* <div>Hi</div> */}
+                    {/* </div> */}
+                </ScrollArea>
+                <Button variant='link' size='icon' onClick={() => setShowAll(!showAll)} className='mx-auto py-2'>
+                    <p className='text-base'>{!showAll ? 'See more' : 'See less'}</p>
+                </Button>
+            </div>
         </div>
     );
 };

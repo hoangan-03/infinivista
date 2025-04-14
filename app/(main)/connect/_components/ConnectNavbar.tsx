@@ -1,68 +1,66 @@
 'use client';
 
-import {usePathname} from 'next/navigation';
 import React from 'react';
 
+import {FeedType, useFeedContext} from '@/context';
 import {cn} from '@/lib/utils';
 
-const defaultTabList = [
+interface Tab {
+    label: string;
+    value: FeedType;
+    disabled: boolean;
+}
+
+const tabList: Tab[] = [
     {
         label: 'For You',
-        pathname: 'for-you',
+        value: 'for-you',
         disabled: false,
-        selected: true,
     },
     {
         label: 'Friends',
-        pathname: 'friends',
+        value: 'friends',
         disabled: false,
-        selected: false,
     },
     {
         label: 'Following',
-        pathname: 'following',
+        value: 'following',
         disabled: false,
-        selected: false,
     },
     {
         label: 'Popular',
-        pathname: 'popular',
+        value: 'popular',
         disabled: false,
-        selected: false,
     },
 ];
 
-const style = {
-    default: 'text-gray-300',
-    disabled: 'text-gray-300 cursor-not-allowed',
-    selected: 'text-blue-700',
-};
-
 interface ConnectNavbarProps {
     title: string;
-    tabList?: {label: string; pathname: string; disabled: boolean; selected: boolean}[];
-    className?: string; // Additional CSS class name for the container div
+    className?: string;
 }
 
-export const ConnectNavbar: React.FC<ConnectNavbarProps> = ({title, tabList = defaultTabList, className}) => {
-    const currentURL = usePathname();
-    const selection = currentURL.split('/').pop();
-    tabList.forEach((tab) => {
-        tab.selected = tab.pathname === selection;
-    });
+export const ConnectNavbar: React.FC<ConnectNavbarProps> = ({title, className}) => {
+    const {feedType, setFeedType} = useFeedContext();
 
     return (
         <div className={cn('connect-navbar', 'flex w-full items-center justify-between', className)}>
             <h5 className='font-extrabold text-blue-700'>{title}</h5>
             <div className='flex items-center gap-4'>
                 {tabList.map((tab, index) => (
-                    <a
+                    <p
                         key={index}
-                        href={'/connect/' + title.toLowerCase() + '/' + tab.pathname}
-                        className={`text-subtitle2 font-bold ${tab.disabled ? style.disabled : tab.selected ? style.selected : style.default}`}
+                        onClick={() => setFeedType(tab.value)}
+                        className={cn(
+                            'cursor-pointer text-subtitle2 font-bold',
+                            tab.disabled
+                                ? 'cursor-not-allowed text-gray-300'
+                                : feedType === tab.value
+                                  ? 'text-blue-700'
+                                  : 'text-gray-300'
+                        )}
                     >
                         {tab.label}
-                    </a>
+                    </p>
                 ))}
             </div>
         </div>

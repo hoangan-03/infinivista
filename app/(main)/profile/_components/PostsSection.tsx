@@ -2,6 +2,7 @@ import {ArrowRightIcon} from '@heroicons/react/solid';
 import React from 'react';
 
 import {Post} from '@/app/(main)/_components';
+import {Icon} from '@/components/commons';
 import {Button, ScrollArea} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import {PostObjectType} from '@/mock_data/postMockData';
@@ -15,21 +16,57 @@ export const PostsSection: React.FC<PostsSectionProps> = ({postList, className})
     return (
         <div className={cn('flex min-w-0 flex-col gap-4', className)}>
             <div className='flex flex-row gap-3'>
-                <Button variant='default'>Post</Button>
-                <Button variant='secondary'>Photos</Button>
-                <Button variant='secondary'>Videos</Button>
-                <Button variant='iconShadow' size='default'>
+                <Button variant='default' className='w-[120px]'>
+                    Post
+                </Button>
+                <Button variant='secondary' className='w-[120px]'>
+                    Photos
+                </Button>
+                <Button variant='secondary' className='w-[120px]'>
+                    Videos
+                </Button>
+                <Button variant='iconShadow' size='default' className='w-[120px]'>
                     More
                     <ArrowRightIcon className='h-4 w-4' />
                 </Button>
             </div>
-
-            <div className='flex min-h-0 w-full flex-col rounded-3xl bg-white'>
-                <div className='h-12 w-52 flex-shrink-0 border-b-2 border-blue-600 py-3 pl-6'>
+            <div className='rounded-3xl bg-white pt-7'>
+                {/* <div className='w-52 flex-shrink-0 border-b-2 border-blue-600 py-3 pl-6'>
                     <h2 className='text-2xl font-bold text-blue-600'>Posts</h2>
+                </div> */}
+                <div className='flex items-center justify-between pr-5'>
+                    <div className='w-52 border-b border-blue-600 pb-4'>
+                        <h2 className='ml-9 text-[28px] font-bold text-blue-600'>Posts</h2>
+                    </div>
+                    <div className='flex gap-3'>
+                        <Button
+                            variant='raw'
+                            size='raw'
+                            className='inline-flex w-fit items-center justify-center gap-2 rounded-[12px] border border-black px-5 py-[6px] font-bold'
+                        >
+                            <Icon name='Upload' />
+                            Post
+                        </Button>
+                        <Button
+                            variant='raw'
+                            size='raw'
+                            className='inline-flex items-center justify-center gap-2 rounded-[12px] border border-black px-5 py-[6px] font-bold'
+                        >
+                            <Icon name='SettingsBurger' />
+                            Filter
+                        </Button>
+                        <Button
+                            variant='raw'
+                            size='raw'
+                            className='inline-flex items-center justify-center gap-2 rounded-[12px] border border-black px-5 py-[6px] font-bold'
+                        >
+                            <Icon name='SettingsGear' />
+                            Manage Posts
+                        </Button>
+                    </div>
                 </div>
-                <ScrollArea className='posts-scroll-area h-[calc(100%-3rem)]'>
-                    <div className='post-list flex flex-col gap-7 p-7'>
+                <ScrollArea className='h-[650px]'>
+                    <div className='flex flex-col gap-7 p-7'>
                         {postList.map((post) => (
                             <Post key={post.id} postObject={post} />
                         ))}

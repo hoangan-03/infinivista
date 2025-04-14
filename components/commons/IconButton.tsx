@@ -13,10 +13,11 @@ export interface IconButtonProps extends Omit<ButtonProps, 'aria-label'> {
     width?: number;
     height?: number;
     className?: string;
+    iconClassName?: string;
 }
 
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
-    ({label, defaultName, hoverName, width = 24, height = 24, className, ...props}, ref) => {
+    ({label, defaultName, hoverName, width = 24, height = 24, className, iconClassName, ...props}, ref) => {
         return (
             <Button
                 aria-label={label}
@@ -27,11 +28,11 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
                 {...props}
             >
                 <div className={cn('opacity-100 transition-opacity', hoverName && 'group-hover:opacity-0')}>
-                    <Icon name={defaultName} width={width} height={height} />
+                    <Icon name={defaultName} width={width} height={height} className={iconClassName} />
                 </div>
                 {hoverName && (
                     <div className='absolute left-0 top-0 opacity-0 transition-opacity group-hover:opacity-100'>
-                        <Icon name={hoverName} width={width} height={height} />
+                        <Icon name={hoverName} width={width} height={height} className={iconClassName} />
                     </div>
                 )}
             </Button>

@@ -1,5 +1,6 @@
 import Image from 'next/image';
 
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import placeholderImage from '@/public/assets/images/placeholder.png';
 
@@ -26,9 +27,18 @@ export const MessageArea: React.FC<MessageAreaProps> = ({
     return (
         <div className={cn('flex gap-2', className)}>
             {!isCurrentUser && showAvatar && (
-                <div className='relative h-8 w-8 overflow-hidden rounded-full'>
-                    <Image src={placeholderImage} alt='User Placeholder' width={32} height={32} />
-                </div>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <div className='relative h-8 w-8 overflow-hidden rounded-full'>
+                                <Image src={placeholderImage} alt='User Placeholder' width={32} height={32} />
+                            </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>{username}</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
             )}
             <div className={cn('w-full rounded-sm px-2 py-1', isCurrentUser ? 'bg-primary' : 'bg-gray-100')}>
                 {!isCurrentUser && (
@@ -45,9 +55,18 @@ export const MessageArea: React.FC<MessageAreaProps> = ({
                 </p>
             </div>
             {isCurrentUser && showAvatar && (
-                <div className='relative h-8 w-8 overflow-hidden rounded-full'>
-                    <Image src={placeholderImage} alt='User Placeholder' width={32} height={32} />
-                </div>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <div className='relative h-8 w-8 overflow-hidden rounded-full'>
+                                <Image src={placeholderImage} alt='User Placeholder' width={32} height={32} />
+                            </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>{username}</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
             )}
         </div>
     );

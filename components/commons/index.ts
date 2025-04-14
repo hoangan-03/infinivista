@@ -1,4 +1,3 @@
-export {GoogleSignInButton} from './GoogleSignInButton';
 export {Header} from './Header';
 export {Icon} from './Icon';
 export {IconButton} from './IconButton';

@@ -22,6 +22,7 @@ import EyeClose_filled from '@/public/assets/icons/eye-off-filled.svg';
 import Repost from '@/public/assets/icons/file-copy.svg';
 import Repost_filled from '@/public/assets/icons/file-copy-filled.svg';
 import Globe from '@/public/assets/icons/globe.svg';
+import Google from '@/public/assets/icons/google.svg';
 import Like from '@/public/assets/icons/heart-3.svg';
 import Like_filled from '@/public/assets/icons/heart-3-filled.svg';
 import Home from '@/public/assets/icons/home.svg';
@@ -40,10 +41,12 @@ import Save from '@/public/assets/icons/save.svg';
 import Save_filled from '@/public/assets/icons/save-filled.svg';
 import Search from '@/public/assets/icons/search.svg';
 import SendArrow from '@/public/assets/icons/send-arrow.svg';
+import SettingsBurger from '@/public/assets/icons/settings-burger.svg';
 import SettingsGear from '@/public/assets/icons/settings-gear.svg';
 import ShopCart from '@/public/assets/icons/shop-cart.svg';
 import Smiley from '@/public/assets/icons/smiley.svg';
 import Study from '@/public/assets/icons/study.svg';
+import Upload from '@/public/assets/icons/upload.svg';
 import UserAdd from '@/public/assets/icons/user-add.svg';
 import Work from '@/public/assets/icons/work.svg';
 import ZoomIn from '@/public/assets/icons/zoom-in.svg';
@@ -62,6 +65,7 @@ const Icons = {
     Navigation,
     Chat,
     ShopCart,
+    Google,
     Mail,
     NotificationBell,
     SettingsGear,
@@ -90,6 +94,8 @@ const Icons = {
     Home,
     Locate,
     Love,
+    Upload,
+    SettingsBurger,
     Facebook,
     Instagram,
     Tiktok,

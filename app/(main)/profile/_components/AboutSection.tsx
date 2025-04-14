@@ -1,16 +1,18 @@
 import React from 'react';
 
+import {ScrollArea} from '@/components/ui';
+
 export const AboutSection: React.FC<{text?: string}> = ({text}) => {
     const about = text || 'Hello, nice to meet you!';
 
     return (
-        <div className='flex flex-row rounded-lg bg-white shadow-md'>
-            <div className='h-12 w-52 flex-shrink-0 border-b-2 border-blue-600 py-3 pl-6'>
-                <h2 className='text-2xl font-bold text-blue-600'>About</h2>
+        <div className='flex gap-8 rounded-lg bg-white py-6 pr-6 shadow-md'>
+            <div className='w-52 self-start border-b border-blue-600 pb-3'>
+                <h2 className='ml-6 text-[28px] font-bold text-blue-600'>About</h2>
             </div>
-            <div className='flex flex-grow items-center justify-center p-6 text-justify'>
-                <p className='text-wrap text-base text-gray-700'>{about}</p>
-            </div>
+            <ScrollArea className='max-h-[200px] w-[calc(100%-208px)] flex-grow'>
+                <p className='text-justify text-gray-700'>{about}</p>
+            </ScrollArea>
         </div>
     );
 };

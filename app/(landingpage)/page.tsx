@@ -4,38 +4,11 @@ import React from 'react';
 
 import {Button} from '@/components/ui/button';
 import {cn} from '@/lib/utils';
+import {ROUTES} from '@/routes/routes.enum';
 
 const Home: React.FC = () => {
     return (
         <div className='flex h-auto w-full flex-col bg-gray-900 text-white'>
-            {/* Navbar */}
-            {/* <nav className='flex w-full items-center justify-between bg-black bg-opacity-50 px-8 py-4'>
-                <div className='text-2xl font-bold'>Infinivista</div>
-                <ul className='flex gap-6 text-lg'>
-                    <li>
-                        <a href='#' className='hover:text-blue-400'>
-                            Home
-                        </a>
-                    </li>
-                    <li>
-                        <a href='#' className='hover:text-blue-400'>
-                            About
-                        </a>
-                    </li>
-                    <li>
-                        <a href='#' className='hover:text-blue-400'>
-                            Contact us
-                        </a>
-                    </li>
-                    <li>
-                        <a href='#' className='hover:text-blue-400'>
-                            Help Center
-                        </a>
-                    </li>
-                </ul>
-                <button className='rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600'>Join Beta</button>
-            </nav> */}
-
             {/* Hero Section */}
             <div className='relative flex h-[1024px] w-full items-center justify-center bg-cover bg-center'>
                 <video autoPlay loop muted className='absolute inset-0 h-full w-full object-cover'>
@@ -47,7 +20,7 @@ const Home: React.FC = () => {
                     <h2 className='mb-10 text-6xl font-bold text-white'>
                         Where the <br /> world connects
                     </h2>
-                    <Link href='/connect/feed'>
+                    <Link href={ROUTES.CONNECT_FEED}>
                         <Button
                             variant='default'
                             className={cn(

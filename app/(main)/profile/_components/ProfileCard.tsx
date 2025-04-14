@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -19,7 +18,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({userObject, isOwner, cl
     const displayedJobTitle = userObject.introduction.jobTitles[userObject.details.displayedJobNo];
 
     return (
-        <div className={cn('relative h-full rounded-3xl bg-white shadow-lg', className)}>
+        <div className={cn('relative h-full rounded-3xl bg-white shadow-sm', className)}>
             <div className='relative h-52 w-full'>
                 <Image
                     src={userObject.backgroundPic}
@@ -71,7 +70,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({userObject, isOwner, cl
                         <div className='flex flex-row items-center justify-end gap-3'>
                             <Button variant='default'>Add to story</Button>
                             <Button variant='secondary'>Edit profile</Button>
-                            <IconButton label='More options' defaultName='More' />
+                            <IconButton label='More options' defaultName='More' iconClassName='text-black' />
                         </div>
                     ) : (
                         <div className='flex flex-row items-center justify-end gap-3'>
@@ -80,7 +79,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({userObject, isOwner, cl
                                 Add friend
                             </Button>
                             <Button variant='secondary'>Message</Button>
-                            <IconButton label='More options' defaultName='More' />
+                            <IconButton label='More options' defaultName='More' iconClassName='text-black' />
                         </div>
                     )}
                 </div>
@@ -96,7 +95,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({userObject, isOwner, cl
                                 <Icon name={social.name as IconProps['name']} />
                             </div>
                             <Link href={social.link}>
-                                <h3 className='text-base text-black'>{social.link.split('/').pop()}</h3>
+                                <h3 className='text-base text-black hover:underline'>{social.link.split('/').pop()}</h3>
                             </Link>
                         </div>
                     ))}

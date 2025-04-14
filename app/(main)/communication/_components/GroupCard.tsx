@@ -9,11 +9,15 @@ interface GroupCardProps {
     tag2?: string;
     lastActive: number;
     className?: string;
+    onClick?: () => void;
 }
 
-export const GroupCard: React.FC<GroupCardProps> = ({name, tag1, tag2, lastActive, className}) => {
+export const GroupCard: React.FC<GroupCardProps> = ({name, tag1, tag2, lastActive, className, onClick}) => {
     return (
-        <div className={cn('flex gap-4 rounded-xl bg-blue-200 p-3', className)}>
+        <div
+            className={cn('flex cursor-pointer gap-4 rounded-xl bg-blue-200 p-3 hover:bg-blue-300', className)}
+            onClick={onClick}
+        >
             <div className='relative h-12 w-12 overflow-hidden rounded-full'>
                 <Image
                     src={placeholderImage}
@@ -24,8 +28,8 @@ export const GroupCard: React.FC<GroupCardProps> = ({name, tag1, tag2, lastActiv
                 />
             </div>
             <div className='flex-grow'>
-                <div className='flex items-center justify-between'>
-                    <p className='max-w-[160px] truncate font-bold'>{name}</p>
+                <div className='flex items-center justify-between gap-2'>
+                    <p className='max-w-[140px] truncate font-bold'>{name}</p>
                     <p className='text-[14px] text-gray-500'>{lastActive}m</p>
                 </div>
                 <div className='flex gap-2'>

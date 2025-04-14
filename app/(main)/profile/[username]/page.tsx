@@ -30,7 +30,7 @@ const UserProfile: React.FC<{params: {username: string}}> = ({params}) => {
                 <AboutSection text={displayedUser.about} />
 
                 <div className='flex h-screen gap-4 py-6'>
-                    <FriendsSection friendList={friendList} className='flex-1' />
+                    <FriendsSection friendList={friendList} className='flex-1 self-start' />
                     <PostsSection postList={postList} className='flex-3' />
                 </div>
             </div>
