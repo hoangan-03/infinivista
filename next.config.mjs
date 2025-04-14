@@ -9,25 +9,6 @@ const nextConfig = {
 
         return config;
     },
-    async redirects() {
-        return [
-            {
-                source: '/connect',
-                destination: '/connect/feed/for-you',
-                permanent: true,
-            },
-            {
-                source: '/connect/feed',
-                destination: '/connect/feed/for-you',
-                permanent: true,
-            },
-            {
-                source: '/connect/story',
-                destination: '/connect/story/for-you',
-                permanent: true,
-            },
-        ];
-    },
     images: {
         remotePatterns: [
             {

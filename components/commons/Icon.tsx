@@ -22,6 +22,7 @@ import EyeClose_filled from '@/public/assets/icons/eye-off-filled.svg';
 import Repost from '@/public/assets/icons/file-copy.svg';
 import Repost_filled from '@/public/assets/icons/file-copy-filled.svg';
 import Globe from '@/public/assets/icons/globe.svg';
+import Google from '@/public/assets/icons/google.svg';
 import Like from '@/public/assets/icons/heart-3.svg';
 import Like_filled from '@/public/assets/icons/heart-3-filled.svg';
 import Home from '@/public/assets/icons/home.svg';
@@ -64,6 +65,7 @@ const Icons = {
     Navigation,
     Chat,
     ShopCart,
+    Google,
     Mail,
     NotificationBell,
     SettingsGear,

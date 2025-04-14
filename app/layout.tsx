@@ -3,8 +3,6 @@ import './globals.css';
 import type {Metadata, Viewport} from 'next';
 import localFont from 'next/font/local';
 
-// import Provider from '@/components/commons/Provider';
-
 const geistSans = localFont({
     src: './_fonts/GeistVF.woff',
     variable: '--font-geist-sans',
@@ -34,13 +32,11 @@ export default function RootLayout({
     return (
         <html lang='en'>
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                {/* <Provider> */}
                 <div className='bg-gray-100'>
                     <div className='container'>
                         <div className='relative flex min-h-screen bg-white'>{children}</div>
                     </div>
                 </div>
-                {/* </Provider> */}
             </body>
         </html>
     );

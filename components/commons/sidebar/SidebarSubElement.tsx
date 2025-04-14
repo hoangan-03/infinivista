@@ -19,7 +19,6 @@ export const SidebarSubElement: React.FC<SidebarSubElementProps> = ({
     sidebarExpanded,
     className,
 }) => {
-    console.log('href', href);
     return (
         <div className={cn('sidebar-transition', sidebarExpanded ? 'max-w-[250px]' : 'max-w-[90px]', className)}>
             <Link href={href}>
