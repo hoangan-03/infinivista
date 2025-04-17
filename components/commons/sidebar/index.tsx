@@ -126,7 +126,7 @@ export const Sidebar: React.FC = () => {
                             iconName='Chat'
                             selected={updatedPageList[4].selected}
                             sidebarExpanded={sidebarExpanded}
-                            onClick={() => router.push('/communication/1')}
+                            onClick={() => router.push('/communication')}
                         />
                         <SidebarElement
                             name='Shop'

@@ -24,7 +24,7 @@ const inputVariants = cva(
 );
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>, VariantProps<typeof inputVariants> {
-    fontSize: string;
+    fontSize?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(

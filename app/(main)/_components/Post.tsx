@@ -69,14 +69,11 @@ export const Post: React.FC<PostProps> = ({postObject, className}) => {
     const [, forceRerender] = React.useReducer((x) => x + 1, 0);
 
     const [liked, toggleLiked] = React.useState<boolean>(false);
-    // const liked = postObject?.reactionList.some((reaction) => reaction.people.some((person) => person.username === currentUser.username));
     const [commentsSectionOpen, setCommentsSectionOpen] = React.useState<boolean>(false);
 
     const maxNumberOfDisplays = 3;
 
     const handleClickReact = (event: React.MouseEvent<HTMLButtonElement>, reactionType: ReactionType) => {
-        console.log('Reacted');
-
         if (!postObject) return;
 
         const reaction = postObject.reactionList.find((reaction) => reaction.type === reactionType);

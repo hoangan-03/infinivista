@@ -13,9 +13,7 @@ import {
 import {cn} from '@/lib/utils';
 import placeholderImage from '@/public/assets/images/placeholder.png';
 
-import {GroupCard} from '../_components/GroupCard';
-import {MessageArea} from '../_components/MessageArea';
-import {MessageUserCard} from '../_components/MessageUserCard';
+import {GroupCard, MessageArea, MessageUserCard} from './_components';
 
 interface IMessage {
     username: string;
@@ -170,7 +168,7 @@ const groupCards: IGroupCard[] = [
     },
 ];
 
-export default function Communication() {
+export default function CommunicationPage() {
     return (
         <div className='flex gap-10'>
             <div className='w-[70%]'>

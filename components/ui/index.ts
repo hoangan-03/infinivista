@@ -1,7 +1,18 @@
 export {Badge, badgeVariants} from './badge';
 export {Button} from './button';
 export {Collapsible, CollapsibleContent, CollapsibleTrigger} from './collapsible';
-export {Dialog} from './dialog';
+export {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogOverlay,
+    DialogPortal,
+    DialogTitle,
+    DialogTrigger,
+} from './dialog';
 export {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -28,3 +39,4 @@ export {Sidebar} from './sidebar';
 export {Skeleton} from './skeleton';
 export {Switch} from './switch';
 export {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from './tooltip';
+export {VisuallyHidden} from './visually-hidden';
