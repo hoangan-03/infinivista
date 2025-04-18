@@ -15,7 +15,7 @@ function StoryComment({data}: Props) {
                     <p className='w-[90%] text-sm text-gray-500'>
                         <span className='w-fit font-bold text-black'>{data?.username}</span> {data?.text}
                     </p>
-                    <Icon name='Like' />
+                    <Icon name='heart' />
                 </div>
             </div>
             <div className='flex items-center justify-between'>

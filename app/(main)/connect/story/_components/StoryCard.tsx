@@ -59,11 +59,11 @@ function StoryCard({width, height, data, onClick}: Props) {
             <div className='absolute inset-0 flex items-center justify-center gap-4 p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100'>
                 <div className='flex items-center justify-between gap-2'>
                     <p className='text-white'>188K</p>
-                    <Icon name='Like_filled' className='text-white' />
+                    <Icon name='heart-filled' className='text-white' />
                 </div>
                 <div className='flex items-center justify-between gap-2'>
                     <p className='text-white'>23K</p>
-                    <Icon name='Comment_filled' className='text-white' />
+                    <Icon name='chat-rectangle-filled' className='text-white' />
                 </div>
             </div>
         </div>

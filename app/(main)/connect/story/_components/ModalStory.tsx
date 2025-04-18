@@ -37,12 +37,7 @@ function ModalStory({open, data, onClose}: Props) {
                     <div className='w-3/5'>
                         {data?.videoUrl ? (
                             <div className='relative aspect-video h-full'>
-                                <video
-                                    className='h-full w-full rounded-l-lg object-cover'
-                                    controls
-                                    playsInline
-                                    // poster={data.thumbnailUrl || '/assets/images/video-thumbnail.jpg'}
-                                >
+                                <video className='h-full w-full rounded-l-lg object-cover' controls playsInline>
                                     <source src={data.videoUrl} type='video/mp4' />
                                     Your browser does not support the video tag.
                                 </video>
@@ -72,13 +67,13 @@ function ModalStory({open, data, onClose}: Props) {
                             <p>100000 Likes</p>
                             <div className='mt-2 flex items-center gap-4'>
                                 <Button variant='raw' size='icon' className='hover:scale-110'>
-                                    <Icon name='Like' />
+                                    <Icon name='heart' />
                                 </Button>
                                 <Button variant='raw' size='icon' className='hover:scale-110'>
-                                    <Icon name='Comment' />
+                                    <Icon name='chat-rectangle' />
                                 </Button>
                                 <Button variant='raw' size='icon' className='hover:scale-110'>
-                                    <Icon name='Share' />
+                                    <Icon name='share' />
                                 </Button>
                             </div>
                         </div>

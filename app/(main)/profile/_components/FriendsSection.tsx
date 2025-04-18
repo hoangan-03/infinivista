@@ -1,47 +1,32 @@
 'use client';
 
 import {useRouter} from 'next/navigation';
-import React from 'react';
+import React, {useState} from 'react';
 
 import {FriendListItem} from '@/app/(main)/_components';
 import {Badge, Button, Input, ScrollArea} from '@/components/ui';
 import {cn} from '@/lib/utils';
-import {FriendListType} from '@/mock_data/friendList';
+import {Friend} from '@/mock_data/friend';
 
 interface FriendsSectionProps {
-    friendList: FriendListType;
+    data: Friend[];
     className?: string;
 }
 
-export const FriendsSection: React.FC<FriendsSectionProps> = ({friendList, className}) => {
+export const FriendsSection: React.FC<FriendsSectionProps> = ({data, className}) => {
     const router = useRouter();
-    const [query, setQuery] = React.useState<string>('');
-    const [showAll, setShowAll] = React.useState<boolean>(false);
+    const [query, setQuery] = useState<string>('');
+    const [showAll, setShowAll] = useState<boolean>(false);
 
-    // const friends = [
-    //     'Alexandra Tan',
-    //     'John Doe',
-    //     'Jane Smith',
-    //     'Michael Johnson',
-    //     'Emily Davis',
-    //     'Chris Brown',
-    //     'Jessica Wilson',
-    //     'David Martinez',
-    //     'Sophia Garcia',
-    //     'Daniel Rodriguez',
-    // ];
-
-    const filteredFriends = friendList.filter(
+    const filteredFriends = data.filter(
         (friend) =>
-            // Return true if query is empty string, otherwise compare
             !query ||
             friend.name.toLowerCase().includes(query.toLowerCase()) ||
             friend.username.toLowerCase().includes(query.toLowerCase())
     );
-    const displayedFriends = showAll ? filteredFriends : filteredFriends.slice(0, 2);
+    const displayedFriends = showAll ? filteredFriends.slice(0, 10) : filteredFriends.slice(0, 8);
 
     return (
-        // flex h-auto min-w-0 flex-col
         <div className={cn('rounded-3xl bg-white pb-5 pt-7 shadow-md', className)}>
             <div className='w-52 border-b border-blue-600 pb-4'>
                 <div className='flex items-center justify-between gap-6'>
@@ -64,22 +49,14 @@ export const FriendsSection: React.FC<FriendsSectionProps> = ({friendList, class
                     className='search-input'
                 />
                 <ScrollArea className={cn('mt-6 pr-3', showAll ? 'h-[550px]' : 'h-fit')}>
-                    {/* <div className='flex flex-col gap-4 pb-6'> */}
                     {displayedFriends.map((friend, index) => (
                         <FriendListItem
                             key={friend.username}
-                            username={friend.username}
-                            name={friend.name}
-                            profilePic={friend.profilePic}
-                            withMutualFriends
-                            mutualFriends={friend.mutualFriends}
-                            withAddFriendButton
+                            data={friend}
                             className={cn('mb-4', index === displayedFriends.length - 1 && 'mb-0')}
-                            onClick={() => router.push(`/profile/${friend.username}`)}
+                            onViewProfile={() => router.push(`/profile/${friend.username}`)}
                         />
                     ))}
-                    {/* <div>Hi</div> */}
-                    {/* </div> */}
                 </ScrollArea>
                 <Button variant='link' size='icon' onClick={() => setShowAll(!showAll)} className='mx-auto py-2'>
                     <p className='text-base'>{!showAll ? 'See more' : 'See less'}</p>

@@ -53,7 +53,7 @@ export const CommentsSection: React.FC<CommentsSectionProps> = ({
                         </div>
                         <Separator orientation='vertical' className='w-[2px] bg-black' />
                         <div className='flex items-center gap-1'>
-                            <Icon name='Comment' />
+                            <Icon name='chat-rectangle' />
                             {commentCount}
                         </div>
                     </DialogTitle>

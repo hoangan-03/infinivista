@@ -165,7 +165,7 @@ export default function RegisterPage() {
                                     onClick={() => signIn('google')}
                                     className='flex w-full gap-2 rounded-sm bg-gray-900 text-caption font-bold text-white'
                                 >
-                                    <Icon name='Google' />
+                                    <Icon name='google' />
                                     Sign in with Google
                                 </Button>
                                 <div className='flex items-center justify-center gap-2'>

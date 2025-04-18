@@ -203,7 +203,7 @@ export default function CommunicationPage() {
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild className='outline-none ring-0 focus-visible:ring-0'>
                             <Button variant='raw' size='icon'>
-                                <Icon name='More' width={15} height={15} />
+                                <Icon name='more' width={15} height={15} />
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent alignOffset={16}>
@@ -236,17 +236,17 @@ export default function CommunicationPage() {
                         <div className='flex gap-2'>
                             <div className='relative h-6 w-6'>
                                 <Button variant='raw' size='icon'>
-                                    <Icon name='Picture' className='absolute inset-0 h-full w-full text-white' />
+                                    <Icon name='image' className='absolute inset-0 h-full w-full text-white' />
                                 </Button>
                             </div>
                             <Button variant='raw' size='icon'>
-                                <Icon name='Attachment' className='text-white' />
+                                <Icon name='attachment' className='text-white' />
                             </Button>
                             <Button variant='raw' size='icon'>
-                                <Icon name='Smiley' className='text-white' />
+                                <Icon name='smile' className='text-white' />
                             </Button>
                             <Button variant='raw' size='icon'>
-                                <Icon name='Mention' className='text-white' />
+                                <Icon name='mention' className='text-white' />
                             </Button>
                         </div>
                         <div className='flex h-5 flex-grow items-center gap-2'>
@@ -261,7 +261,7 @@ export default function CommunicationPage() {
                                 size='square'
                                 className='h-10 w-10 rounded-sm bg-white flex-center'
                             >
-                                <Icon name='SendArrow' width={20} height={20} />
+                                <Icon name='arrow-send' width={20} height={20} />
                             </Button>
                         </div>
                     </div>
@@ -271,7 +271,7 @@ export default function CommunicationPage() {
                 <div className='mb-10'>
                     <div className='mb-5 flex items-center gap-3'>
                         <h5 className='text-heading5 font-bold'>Messages</h5>
-                        <Icon name='CaretDown' width={16} height={16} />
+                        <Icon name='caret-down' width={16} height={16} />
                         <p className='rounded-full bg-gray-200 px-2 py-1'>2</p>
                     </div>
                     <div>
@@ -291,7 +291,7 @@ export default function CommunicationPage() {
                         <h5 className='text-heading5 font-bold'>Groups</h5>
                         <Button variant='raw' size='icon'>
                             <div className='flex h-8 w-8 items-center justify-center rounded-full bg-blue-100'>
-                                <Icon name='More' width={18} height={4} className='rotate-90' />
+                                <Icon name='more' width={18} height={4} className='rotate-90' />
                             </div>
                         </Button>
                     </div>

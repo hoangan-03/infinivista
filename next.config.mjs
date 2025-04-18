@@ -9,6 +9,15 @@ const nextConfig = {
 
         return config;
     },
+    async redirects() {
+        return [
+            {
+                source: '/settings',
+                destination: '/settings/profile',
+                permanent: true,
+            },
+        ];
+    },
     images: {
         remotePatterns: [
             {
