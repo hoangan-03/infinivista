@@ -12,4 +12,9 @@ export enum ROUTES {
 
     COMMUNICATION = '/communication',
     COMMUNICATION_CHANNEL = '/communication/[channelId]',
+
+    SETTINGS = '/settings',
+    SETTINGS_PROFILE = '/settings/profile',
+    SETTINGS_PRIVACY = '/settings/privacy',
+    SETTINGS_LANGUAGE = '/settings/language',
 }

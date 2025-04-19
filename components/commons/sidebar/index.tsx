@@ -6,6 +6,7 @@ import React from 'react';
 import {Icon} from '@/components/commons';
 import {Button, Separator} from '@/components/ui';
 import {cn} from '@/lib/utils';
+import {profile} from '@/mock_data/profile';
 import currentUser from '@/mock_data/self';
 import LogoIcon from '@/public/assets/images/logo_icon.svg';
 import LogoText from '@/public/assets/images/logo_text.svg';
@@ -77,7 +78,7 @@ export const Sidebar: React.FC = () => {
                         )}
                     >
                         <span>
-                            <Icon name='Plus' width={16} height={16} />
+                            <Icon name='plus' width={16} height={16} />
                         </span>
                         <p
                             className={cn(
@@ -126,16 +127,16 @@ export const Sidebar: React.FC = () => {
                             iconName='Chat'
                             selected={updatedPageList[4].selected}
                             sidebarExpanded={sidebarExpanded}
-                            onClick={() => router.push('/communication/1')}
+                            onClick={() => router.push('/communication')}
                         />
-                        <SidebarElement
+                        {/* <SidebarElement
                             name='Shop'
                             iconName='ShopCart'
                             selected={updatedPageList[5].selected}
                             sidebarExpanded={sidebarExpanded}
                             onClick={() => router.push('/shop')}
-                        />
-                        <SidebarElement
+                        /> */}
+                        {/* <SidebarElement
                             name='Mailbox'
                             iconName='Mail'
                             selected={updatedPageList[6].selected}
@@ -152,7 +153,7 @@ export const Sidebar: React.FC = () => {
                             numericalData={10}
                             sidebarExpanded={sidebarExpanded}
                             numericalDataClassName='bg-green-600'
-                        />
+                        /> */}
                         <SidebarElement
                             name='Settings'
                             iconName='SettingsGear'
@@ -166,9 +167,7 @@ export const Sidebar: React.FC = () => {
                         <p className='mb-5 font-bold text-gray-500'>Profile</p>
                         <SidebarProfile
                             href={`/profile/${currentUser.username}`}
-                            imgSrc={currentUser.profilePic}
-                            name={currentUser.name}
-                            email={currentUser.email}
+                            data={profile}
                             sidebarExpanded={sidebarExpanded}
                         />
                         <SidebarElement

@@ -28,7 +28,7 @@ interface Comment {
     commentText: string;
 }
 
-interface Post {
+export interface Post {
     id: number;
     author: string;
     created_at: Date;

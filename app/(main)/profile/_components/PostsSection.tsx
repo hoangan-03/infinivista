@@ -5,16 +5,16 @@ import {Post} from '@/app/(main)/_components';
 import {Icon} from '@/components/commons';
 import {Button, ScrollArea} from '@/components/ui';
 import {cn} from '@/lib/utils';
-import {PostObjectType} from '@/mock_data/postMockData';
+import {Post as IPost} from '@/mock_data/post';
 
 interface PostsSectionProps {
-    postList: PostObjectType[];
+    data: IPost[];
     className?: string;
 }
 
-export const PostsSection: React.FC<PostsSectionProps> = ({postList, className}) => {
+export const PostsSection: React.FC<PostsSectionProps> = ({data, className}) => {
     return (
-        <div className={cn('flex min-w-0 flex-col gap-4', className)}>
+        <div className={cn('space-y-4', className)}>
             <div className='flex flex-row gap-3'>
                 <Button variant='default' className='w-[120px]'>
                     Post
@@ -31,9 +31,6 @@ export const PostsSection: React.FC<PostsSectionProps> = ({postList, className})
                 </Button>
             </div>
             <div className='rounded-3xl bg-white pt-7'>
-                {/* <div className='w-52 flex-shrink-0 border-b-2 border-blue-600 py-3 pl-6'>
-                    <h2 className='text-2xl font-bold text-blue-600'>Posts</h2>
-                </div> */}
                 <div className='flex items-center justify-between pr-5'>
                     <div className='w-52 border-b border-blue-600 pb-4'>
                         <h2 className='ml-9 text-[28px] font-bold text-blue-600'>Posts</h2>
@@ -44,7 +41,7 @@ export const PostsSection: React.FC<PostsSectionProps> = ({postList, className})
                             size='raw'
                             className='inline-flex w-fit items-center justify-center gap-2 rounded-[12px] border border-black px-5 py-[6px] font-bold'
                         >
-                            <Icon name='Upload' />
+                            <Icon name='upload' />
                             Post
                         </Button>
                         <Button
@@ -52,7 +49,7 @@ export const PostsSection: React.FC<PostsSectionProps> = ({postList, className})
                             size='raw'
                             className='inline-flex items-center justify-center gap-2 rounded-[12px] border border-black px-5 py-[6px] font-bold'
                         >
-                            <Icon name='SettingsBurger' />
+                            <Icon name='settings-burger' />
                             Filter
                         </Button>
                         <Button
@@ -60,15 +57,15 @@ export const PostsSection: React.FC<PostsSectionProps> = ({postList, className})
                             size='raw'
                             className='inline-flex items-center justify-center gap-2 rounded-[12px] border border-black px-5 py-[6px] font-bold'
                         >
-                            <Icon name='SettingsGear' />
+                            <Icon name='settings-gear' />
                             Manage Posts
                         </Button>
                     </div>
                 </div>
                 <ScrollArea className='h-[650px]'>
-                    <div className='flex flex-col gap-7 p-7'>
-                        {postList.map((post) => (
-                            <Post key={post.id} postObject={post} />
+                    <div className='space-y-7 p-7'>
+                        {data.map((post) => (
+                            <Post key={post.id} data={post} />
                         ))}
                     </div>
                 </ScrollArea>

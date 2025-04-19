@@ -1,13 +1,12 @@
 import React from 'react';
 
 import {Icon} from '@/components/commons';
-import {IconProps} from '@/components/commons/Icon';
 import {Button, Separator} from '@/components/ui';
 import {cn} from '@/lib/utils';
 
 interface SidebarElementProps {
     name: string;
-    iconName: IconProps['name'];
+    iconName: string;
     selected?: boolean;
     withNumericalData?: boolean;
     numericalData?: number;
@@ -82,7 +81,7 @@ export const SidebarElement: React.FC<SidebarElementProps> = ({
                         onClick={() => setDropdownExpanded(!dropdownExpanded)}
                     >
                         <Icon
-                            name='CaretDown'
+                            name='caret-down'
                             width={16}
                             height={16}
                             className={cn('text-black', 'sidebar-transition', dropdownExpanded && '-scale-y-100')}

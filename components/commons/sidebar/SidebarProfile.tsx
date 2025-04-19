@@ -1,32 +1,24 @@
-import Image, {StaticImageData} from 'next/image';
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
 import {cn} from '@/lib/utils';
+import {Profile} from '@/mock_data/profile';
 
 interface SidebarProfileProps {
     href: string;
-    imgSrc: string | StaticImageData;
-    name: string;
-    email: string;
+    data: Profile;
     sidebarExpanded: boolean;
     className?: string;
 }
 
-export const SidebarProfile: React.FC<SidebarProfileProps> = ({
-    href,
-    imgSrc,
-    name,
-    email,
-    sidebarExpanded,
-    className,
-}) => {
+export const SidebarProfile: React.FC<SidebarProfileProps> = ({href, data, sidebarExpanded, className}) => {
     return (
         <div className={cn('mb-5', className)}>
             <Link href={href} className={cn('flex items-center', !sidebarExpanded && 'justify-center')}>
                 <div className='relative h-10 w-10 rounded-full'>
                     <Image
-                        src={imgSrc}
+                        src={data.avatar}
                         alt='User Avatar'
                         width={40}
                         height={40}
@@ -34,8 +26,10 @@ export const SidebarProfile: React.FC<SidebarProfileProps> = ({
                     />
                 </div>
                 <div className={cn('sidebar-transition', sidebarExpanded ? 'ml-4 w-36' : 'text-collapsed')}>
-                    <p className='font-bold text-black'>{name}</p>
-                    <p className='max-w-[140px] truncate text-[#A0ABBB]'>{email}</p>
+                    <p className='font-bold text-black'>
+                        {data.firstName} {data.lastName}
+                    </p>
+                    <p className='max-w-[140px] truncate text-[#A0ABBB]'>{data.email}</p>
                 </div>
             </Link>
         </div>
