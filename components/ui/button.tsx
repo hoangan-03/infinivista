@@ -5,8 +5,10 @@ import * as React from 'react';
 import {cn} from '@/lib/utils';
 
 const buttonVariants = cva(
-    'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-bold text-sm ring-offset-white transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:fill-black [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:translate-y-[-1px] active:translate-y-0.5 hover:shadow-md active:shadow-lg',
+    'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-bold text-sm ring-offset-white focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 active:translate-y-0.5 hover:shadow-md active:shadow-lg',
     // focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2
+    // [&_svg]:fill-black [&_svg]:pointer-events-none [&_svg]:shrink-0 transition-colors
+    // hover:translate-y-[-1px]
     {
         variants: {
             variant: {
@@ -24,6 +26,7 @@ const buttonVariants = cva(
                     'flex-center bg-white text-primary border-primary border-2 hover:bg-primary hover:text-white',
                 iconOutline: 'flex-center border border-black bg-white hover:bg-blue-300 active:bg-blue-300 text-black',
                 iconShadow: 'flex-center bg-white text-slate-900 shadow-md hover:shadow-lg',
+                icon: 'group hover:translate-y-0 hover:shadow-none active:shadow-none active:translate-y-0',
             },
             size: {
                 raw: '',
@@ -48,12 +51,13 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({className, variant, size, asChild = false, ...props}, ref) => {
+    ({className, variant, size, asChild = false, type = 'button', ...props}, ref) => {
         const Comp = asChild ? Slot : 'button';
         return (
             <Comp
                 className={variant === 'raw' ? className : cn(buttonVariants({variant, size, className}))}
                 ref={ref}
+                type={type}
                 {...props}
             />
         );

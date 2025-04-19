@@ -8,7 +8,6 @@ import * as Yup from 'yup';
 
 import {Icon, LogoName, PasswordInput} from '@/components/commons';
 import {Button, Input, Separator} from '@/components/ui';
-import {cn} from '@/lib/utils';
 import {ROUTES} from '@/routes/routes.enum';
 
 const registerSchema = Yup.object().shape({
@@ -47,8 +46,8 @@ export default function RegisterPage() {
     };
 
     return (
-        <div id='register-page' className='h-fit w-full px-12 flex-center'>
-            <div id='register-form' className='flex h-full w-full flex-col items-center justify-around gap-5 py-5'>
+        <div className='h-fit w-full px-12 flex-center'>
+            <div className='flex h-full w-full flex-col items-center justify-around gap-5 py-5'>
                 <LogoName />
                 <div className='w-full'>
                     <h4 className='mb-4 font-bold md:text-heading5'>Nice to see you again</h4>
@@ -59,24 +58,21 @@ export default function RegisterPage() {
                                     Full name
                                 </label>
                                 <Input
-                                    type='text'
                                     placeholder='Enter full name'
-                                    fontSize='text-paragraph1'
+                                    className='rounded-md text-paragraph1'
                                     variant='outline'
-                                    borderRadius='square'
+                                    errorMessage={errors.name?.message}
                                     {...register('name')}
                                 />
-
-                                <p
+                                {/* <p
                                     className={cn(
                                         'w-full pl-3 text-caption text-blue-500',
                                         errors.name ? 'visible' : 'invisible'
                                     )}
                                 >
                                     {errors.name?.message}
-                                </p>
+                                </p> */}
                             </div>
-
                             <div>
                                 <label
                                     htmlFor='email_phone'
@@ -85,24 +81,13 @@ export default function RegisterPage() {
                                     Email or phone number
                                 </label>
                                 <Input
-                                    type='text'
                                     placeholder='Enter email or phone number'
-                                    fontSize='text-paragraph1'
+                                    className='rounded-md text-paragraph1'
                                     variant='outline'
-                                    borderRadius='square'
+                                    errorMessage={errors.emailPhone?.message}
                                     {...register('emailPhone')}
                                 />
-
-                                <p
-                                    className={cn(
-                                        'w-full pl-3 text-caption text-blue-500',
-                                        errors.emailPhone ? 'visible' : 'invisible'
-                                    )}
-                                >
-                                    {errors.emailPhone?.message}
-                                </p>
                             </div>
-
                             <div>
                                 <label
                                     htmlFor='password'
@@ -112,22 +97,12 @@ export default function RegisterPage() {
                                 </label>
                                 <PasswordInput
                                     placeholder='Enter password'
-                                    fontSize='text-paragraph1'
+                                    className='rounded-md text-paragraph1'
                                     variant='outline'
-                                    borderRadius='square'
+                                    errorMessage={errors.password?.message}
                                     {...register('password')}
                                 />
-
-                                <p
-                                    className={cn(
-                                        'w-full pl-3 text-caption text-blue-500',
-                                        errors.password ? 'visible' : 'invisible'
-                                    )}
-                                >
-                                    {errors.password?.message}
-                                </p>
                             </div>
-
                             <div>
                                 <label
                                     htmlFor='confirmPassword'
@@ -137,23 +112,13 @@ export default function RegisterPage() {
                                 </label>
                                 <PasswordInput
                                     placeholder='Enter password again'
-                                    fontSize='text-paragraph1'
+                                    className='rounded-md text-paragraph1'
                                     variant='outline'
-                                    borderRadius='square'
+                                    errorMessage={errors.confirmPassword?.message}
                                     {...register('confirmPassword')}
                                 />
-
-                                <p
-                                    className={cn(
-                                        'w-full pl-3 text-caption text-blue-500',
-                                        errors.confirmPassword ? 'visible' : 'invisible'
-                                    )}
-                                >
-                                    {errors.confirmPassword?.message}
-                                </p>
                             </div>
                         </div>
-
                         <div className='button-group flex flex-col gap-8'>
                             <Button type='submit' className='rounded-sm bg-blue-700 text-caption font-bold text-white'>
                                 Register

@@ -11,8 +11,6 @@ const ProfilePage: React.FC<{params: {uuid: string}}> = ({params}) => {
     // TODO: Use uuid to get user data from the server --> if not found, return notFound()
     const profile: Profile = params ? mockProfile : mockProfile;
 
-    console.log(profile);
-
     if (!profile) {
         return notFound();
     }

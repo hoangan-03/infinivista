@@ -2,8 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-import {Icon, IconButton} from '@/components/commons';
-import {IconProps} from '@/components/commons/Icon';
+import {Icon} from '@/components/commons';
 import {Button} from '@/components/ui/button';
 import {cn} from '@/lib/utils';
 import {INTRODUCTION, Profile} from '@/mock_data/profile';
@@ -68,7 +67,9 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({data, isOwner, classNam
                         <div className='flex flex-row items-center justify-end gap-3'>
                             <Button variant='default'>Add to story</Button>
                             <Button variant='secondary'>Edit profile</Button>
-                            <IconButton label='More options' defaultName='More' iconClassName='text-black' />
+                            <Button variant='icon' size='icon'>
+                                <Icon name='more' />
+                            </Button>
                         </div>
                     ) : (
                         <div className='flex flex-row items-center justify-end gap-3'>
@@ -77,7 +78,9 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({data, isOwner, classNam
                                 Add friend
                             </Button>
                             <Button variant='secondary'>Message</Button>
-                            <IconButton label='More options' defaultName='More' iconClassName='text-black' />
+                            <Button variant='icon' size='icon'>
+                                <Icon name='more' />
+                            </Button>
                         </div>
                     )}
                 </div>
@@ -85,8 +88,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({data, isOwner, classNam
                     {data.socialLinks.map((social) => (
                         <div key={social.type} className='flex flex-row items-center gap-3'>
                             <div className='flex h-6 w-6 items-center justify-center'>
-                                {/* URGENT: ADD 4 SOCIAL MEDIA ICONS */}
-                                <Icon name={social.type as IconProps['name']} />
+                                <Icon name={social.type} />
                             </div>
                             <Link href={social.url}>
                                 <h3 className='text-base text-black hover:underline'>{social.url.split('/').pop()}</h3>

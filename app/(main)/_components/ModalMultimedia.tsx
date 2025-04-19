@@ -1,6 +1,9 @@
+'use client';
+
 import Image from 'next/image';
 import React from 'react';
 
+import {ClientVideo} from '@/components/commons';
 import {Separator} from '@/components/ui';
 import {
     Dialog,
@@ -32,10 +35,9 @@ export const ModalMultimedia: React.FC<ModalMultimediaProps> = ({attachments, ma
     const videoCount = attachments.filter((attachment) => attachment.type === 'video').length;
 
     return (
-        // <div className=''>
         <Dialog>
             <DialogTrigger>
-                <section className='post-multimedia grid auto-rows-fr grid-cols-[repeat(auto-fill,_minmax(188px,_1fr))] gap-3'>
+                <section className='grid auto-rows-fr grid-cols-[repeat(auto-fill,_minmax(188px,_1fr))] gap-3'>
                     {attachments.map((media, index) => {
                         const overflow = attachments.length > maxNumberOfDisplays;
                         const lastDisplayIndex = maxNumberOfDisplays - 1;
@@ -43,7 +45,6 @@ export const ModalMultimedia: React.FC<ModalMultimediaProps> = ({attachments, ma
                         return (
                             index < maxNumberOfDisplays && (
                                 <div
-                                    id={media.type + '-' + media.id}
                                     key={media.id}
                                     className='relative h-full w-full rounded-xl object-cover shadow-sm'
                                 >
@@ -69,12 +70,17 @@ export const ModalMultimedia: React.FC<ModalMultimediaProps> = ({attachments, ma
                                             />
                                         )}
                                         {media.type === 'video' && (
-                                            <video
+                                            // <video
+                                            //     controls={!(lastDisplayIndex && overflow)}
+                                            //     className='h-full w-full rounded-xl object-cover'
+                                            // >
+                                            //     <source src={media.src} type='video/mp4' />
+                                            // </video>
+                                            <ClientVideo
                                                 controls={!(lastDisplayIndex && overflow)}
                                                 className='h-full w-full rounded-xl object-cover'
-                                            >
-                                                <source src={media.src} type='video/mp4' />
-                                            </video>
+                                                src={media.src}
+                                            />
                                         )}
                                     </div>
                                 </div>
@@ -83,9 +89,7 @@ export const ModalMultimedia: React.FC<ModalMultimediaProps> = ({attachments, ma
                     })}
                 </section>
             </DialogTrigger>
-            <DialogContent
-                className={cn('dialog-content', 'sm:max-w-[425px] md:max-w-[600px] lg:max-w-[800px]', className)}
-            >
+            <DialogContent className={cn('sm:max-w-[425px] md:max-w-[600px] lg:max-w-[800px]', className)}>
                 <DialogHeader>
                     <DialogTitle className='sticky top-0 z-10 flex items-center justify-center gap-4 bg-white py-2'>
                         {imageCount && imageCount.toString() + ' Images'}
@@ -109,9 +113,10 @@ export const ModalMultimedia: React.FC<ModalMultimediaProps> = ({attachments, ma
                                     />
                                 )}
                                 {media.type === 'video' && (
-                                    <video controls className='h-fit w-full rounded-xl'>
-                                        <source src={media.src} type='video/mp4' />
-                                    </video>
+                                    // <video controls className='h-fit w-full rounded-xl'>
+                                    //     <source src={media.src} type='video/mp4' />
+                                    // </video>
+                                    <ClientVideo controls className='h-fit w-full rounded-xl' src={media.src} />
                                 )}
                             </div>
                         );
@@ -119,6 +124,5 @@ export const ModalMultimedia: React.FC<ModalMultimediaProps> = ({attachments, ma
                 </div>
             </DialogContent>
         </Dialog>
-        // </div>
     );
 };

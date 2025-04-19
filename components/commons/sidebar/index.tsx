@@ -7,7 +7,6 @@ import {Icon} from '@/components/commons';
 import {Button, Separator} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import {profile} from '@/mock_data/profile';
-import currentUser from '@/mock_data/self';
 import LogoIcon from '@/public/assets/images/logo_icon.svg';
 import LogoText from '@/public/assets/images/logo_text.svg';
 import {ROUTES} from '@/routes/routes.enum';
@@ -96,7 +95,7 @@ export const Sidebar: React.FC = () => {
                     <div className='mb-5'>
                         <SidebarElement
                             name='Connect'
-                            iconName='Globe'
+                            iconName='globe'
                             selected={updatedPageList[0].selected}
                             sidebarExpanded={sidebarExpanded}
                             onClick={() => router.push('/connect')}
@@ -117,14 +116,14 @@ export const Sidebar: React.FC = () => {
                         </SidebarElement>
                         <SidebarElement
                             name='Discover'
-                            iconName='Navigation'
+                            iconName='navigation'
                             selected={updatedPageList[3].selected}
                             sidebarExpanded={sidebarExpanded}
                             onClick={() => router.push('/discover')}
                         />
                         <SidebarElement
                             name='Message'
-                            iconName='Chat'
+                            iconName='chat-circle'
                             selected={updatedPageList[4].selected}
                             sidebarExpanded={sidebarExpanded}
                             onClick={() => router.push('/communication')}
@@ -156,7 +155,7 @@ export const Sidebar: React.FC = () => {
                         /> */}
                         <SidebarElement
                             name='Settings'
-                            iconName='SettingsGear'
+                            iconName='settings-gear'
                             selected={updatedPageList[8].selected}
                             sidebarExpanded={sidebarExpanded}
                             onClick={() => router.push('/settings')}
@@ -165,20 +164,16 @@ export const Sidebar: React.FC = () => {
                     </div>
                     <div className='mb-5'>
                         <p className='mb-5 font-bold text-gray-500'>Profile</p>
-                        <SidebarProfile
-                            href={`/profile/${currentUser.username}`}
-                            data={profile}
-                            sidebarExpanded={sidebarExpanded}
-                        />
+                        <SidebarProfile href={ROUTES.PROFILE} data={profile} sidebarExpanded={sidebarExpanded} />
                         <SidebarElement
                             name='Switch Account'
-                            iconName='LeftRight'
+                            iconName='left-right'
                             sidebarExpanded={sidebarExpanded}
                             onClick={() => console.log('Switching account...')}
                         />
                         <SidebarElement
                             name='Log Out'
-                            iconName='Logout'
+                            iconName='logout'
                             sidebarExpanded={sidebarExpanded}
                             onClick={() => console.log('Logging out...')}
                         />
@@ -186,7 +181,7 @@ export const Sidebar: React.FC = () => {
                     </div>
                     <SidebarElement
                         name='Collapse'
-                        iconName={sidebarExpanded ? 'ZoomOut' : 'ZoomIn'}
+                        iconName={sidebarExpanded ? 'zoom-out' : 'zoom-in'}
                         sidebarExpanded={sidebarExpanded}
                         onClick={() => setSidebarExpanded(!sidebarExpanded)}
                         className='mb-0'

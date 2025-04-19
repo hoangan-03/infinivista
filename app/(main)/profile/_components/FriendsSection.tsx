@@ -39,14 +39,12 @@ export const FriendsSection: React.FC<FriendsSectionProps> = ({data, className})
             <div className='p-3'>
                 <Input
                     variant='outline'
-                    fontSize='text-paragraph1'
                     placeholder='Find friends'
                     value={query}
                     onChange={(event) => {
                         setQuery(event.target.value);
-                        console.log(query);
                     }}
-                    className='search-input'
+                    className='text-paragraph1'
                 />
                 <ScrollArea className={cn('mt-6 pr-3', showAll ? 'h-[550px]' : 'h-fit')}>
                     {displayedFriends.map((friend, index) => (
