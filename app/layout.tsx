@@ -31,12 +31,8 @@ export default function RootLayout({
 }>) {
     return (
         <html lang='en'>
-            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                {/* <div className='bg-gray-100'> */}
-                {/* <div className='container'> */}
+            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning={true}>
                 <div className='relative min-h-screen bg-white'>{children}</div>
-                {/* </div> */}
-                {/* </div> */}
             </body>
         </html>
     );

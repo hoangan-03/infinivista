@@ -9,7 +9,6 @@ import * as Yup from 'yup';
 
 import {Icon, LogoName, PasswordInput} from '@/components/commons';
 import {Button, Input, Separator, Switch} from '@/components/ui';
-import {cn} from '@/lib/utils';
 import {ROUTES} from '@/routes/routes.enum';
 
 const loginSchema = Yup.object().shape({
@@ -42,8 +41,8 @@ export default function LoginPage() {
     const [rememberMe, setRememberMe] = React.useState(false);
 
     return (
-        <div id='login-page' className='h-full w-full px-12 flex-center'>
-            <div id='login-form' className='flex h-full w-full flex-col items-center justify-around'>
+        <div className='h-full w-full px-12 flex-center'>
+            <div className='flex h-full w-full flex-col items-center justify-around'>
                 <LogoName />
                 <div className='w-full'>
                     <h4 className='mb-4 font-bold md:text-heading5'>Nice to see you again</h4>
@@ -59,22 +58,20 @@ export default function LoginPage() {
                                 <Input
                                     type='text'
                                     placeholder='Enter email or phone number'
-                                    fontSize='text-paragraph1'
                                     variant='outline'
-                                    borderRadius='square'
+                                    className='rounded-md text-paragraph1'
+                                    errorMessage={errors.emailPhone?.message}
                                     {...register('emailPhone')}
                                 />
-
-                                <p
+                                {/* <p
                                     className={cn(
                                         'w-full pl-3 text-caption text-blue-500',
                                         errors.emailPhone ? 'visible' : 'invisible'
                                     )}
                                 >
                                     {errors.emailPhone?.message}
-                                </p>
+                                </p> */}
                             </div>
-
                             <div>
                                 <label
                                     htmlFor='password'
@@ -84,22 +81,12 @@ export default function LoginPage() {
                                 </label>
                                 <PasswordInput
                                     placeholder='Enter password'
-                                    fontSize='text-paragraph1'
                                     variant='outline'
-                                    borderRadius='square'
+                                    className='rounded-md text-paragraph1'
+                                    errorMessage={errors.password?.message}
                                     {...register('password')}
                                 />
-
-                                <p
-                                    className={cn(
-                                        'w-full pl-3 text-caption text-blue-500',
-                                        errors.password ? 'visible' : 'invisible'
-                                    )}
-                                >
-                                    {errors.password?.message}
-                                </p>
                             </div>
-
                             <div className='mt-1 flex items-center justify-between'>
                                 <div className='flex items-center focus:underline focus:outline-none'>
                                     <Switch
@@ -114,16 +101,14 @@ export default function LoginPage() {
                                     </label>
                                 </div>
                                 <Link
-                                    id='forgot-password-link'
-                                    href='/auth/login/forgot-password'
+                                    href={ROUTES.FORGOT_PASSWORD}
                                     className='text-nowrap text-paragraph1 text-blue-500 hover:underline md:text-caption'
                                 >
                                     Forgot password?
                                 </Link>
                             </div>
                         </div>
-
-                        <div className='button-group flex flex-col gap-8'>
+                        <div className='flex flex-col gap-8'>
                             <Button type='submit' className='rounded-sm bg-blue-700 text-caption font-bold text-white'>
                                 Sign in
                             </Button>

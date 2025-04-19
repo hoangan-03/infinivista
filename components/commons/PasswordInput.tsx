@@ -1,42 +1,30 @@
 'use client';
 
-import * as React from 'react';
+import {forwardRef, useState} from 'react';
 
-import {IconButton} from '@/components/commons';
 import {Input} from '@/components/ui';
 import {InputProps} from '@/components/ui/input';
-import {cn} from '@/lib/utils';
 
-const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(({className, ...props}, ref) => {
-    const [shownPassword, setShownPassword] = React.useState(false);
-    const icon = shownPassword ? 'EyeClose' : 'EyeOpen';
+import {Icon} from '.';
+
+const PasswordInput = forwardRef<HTMLInputElement, InputProps>(({className, ...props}, ref) => {
+    const [showPassword, setShowPassword] = useState(false);
+    const icon = showPassword ? 'eye' : 'eye-off';
 
     return (
-        <div className='relative w-full'>
-            <Input
-                type={shownPassword ? 'text' : 'password'}
-                className={cn('select-none', className)}
-                onCopy={(e) => e.preventDefault()}
-                onPaste={(e) => e.preventDefault()}
-                ref={ref}
-                {...props}
-            />
-            <div className='pointer-events-none absolute right-0 top-0 flex h-full w-full items-center justify-end pr-4'>
-                <IconButton
-                    label='Show password'
-                    type='button'
-                    defaultName={icon}
-                    hoverName={`${icon}_filled`}
-                    width={16}
-                    height={16}
-                    onClick={() => {
-                        setShownPassword((shownPassword) => !shownPassword);
-                        console.log(shownPassword);
-                    }}
-                    className='pointer-events-auto'
-                />
-            </div>
-        </div>
+        <Input
+            type={showPassword ? 'text' : 'password'}
+            className={className}
+            ref={ref}
+            suffixIcon={
+                <>
+                    <Icon name={icon} className='block group-hover:hidden' />
+                    <Icon name={`${icon}-filled`} className='hidden group-hover:block' />
+                </>
+            }
+            onChangePasswordVisibility={() => setShowPassword((showPassword) => !showPassword)}
+            {...props}
+        />
     );
 });
 PasswordInput.displayName = 'PasswordInput';

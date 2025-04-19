@@ -6,7 +6,7 @@ import {useSelector} from 'react-redux';
 import {FriendListItem} from '@/app/(main)/_components';
 import {RightBarElement} from '@/components/commons/layout/RightBar';
 import {Button} from '@/components/ui';
-import friendList from '@/mock_data/friendList';
+import {friends} from '@/mock_data/friend';
 import {SettingsState} from '@/slices/settingsSlice';
 
 export const Contacts: React.FC = () => {
@@ -18,32 +18,23 @@ export const Contacts: React.FC = () => {
 
     const handleToggleExpand = () => {
         const newDisplayNumber = expanded ? minContacts : maxContacts;
-        setDisplayNumber(Math.min(newDisplayNumber, friendList.length));
+        setDisplayNumber(Math.min(newDisplayNumber, friends.length));
         setExpanded(!expanded);
     };
 
     React.useEffect(() => {
-        setDisplayNumber(Math.min(minContacts, friendList.length));
+        setDisplayNumber(Math.min(minContacts, friends.length));
         setExpanded(false);
         setMounted(true);
-        // console.log(minContacts);
     }, [minContacts]);
 
     return (
         <RightBarElement title='Contacts'>
             <div className='flex flex-col gap-4 rounded-xl p-4 shadow-md'>
                 {mounted &&
-                    friendList
+                    friends
                         .slice(0, displayNumber)
-                        .map((person) => (
-                            <FriendListItem
-                                key={person.username}
-                                username={person.username}
-                                name={person.name}
-                                profilePic={person.profilePic}
-                                isOnline={person.isOnline}
-                            />
-                        ))}
+                        .map((friend, index) => <FriendListItem key={index} data={friend} />)}
                 <div className='flex-center'>
                     <Button variant='link' size='icon' onClick={handleToggleExpand}>
                         <p className='text-caption'>{!expanded ? 'See more' : 'See less'}</p>

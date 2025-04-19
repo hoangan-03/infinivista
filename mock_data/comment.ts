@@ -5,6 +5,7 @@ export interface Comment {
     avatar: string;
     likeAmount: number;
     date: string;
+    createdAt: Date;
 }
 
 export const comments: Comment[] = [
@@ -15,6 +16,7 @@ export const comments: Comment[] = [
         likeAmount: 5000,
         date: '10 weeks ago',
         avatar: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408648/cld-sample-4.jpg',
+        createdAt: new Date(),
     },
     {
         id: 2,
@@ -23,6 +25,7 @@ export const comments: Comment[] = [
         likeAmount: 5000,
         date: '10 weeks ago',
         avatar: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408648/cld-sample-4.jpg',
+        createdAt: new Date(),
     },
     {
         id: 3,
@@ -31,6 +34,7 @@ export const comments: Comment[] = [
         likeAmount: 5000,
         date: '10 weeks ago',
         avatar: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408648/cld-sample-4.jpg',
+        createdAt: new Date(),
     },
     {
         id: 4,
@@ -39,6 +43,7 @@ export const comments: Comment[] = [
         likeAmount: 5000,
         date: '10 weeks ago',
         avatar: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408648/cld-sample-4.jpg',
+        createdAt: new Date(),
     },
     {
         id: 5,
@@ -47,5 +52,6 @@ export const comments: Comment[] = [
         likeAmount: 5000,
         date: '10 weeks ago',
         avatar: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408648/cld-sample-4.jpg',
+        createdAt: new Date(),
     },
 ];

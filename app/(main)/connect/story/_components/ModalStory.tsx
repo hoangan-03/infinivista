@@ -1,5 +1,4 @@
-import {Avatar} from '@/app/(main)/_components';
-import {Icon} from '@/components/commons';
+import {Avatar, ClientVideo, Icon} from '@/components/commons';
 import {
     Button,
     Dialog,
@@ -14,8 +13,6 @@ import {
 } from '@/components/ui';
 import {comments} from '@/mock_data/comment';
 import {Story} from '@/mock_data/story';
-
-import {StoryComment} from '.';
 
 interface Props {
     open: boolean;
@@ -37,10 +34,16 @@ function ModalStory({open, data, onClose}: Props) {
                     <div className='w-3/5'>
                         {data?.videoUrl ? (
                             <div className='relative aspect-video h-full'>
-                                <video className='h-full w-full rounded-l-lg object-cover' controls playsInline>
+                                {/* <video className='h-full w-full rounded-l-lg object-cover' controls playsInline>
                                     <source src={data.videoUrl} type='video/mp4' />
                                     Your browser does not support the video tag.
-                                </video>
+                                </video> */}
+                                <ClientVideo
+                                    controls
+                                    playsInline
+                                    className='h-full w-full rounded-l-lg object-cover'
+                                    src={data.videoUrl}
+                                />
                             </div>
                         ) : (
                             <div className='flex h-[60vh] items-center justify-center rounded-l-lg bg-gray-100'>
@@ -59,7 +62,22 @@ function ModalStory({open, data, onClose}: Props) {
                         <Separator className='mt-4 bg-gray-100' />
                         <ScrollArea className='h-[60vh] max-h-[60vh]'>
                             {comments.map((comment, index) => (
-                                <StoryComment key={index} data={comment} />
+                                <div className='mt-4 space-y-2' key={index}>
+                                    <div className='flex gap-2'>
+                                        <Avatar />
+                                        <div className='flex w-[90%] justify-between gap-2'>
+                                            <p className='w-[90%] text-sm text-gray-500'>
+                                                <span className='w-fit font-bold text-black'>{comment.username}</span>{' '}
+                                                {comment.text}
+                                            </p>
+                                            <Icon name='heart' />
+                                        </div>
+                                    </div>
+                                    <div className='flex items-center justify-between'>
+                                        <p className='text-sm text-gray-500'>{comment.likeAmount} likes</p>
+                                        <p className='text-sm text-gray-500'>{comment.date}</p>
+                                    </div>
+                                </div>
                             ))}
                         </ScrollArea>
                         <Separator className='mt-4 bg-gray-100' />

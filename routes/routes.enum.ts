@@ -8,7 +8,7 @@ export enum ROUTES {
     CONNECT_FEED = '/connect/feed',
     CONNECT_STORY = '/connect/story',
 
-    PROFILE = '/profile/[username]',
+    PROFILE = '/profile',
 
     COMMUNICATION = '/communication',
     COMMUNICATION_CHANNEL = '/communication/[channelId]',

@@ -2,9 +2,9 @@
 
 import {Post} from '@/app/(main)/_components';
 import {useFeedContext} from '@/context';
-import posts from '@/mock_data/postMockData';
+import {posts} from '@/mock_data/post';
 
-function ConnectFeed() {
+function FeedPage() {
     const {feedType} = useFeedContext();
 
     // TODO: Implement once API is ready
@@ -13,10 +13,10 @@ function ConnectFeed() {
     return (
         <div className='flex flex-col gap-7'>
             {filteredPosts.map((post) => (
-                <Post key={post.id} postObject={post} />
+                <Post key={post.id} data={post} />
             ))}
         </div>
     );
 }
 
-export default ConnectFeed;
+export default FeedPage;

@@ -1,10 +1,9 @@
 import {redirect} from 'next/navigation';
 
-import currentUser from '@/mock_data/self';
+import {profile} from '@/mock_data/profile';
 
 export default function Profile() {
-    const username = currentUser.username;
+    const username = profile.username;
 
-    // immediately redirects to /profile/[username]
     redirect(`/profile/${username}`);
 }

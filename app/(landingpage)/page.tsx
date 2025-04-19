@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
+import {ClientVideo} from '@/components/commons';
 import {Button} from '@/components/ui/button';
 import {cn} from '@/lib/utils';
 import {ROUTES} from '@/routes/routes.enum';
@@ -11,10 +12,17 @@ const Home: React.FC = () => {
         <div className='flex h-auto w-full flex-col bg-gray-900 text-white'>
             {/* Hero Section */}
             <div className='relative flex h-[1024px] w-full items-center justify-center bg-cover bg-center'>
-                <video autoPlay loop muted className='absolute inset-0 h-full w-full object-cover'>
+                {/* <video autoPlay loop muted className='absolute inset-0 h-full w-full object-cover'>
                     <source src='/assets/images/back_video.mp4' type='video/mp4' />
                     Your browser does not support the video tag.
-                </video>
+                </video> */}
+                <ClientVideo
+                    autoPlay
+                    loop
+                    muted
+                    className='absolute inset-0 h-full w-full object-cover'
+                    src='/assets/images/back_video.mp4'
+                />
                 <div className='z-10 text-center'>
                     <h1 className='mb-4 text-2xl font-bold uppercase text-gray-300'>WE ARE INFINIVISTA</h1>
                     <h2 className='mb-10 text-6xl font-bold text-white'>
@@ -206,7 +214,7 @@ const Home: React.FC = () => {
                 </div>
             </div>
 
-            <div className='relative h-screen w-full bg-black' id='screen1'>
+            <div className='relative h-screen w-full bg-black'>
                 <Image
                     src='/assets/images/background_connect.jpg'
                     alt='iPhone Image'
@@ -234,7 +242,7 @@ const Home: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <div className='relative h-[1240px] w-full bg-[#058189]' id='screen2'>
+            <div className='relative h-[1240px] w-full bg-[#058189]'>
                 <Image
                     src='/assets/icons/express.png'
                     alt='iPhone Image'
@@ -261,7 +269,7 @@ const Home: React.FC = () => {
                 </div>
             </div>
 
-            <div className='relative h-[1240px] w-full bg-[#DD245C]' id='screen3'>
+            <div className='relative h-[1240px] w-full bg-[#DD245C]'>
                 <Image
                     src='/assets/icons/profile.png'
                     alt='iPhone Image'
@@ -290,7 +298,7 @@ const Home: React.FC = () => {
                 </div>
             </div>
 
-            <div className='relative h-[1240px] w-full bg-[#04A014]' id='screen4'>
+            <div className='relative h-[1240px] w-full bg-[#04A014]'>
                 <Image
                     src='/assets/icons/feed.png'
                     alt='iPhone Image'
@@ -317,7 +325,7 @@ const Home: React.FC = () => {
                 </div>
             </div>
 
-            <div className='relative h-[1240px] w-full bg-[#0C5CF7]' id='screen5'>
+            <div className='relative h-[1240px] w-full bg-[#0C5CF7]'>
                 <Image
                     src='/assets/icons/shopping.png'
                     alt='iPhone Image'

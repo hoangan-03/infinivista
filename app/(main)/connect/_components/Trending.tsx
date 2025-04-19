@@ -3,7 +3,7 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 
-import {IconButton} from '@/components/commons/IconButton';
+import {Icon} from '@/components/commons';
 import {RightBarElement} from '@/components/commons/layout/RightBar';
 import {Button} from '@/components/ui';
 import trendingList from '@/mock_data/trendingList';
@@ -43,7 +43,9 @@ export const Trending: React.FC = () => {
                                     {trend.postCount < 1000 ? trend.postCount : trend.postCount / 1000 + 'k'} posts
                                 </p>
                             </div>
-                            <IconButton label='More options' defaultName='More' />
+                            <Button variant='icon' size='icon'>
+                                <Icon name='more' />
+                            </Button>
                         </a>
                     ))}
                 <Button variant='link' size='icon' onClick={handleToggleExpand}>

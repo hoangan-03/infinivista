@@ -1,3 +1,5 @@
+import {Comment} from './comment';
+
 export enum ATTACHMENT_TYPE {
     IMAGE = 'image',
     VIDEO = 'video',
@@ -29,25 +31,16 @@ export interface Reaction {
     people: Person[];
 }
 
-export interface Comment {
-    id: number;
-    username: string;
-    created_by: string;
-    avatar: string;
-    created_at: Date;
-    commentText: string;
-}
-
 export interface Post {
     id: number;
     author: string;
-    created_at: Date;
+    createdAt: Date;
     avatar: string;
     description: string;
-    attachmentList: Attachment[];
-    reactionList: Reaction[];
+    attachments: Attachment[];
+    reactions: Reaction[];
+    comments: Comment[];
     viewCount: number;
-    commentList: Comment[];
     repostCount: number;
     shareCount: number;
 }
@@ -56,11 +49,11 @@ export const posts: Post[] = [
     {
         id: 1,
         author: 'John Nguyen',
-        created_at: new Date(),
+        createdAt: new Date(),
         avatar: '/assets/images/avatar.jpg',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet quam non lectus facilisis consectetur.',
-        attachmentList: [
+        attachments: [
             {
                 id: 2,
                 type: ATTACHMENT_TYPE.IMAGE,
@@ -92,7 +85,7 @@ export const posts: Post[] = [
                 alt: 'Image 3',
             },
         ],
-        reactionList: [
+        reactions: [
             {
                 id: 7,
                 type: REACTION_TYPE.LIKE,
@@ -136,22 +129,24 @@ export const posts: Post[] = [
             },
         ],
         viewCount: 3000,
-        commentList: [
+        comments: [
             {
                 id: 14,
                 username: 'jane-smith',
-                created_by: 'Jane Smith',
                 avatar: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408640/samples/landscapes/nature-mountains.jpg',
-                created_at: new Date(),
-                commentText: 'Great post! Thanks for sharing.',
+                createdAt: new Date(),
+                text: 'Great post! Thanks for sharing.',
+                date: '10 weeks ago',
+                likeAmount: 5000,
             },
             {
                 id: 15,
                 username: 'bob-johnson',
-                created_by: 'Bob Johnson',
                 avatar: '',
-                created_at: new Date(),
-                commentText: 'I agree. It was very informative.',
+                createdAt: new Date(),
+                text: 'I agree. It was very informative.',
+                likeAmount: 5000,
+                date: '10 weeks ago',
             },
         ],
         repostCount: 10,
@@ -160,10 +155,10 @@ export const posts: Post[] = [
     {
         id: 2,
         author: 'Jane Doe',
-        created_at: new Date(),
+        createdAt: new Date(),
         avatar: '/assets/images/avatar.jpg',
         description: 'Exploring the beauty of nature through photography.',
-        attachmentList: [
+        attachments: [
             {
                 id: 21,
                 type: ATTACHMENT_TYPE.IMAGE,
@@ -183,7 +178,7 @@ export const posts: Post[] = [
                 alt: 'Dog Video',
             },
         ],
-        reactionList: [
+        reactions: [
             {
                 id: 24,
                 type: REACTION_TYPE.LIKE,
@@ -215,14 +210,15 @@ export const posts: Post[] = [
             },
         ],
         viewCount: 4500,
-        commentList: [
+        comments: [
             {
                 id: 26,
                 username: 'sophia',
-                created_by: 'Sophia',
                 avatar: 'https://res.cloudinary.com/demo/image/upload/samples/people/boy-snow-hoodie.jpg',
-                created_at: new Date(),
-                commentText: 'Amazing photos! Nature is truly breathtaking.',
+                createdAt: new Date(),
+                text: 'Amazing photos! Nature is truly breathtaking.',
+                likeAmount: 5000,
+                date: '10 weeks ago',
             },
         ],
         repostCount: 12,
@@ -231,10 +227,10 @@ export const posts: Post[] = [
     {
         id: 3,
         author: 'Michael Smith',
-        created_at: new Date(),
+        createdAt: new Date(),
         avatar: '/assets/images/avatar.jpg',
         description: 'Capturing urban life in the city.',
-        attachmentList: [
+        attachments: [
             {
                 id: 31,
                 type: ATTACHMENT_TYPE.IMAGE,
@@ -254,7 +250,7 @@ export const posts: Post[] = [
                 alt: 'Elephants Video',
             },
         ],
-        reactionList: [
+        reactions: [
             {
                 id: 34,
                 type: REACTION_TYPE.LIKE,
@@ -286,14 +282,15 @@ export const posts: Post[] = [
             },
         ],
         viewCount: 5200,
-        commentList: [
+        comments: [
             {
                 id: 36,
                 username: 'mia',
-                created_by: 'Mia',
                 avatar: 'https://res.cloudinary.com/demo/image/upload/samples/people/boy-snow-hoodie.jpg',
-                created_at: new Date(),
-                commentText: 'Love the urban vibes in these shots!',
+                createdAt: new Date(),
+                text: 'Love the urban vibes in these shots!',
+                likeAmount: 5000,
+                date: '10 weeks ago',
             },
         ],
         repostCount: 15,
