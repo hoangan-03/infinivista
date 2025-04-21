@@ -3,10 +3,10 @@ import React from 'react';
 import {Icon} from '@/components/commons';
 // import {IconProps} from '@/components/commons/Icon';
 import {cn} from '@/lib/utils';
-import {INTRODUCTION, Profile} from '@/mock_data/profile';
+import {INTRODUCTION, IProfile} from '@/mock_data/profile';
 
 interface IntroductionSectionProps {
-    data: Profile;
+    data: IProfile;
     className?: string;
 }
 

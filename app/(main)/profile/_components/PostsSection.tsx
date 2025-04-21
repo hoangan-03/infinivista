@@ -5,7 +5,7 @@ import {Post} from '@/app/(main)/_components';
 import {Icon} from '@/components/commons';
 import {Button, ScrollArea} from '@/components/ui';
 import {cn} from '@/lib/utils';
-import {Post as IPost} from '@/mock_data/post';
+import {IPost} from '@/mock_data/post';
 
 interface PostsSectionProps {
     data: IPost[];
@@ -30,7 +30,7 @@ export const PostsSection: React.FC<PostsSectionProps> = ({data, className}) => 
                     <ArrowRightIcon className='h-4 w-4' />
                 </Button>
             </div>
-            <div className='rounded-3xl bg-white pt-7'>
+            <div className='rounded-3xl bg-white pt-7 shadow-sm'>
                 <div className='flex items-center justify-between pr-5'>
                     <div className='w-52 border-b border-blue-600 pb-4'>
                         <h2 className='ml-9 text-[28px] font-bold text-blue-600'>Posts</h2>

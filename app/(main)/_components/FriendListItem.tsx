@@ -4,10 +4,10 @@ import React from 'react';
 import {Icon} from '@/components/commons';
 import {Button} from '@/components/ui';
 import {cn} from '@/lib/utils';
-import {Friend} from '@/mock_data/friend';
+import {IFriend} from '@/mock_data/friend';
 
 interface FriendListItemProps {
-    data: Friend;
+    data: IFriend;
     onViewProfile?: () => void;
     onAddFriend?: () => void;
     className?: string;

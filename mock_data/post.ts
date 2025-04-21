@@ -1,4 +1,4 @@
-import {Comment} from './comment';
+import {IComment} from './comment';
 
 export enum ATTACHMENT_TYPE {
     IMAGE = 'image',
@@ -11,41 +11,41 @@ export enum REACTION_TYPE {
     SAD = 'sad',
 }
 
-export interface Attachment {
+export interface IAttachment {
     id: number;
     type: ATTACHMENT_TYPE;
     src: string;
     alt: string;
 }
 
-export interface Person {
+export interface IPerson {
     username: string;
     name: string;
     avatar: string;
 }
 
-export interface Reaction {
+export interface IReaction {
     id: number;
     type: REACTION_TYPE;
     count: number;
-    people: Person[];
+    people: IPerson[];
 }
 
-export interface Post {
+export interface IPost {
     id: number;
     author: string;
     createdAt: Date;
     avatar: string;
     description: string;
-    attachments: Attachment[];
-    reactions: Reaction[];
-    comments: Comment[];
+    attachments: IAttachment[];
+    reactions: IReaction[];
+    comments: IComment[];
     viewCount: number;
     repostCount: number;
     shareCount: number;
 }
 
-export const posts: Post[] = [
+export const posts: IPost[] = [
     {
         id: 1,
         author: 'John Nguyen',
@@ -80,6 +80,18 @@ export const posts: Post[] = [
             },
             {
                 id: 6,
+                type: ATTACHMENT_TYPE.IMAGE,
+                src: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408639/samples/ecommerce/leather-bag-gray.jpg',
+                alt: 'Image 3',
+            },
+            {
+                id: 7,
+                type: ATTACHMENT_TYPE.IMAGE,
+                src: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408639/samples/ecommerce/leather-bag-gray.jpg',
+                alt: 'Image 3',
+            },
+            {
+                id: 8,
                 type: ATTACHMENT_TYPE.IMAGE,
                 src: 'https://res.cloudinary.com/dght74v9o/image/upload/v1735408639/samples/ecommerce/leather-bag-gray.jpg',
                 alt: 'Image 3',

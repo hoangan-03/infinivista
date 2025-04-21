@@ -4,80 +4,80 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
-  :root {
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%
-  }
-  .dark {
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%
-  }
+    :root {
+        --sidebar-background: 0 0% 98%;
+        --sidebar-foreground: 240 5.3% 26.1%;
+        --sidebar-primary: 240 5.9% 10%;
+        --sidebar-primary-foreground: 0 0% 98%;
+        --sidebar-accent: 240 4.8% 95.9%;
+        --sidebar-accent-foreground: 240 5.9% 10%;
+        --sidebar-border: 220 13% 91%;
+        --sidebar-ring: 217.2 91.2% 59.8%;
+    }
+    .dark {
+        --sidebar-background: 240 5.9% 10%;
+        --sidebar-foreground: 240 4.8% 95.9%;
+        --sidebar-primary: 224.3 76.3% 48%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 240 3.7% 15.9%;
+        --sidebar-accent-foreground: 240 4.8% 95.9%;
+        --sidebar-border: 240 3.7% 15.9%;
+        --sidebar-ring: 217.2 91.2% 59.8%;
+    }
 }
 
 @layer components {
-  /* .sidebar-transition and .text-collapsed define the animation properties of the sidebar */
-  .sidebar-transition {
-    @apply text-nowrap transition-all duration-500 ease-in-out;
-  }
+    /* .sidebar-transition and .text-collapsed define the animation properties of the sidebar */
+    .sidebar-transition {
+        @apply text-nowrap transition-all duration-500 ease-in-out;
+    }
 
-  .text-collapsed {
-      @apply w-0 opacity-0;
-  }
+    .text-collapsed {
+        @apply w-0 opacity-0;
+    }
 
-  /* Ensuring the friends section of profile page does not overflow */
-  .friends-scroll-area [data-radix-scroll-area-viewport] > * {
-    @apply !block;
-  }
+    /* Ensuring the friends section of profile page does not overflow */
+    .friends-scroll-area [data-radix-scroll-area-viewport] > * {
+        @apply !block;
+    }
 }
 
 @layer utilities {
-  .custom-scrollbar {
-    /* For Webkit browsers like Chrome, Safari */
-    &::-webkit-scrollbar {
-      width: 0.5rem;
-      height: 1rem;
-    }
-    
-    &::-webkit-scrollbar-track {
-      @apply bg-transparent;
-    }
-    
-    &::-webkit-scrollbar-thumb {
-      @apply bg-gray-300/30 rounded-full hover:bg-gray-300/50 transition-colors;
+    .custom-scrollbar {
+        /* For Webkit browsers like Chrome, Safari */
+        &::-webkit-scrollbar {
+            width: 0.5rem;
+            height: 1rem;
+        }
+
+        &::-webkit-scrollbar-track {
+            @apply bg-transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            @apply rounded-full bg-gray-300/30 transition-colors hover:bg-gray-300/50;
+        }
+
+        /* Hide default arrows */
+        &::-webkit-scrollbar-button {
+            display: none;
+        }
+
+        /* For Firefox only */
+        @supports (-moz-appearance: none) {
+            scrollbar-width: thin;
+            scrollbar-color: rgb(189 189 189 / 0.3) transparent;
+        }
     }
 
-    /* Hide default arrows */
-    &::-webkit-scrollbar-button {
-      display: none;
+    /* Hide scrollbar for Chrome, Safari, and Opera */
+    .custom-scrollbar-hidden::-webkit-scrollbar {
+        display: none;
     }
 
-    /* For Firefox only */
-    @supports (-moz-appearance: none) {
-      scrollbar-width: thin;
-      scrollbar-color: rgb(189 189 189 / 0.3) transparent;
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .custom-scrollbar-hidden {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
     }
-  }
-
-  /* Hide scrollbar for Chrome, Safari, and Opera */
-  .custom-scrollbar-hidden::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Hide scrollbar for IE, Edge and Firefox */
-  .custom-scrollbar-hidden {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
 }

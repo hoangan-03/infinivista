@@ -43,7 +43,7 @@ export const ConnectNavbar: React.FC<ConnectNavbarProps> = ({title, className}) 
     const {feedType, setFeedType} = useFeedContext();
 
     return (
-        <div className={cn('connect-navbar', 'flex w-full items-center justify-between', className)}>
+        <div className={cn('flex w-full items-center justify-between', className)}>
             <h5 className='font-extrabold text-blue-700'>{title}</h5>
             <div className='flex items-center gap-4'>
                 {tabList.map((tab, index) => (

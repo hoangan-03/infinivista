@@ -4,7 +4,7 @@ import {Avatar, Icon} from '@/components/commons';
 import {Input, Separator} from '@/components/ui';
 import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle} from '@/components/ui/dialog';
 import {getSumReactions, getTimeStamp} from '@/lib/utils';
-import {Comment as IComment} from '@/mock_data/comment';
+import {IComment} from '@/mock_data/comment';
 import {REACTION_TYPE} from '@/mock_data/post';
 
 import {ReactionButton} from '.';
@@ -26,7 +26,7 @@ export const ModalComments: React.FC<ModalCommentsProps> = ({open, onClose, reac
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent>
+            <DialogContent autoFocus={false}>
                 <DialogHeader>
                     <DialogTitle className='flex gap-4'>
                         <div className='flex items-center gap-1'>
@@ -43,9 +43,9 @@ export const ModalComments: React.FC<ModalCommentsProps> = ({open, onClose, reac
                 </DialogHeader>
                 <div className='flex h-[calc(90vh-4.5rem)] flex-col justify-between gap-5'>
                     <div className='custom-scrollbar flex h-full flex-col items-center gap-5 overflow-y-auto'>
-                        {comments.map((comment) => (
+                        {comments.map((comment, index) => (
                             <div
-                                key={comment.id}
+                                key={index}
                                 className='flex w-full items-center gap-3 rounded-md bg-gray-100 px-3 py-2'
                             >
                                 <Avatar

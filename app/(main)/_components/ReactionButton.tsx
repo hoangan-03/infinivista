@@ -9,16 +9,22 @@ import {REACTION_TYPE} from '@/mock_data/post';
 interface ReactButtonProps {
     width?: number;
     height?: number;
+    reacted?: boolean;
     onReact: (reaction: REACTION_TYPE) => void;
 }
 
-export const ReactionButton: React.FC<ReactButtonProps> = ({width = 24, height = 24}) => {
+export const ReactionButton: React.FC<ReactButtonProps> = ({width = 24, height = 24, onReact, reacted}) => {
     return (
         <TooltipProvider delayDuration={150}>
             <Tooltip>
                 <TooltipTrigger asChild>
                     <Button variant='icon' size='icon'>
-                        <Icon name='heart' width={width} height={height} className='block group-hover:hidden' />
+                        <Icon
+                            name={!reacted ? 'heart' : 'heart-filled'}
+                            width={width}
+                            height={height}
+                            className='block group-hover:hidden'
+                        />
                         <Icon
                             name='heart-filled'
                             width={width}

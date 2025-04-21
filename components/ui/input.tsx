@@ -29,7 +29,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>,
     suffixIcon?: React.ReactNode;
     errorMessage?: string;
     errorClassName?: string;
-    onChangePasswordVisibility?: () => void;
+    onClickSuffixIcon?: () => void;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -42,7 +42,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             suffixIcon,
             errorMessage,
             errorClassName,
-            onChangePasswordVisibility,
+            onClickSuffixIcon,
             ...props
         },
         ref
@@ -60,12 +60,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                         {...props}
                     />
                     {suffixIcon &&
-                        (onChangePasswordVisibility ? (
+                        (onClickSuffixIcon ? (
                             <Button
                                 size='icon'
                                 variant='icon'
                                 className='absolute right-3 top-1/2 -translate-y-1/2 transform hover:-translate-y-1/2 active:-translate-y-1/2'
-                                onClick={onChangePasswordVisibility}
+                                onClick={onClickSuffixIcon}
                             >
                                 {suffixIcon}
                             </Button>

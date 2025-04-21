@@ -2,12 +2,12 @@ import Image from 'next/image';
 
 import {Icon} from '@/components/commons';
 import {cn} from '@/lib/utils';
-import {Story} from '@/mock_data/story';
+import {IStory} from '@/mock_data/story';
 
 interface Props {
     width: 1 | 2 | 3;
     height: 1 | 2 | 3;
-    data?: Story; // TODO: change to interface Story once API is ready
+    data?: IStory; // TODO: change to interface Story once API is ready
     onClick?: () => void;
 }
 

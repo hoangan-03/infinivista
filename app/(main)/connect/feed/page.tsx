@@ -1,6 +1,6 @@
 'use client';
 
-import {Post} from '@/app/(main)/_components';
+import {Post, SharedPost} from '@/app/(main)/_components';
 import {useFeedContext} from '@/context';
 import {posts} from '@/mock_data/post';
 
@@ -11,7 +11,10 @@ function FeedPage() {
     const filteredPosts = feedType === 'for-you' ? posts : posts;
 
     return (
-        <div className='flex flex-col gap-7'>
+        <div className='space-y-7'>
+            {filteredPosts.map((post) => (
+                <SharedPost key={post.id} data={post} />
+            ))}
             {filteredPosts.map((post) => (
                 <Post key={post.id} data={post} />
             ))}

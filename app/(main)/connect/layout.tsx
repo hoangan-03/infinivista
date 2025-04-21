@@ -1,9 +1,9 @@
 import React from 'react';
 
-import {MainContent, RightBar} from '@/components/commons/layout';
+import {MainContent} from '@/components/commons/layout';
 import {FeedProvider} from '@/context';
 
-import {ConnectNavbar, Contacts, Suggestions, Trending} from './_components';
+import {ConnectNavbar, ConnectSidebar} from './_components';
 
 export default function ConnectLayout({children}: {children: React.ReactNode}) {
     return (
@@ -17,11 +17,7 @@ export default function ConnectLayout({children}: {children: React.ReactNode}) {
                             {children}
                         </MainContent>
                     </FeedProvider>
-                    <RightBar>
-                        <Suggestions />
-                        <Trending />
-                        <Contacts />
-                    </RightBar>
+                    <ConnectSidebar />
                 </div>
             </div>
         </div>

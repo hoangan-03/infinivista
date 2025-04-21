@@ -1,3 +1,4 @@
+import {ReactionButton} from '@/app/(main)/_components';
 import {Avatar, ClientVideo, Icon} from '@/components/commons';
 import {
     Button,
@@ -12,41 +13,37 @@ import {
     VisuallyHidden,
 } from '@/components/ui';
 import {comments} from '@/mock_data/comment';
-import {Story} from '@/mock_data/story';
+import {IStory} from '@/mock_data/story';
 
 interface Props {
     open: boolean;
-    data?: Story;
+    data?: IStory;
     onClose: () => void;
 }
 
 function ModalStory({open, data, onClose}: Props) {
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent className='h-fit min-h-[90vh] min-w-[1250px] items-start'>
+            <DialogContent className='h-fit min-h-[85vh] min-w-[1250px] items-start'>
                 <VisuallyHidden>
                     <DialogHeader className='sr-only h-fit space-y-2'>
                         <DialogTitle>Posted by {data?.username}</DialogTitle>
                         <DialogDescription>{data?.description}</DialogDescription>
                     </DialogHeader>
                 </VisuallyHidden>
-                <div className='flex items-center gap-4'>
-                    <div className='w-3/5'>
+                <div className='flex h-full items-center gap-4'>
+                    <div className='flex h-full w-3/5 items-center justify-between'>
                         {data?.videoUrl ? (
-                            <div className='relative aspect-video h-full'>
-                                {/* <video className='h-full w-full rounded-l-lg object-cover' controls playsInline>
-                                    <source src={data.videoUrl} type='video/mp4' />
-                                    Your browser does not support the video tag.
-                                </video> */}
+                            <div className='relative h-full'>
                                 <ClientVideo
                                     controls
                                     playsInline
-                                    className='h-full w-full rounded-l-lg object-cover'
+                                    className='h-full w-full rounded-lg object-cover'
                                     src={data.videoUrl}
                                 />
                             </div>
                         ) : (
-                            <div className='flex h-[60vh] items-center justify-center rounded-l-lg bg-gray-100'>
+                            <div className='flex h-full items-center justify-center rounded-lg bg-gray-100'>
                                 <p className='text-gray-500'>No media available</p>
                             </div>
                         )}
@@ -60,21 +57,24 @@ function ModalStory({open, data, onClose}: Props) {
                             </div>
                         </div>
                         <Separator className='mt-4 bg-gray-100' />
-                        <ScrollArea className='h-[60vh] max-h-[60vh]'>
+                        <ScrollArea className='h-[60vh] max-h-[60vh] pr-3'>
                             {comments.map((comment, index) => (
                                 <div className='mt-4 space-y-2' key={index}>
                                     <div className='flex gap-2'>
                                         <Avatar />
                                         <div className='flex w-[90%] justify-between gap-2'>
-                                            <p className='w-[90%] text-sm text-gray-500'>
+                                            <p className='w-[90%] text-justify text-sm text-gray-500'>
                                                 <span className='w-fit font-bold text-black'>{comment.username}</span>{' '}
                                                 {comment.text}
                                             </p>
-                                            <Icon name='heart' />
+                                            <ReactionButton
+                                                onReact={(reaction) => {
+                                                    console.log(reaction);
+                                                }}
+                                            />
                                         </div>
                                     </div>
-                                    <div className='flex items-center justify-between'>
-                                        <p className='text-sm text-gray-500'>{comment.likeAmount} likes</p>
+                                    <div className='flex items-center justify-end'>
                                         <p className='text-sm text-gray-500'>{comment.date}</p>
                                     </div>
                                 </div>
@@ -84,9 +84,14 @@ function ModalStory({open, data, onClose}: Props) {
                         <div className='mt-2 flex items-center justify-between'>
                             <p>100000 Likes</p>
                             <div className='mt-2 flex items-center gap-4'>
-                                <Button variant='raw' size='icon' className='hover:scale-110'>
+                                {/* <Button variant='raw' size='icon' className='hover:scale-110'>
                                     <Icon name='heart' />
-                                </Button>
+                                </Button> */}
+                                <ReactionButton
+                                    onReact={(reaction) => {
+                                        console.log(reaction);
+                                    }}
+                                />
                                 <Button variant='raw' size='icon' className='hover:scale-110'>
                                     <Icon name='chat-rectangle' />
                                 </Button>

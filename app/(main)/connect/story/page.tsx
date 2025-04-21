@@ -2,18 +2,18 @@
 
 import {useEffect, useState} from 'react';
 
-import {stories, Story} from '@/mock_data/story';
+import {IStory, stories} from '@/mock_data/story';
 
 import {ModalStory, requiredItemsPerRow, StoryRow} from './_components';
 
 type RowData = {
     pattern: 1 | 2 | 3 | 4 | 5 | 6 | 7;
-    data: Story[];
+    data: IStory[];
 };
 
 function StoryPage() {
     const [showStoryModal, setShowStoryModal] = useState<boolean>(false);
-    const [showStory, setShowStory] = useState<Story | undefined>(undefined);
+    const [showStory, setShowStory] = useState<IStory | undefined>(undefined);
     // Use state to store rows, initially empty
     const [storyRows, setStoryRows] = useState<RowData[]>([]);
 

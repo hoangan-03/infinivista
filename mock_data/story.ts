@@ -1,4 +1,4 @@
-export interface Story {
+export interface IStory {
     id: number;
     username: string;
     title: string;
@@ -7,7 +7,7 @@ export interface Story {
     videoUrl: string;
 }
 
-export const stories: Story[] = [
+export const stories: IStory[] = [
     {
         id: 1,
         title: 'Story 1',

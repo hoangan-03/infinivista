@@ -3,13 +3,13 @@ import React from 'react';
 
 import {friends} from '@/mock_data/friend';
 import {posts} from '@/mock_data/post';
-import {Profile, profile as mockProfile} from '@/mock_data/profile';
+import {IProfile, profile as mockProfile} from '@/mock_data/profile';
 
 import {AboutSection, FriendsSection, IntroductionSection, PostsSection, ProfileCard} from '../_components';
 
 const ProfilePage: React.FC<{params: {uuid: string}}> = ({params}) => {
     // TODO: Use uuid to get user data from the server --> if not found, return notFound()
-    const profile: Profile = params ? mockProfile : mockProfile;
+    const profile: IProfile = params ? mockProfile : mockProfile;
 
     if (!profile) {
         return notFound();

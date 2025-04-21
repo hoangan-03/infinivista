@@ -1,5 +1,3 @@
-'use client';
-
 import Image from 'next/image';
 import React from 'react';
 
@@ -26,24 +24,24 @@ interface Attachment {
 
 interface ModalMultimediaProps {
     attachments: Attachment[];
-    maxNumberOfDisplays: number;
+    displayCount?: number;
     className?: string;
 }
 
-export const ModalMultimedia: React.FC<ModalMultimediaProps> = ({attachments, maxNumberOfDisplays, className}) => {
+export const ModalMultimedia: React.FC<ModalMultimediaProps> = ({attachments, displayCount = 4, className}) => {
     const imageCount = attachments.filter((attachment) => attachment.type === 'image').length;
     const videoCount = attachments.filter((attachment) => attachment.type === 'video').length;
 
     return (
         <Dialog>
-            <DialogTrigger>
+            <DialogTrigger className='focus-visible:outline-none'>
                 <section className='grid auto-rows-fr grid-cols-[repeat(auto-fill,_minmax(188px,_1fr))] gap-3'>
                     {attachments.map((media, index) => {
-                        const overflow = attachments.length > maxNumberOfDisplays;
-                        const lastDisplayIndex = maxNumberOfDisplays - 1;
+                        const overflow = attachments.length > displayCount;
+                        const lastDisplayIndex = displayCount - 1;
 
                         return (
-                            index < maxNumberOfDisplays && (
+                            index < displayCount && (
                                 <div
                                     key={media.id}
                                     className='relative h-full w-full rounded-xl object-cover shadow-sm'
@@ -70,12 +68,6 @@ export const ModalMultimedia: React.FC<ModalMultimediaProps> = ({attachments, ma
                                             />
                                         )}
                                         {media.type === 'video' && (
-                                            // <video
-                                            //     controls={!(lastDisplayIndex && overflow)}
-                                            //     className='h-full w-full rounded-xl object-cover'
-                                            // >
-                                            //     <source src={media.src} type='video/mp4' />
-                                            // </video>
                                             <ClientVideo
                                                 controls={!(lastDisplayIndex && overflow)}
                                                 className='h-full w-full rounded-xl object-cover'
@@ -99,28 +91,23 @@ export const ModalMultimedia: React.FC<ModalMultimediaProps> = ({attachments, ma
                 </DialogHeader>
                 <DialogDescription />
                 <div className='flex h-full flex-col justify-between gap-5'>
-                    {attachments.map((media) => {
-                        return (
-                            <div key={media.id}>
-                                {media.type === 'image' && (
-                                    <Image
-                                        src={media.src}
-                                        alt={media.alt}
-                                        width={0}
-                                        height={0}
-                                        sizes='100vw'
-                                        className='h-auto w-full rounded-xl object-cover'
-                                    />
-                                )}
-                                {media.type === 'video' && (
-                                    // <video controls className='h-fit w-full rounded-xl'>
-                                    //     <source src={media.src} type='video/mp4' />
-                                    // </video>
-                                    <ClientVideo controls className='h-fit w-full rounded-xl' src={media.src} />
-                                )}
-                            </div>
-                        );
-                    })}
+                    {attachments.map((media) => (
+                        <div key={media.id}>
+                            {media.type === 'image' && (
+                                <Image
+                                    src={media.src}
+                                    alt={media.alt}
+                                    width={0}
+                                    height={0}
+                                    sizes='100vw'
+                                    className='h-auto w-full rounded-xl object-cover'
+                                />
+                            )}
+                            {media.type === 'video' && (
+                                <ClientVideo controls className='h-fit w-full rounded-xl' src={media.src} />
+                            )}
+                        </div>
+                    ))}
                 </div>
             </DialogContent>
         </Dialog>

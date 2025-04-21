@@ -1,4 +1,4 @@
-import {Story} from '@/mock_data/story';
+import {IStory} from '@/mock_data/story';
 
 import {StoryCard} from '.';
 
@@ -13,8 +13,8 @@ import {StoryCard} from '.';
 
 interface Props {
     pattern: 1 | 2 | 3 | 4 | 5 | 6 | 7;
-    data?: Story[];
-    onClickCard: (story?: Story) => void;
+    data?: IStory[];
+    onClickCard: (story?: IStory) => void;
 }
 
 export const requiredItemsPerRow: Record<number, number> = {

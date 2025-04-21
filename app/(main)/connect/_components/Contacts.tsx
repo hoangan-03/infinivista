@@ -1,46 +1,41 @@
 'use client';
 
-import React from 'react';
-import {useSelector} from 'react-redux';
+import React, {useEffect, useState} from 'react';
 
 import {FriendListItem} from '@/app/(main)/_components';
-import {RightBarElement} from '@/components/commons/layout/RightBar';
 import {Button} from '@/components/ui';
+import {connectSidebarConfig} from '@/constants/common';
 import {friends} from '@/mock_data/friend';
-import {SettingsState} from '@/slices/settingsSlice';
+
+const minContacts = connectSidebarConfig.contacts.min;
+const maxContacts = connectSidebarConfig.contacts.max;
 
 export const Contacts: React.FC = () => {
-    const minContacts = useSelector((state: {settings: SettingsState}) => state.settings.minContacts);
-    const maxContacts = useSelector((state: {settings: SettingsState}) => state.settings.maxContacts);
-    const [displayNumber, setDisplayNumber] = React.useState(0);
-    const [expanded, setExpanded] = React.useState(false);
-    const [mounted, setMounted] = React.useState(false);
+    const [displayNumber, setDisplayNumber] = useState<number>(0);
+    const [isExpanded, setIsExpanded] = useState<boolean>(false);
+    const [mounted, setMounted] = useState<boolean>(false);
 
     const handleToggleExpand = () => {
-        const newDisplayNumber = expanded ? minContacts : maxContacts;
+        const newDisplayNumber = isExpanded ? minContacts : maxContacts;
         setDisplayNumber(Math.min(newDisplayNumber, friends.length));
-        setExpanded(!expanded);
+        setIsExpanded(!isExpanded);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         setDisplayNumber(Math.min(minContacts, friends.length));
-        setExpanded(false);
+        setIsExpanded(false);
         setMounted(true);
-    }, [minContacts]);
+    }, []);
 
     return (
-        <RightBarElement title='Contacts'>
-            <div className='flex flex-col gap-4 rounded-xl p-4 shadow-md'>
-                {mounted &&
-                    friends
-                        .slice(0, displayNumber)
-                        .map((friend, index) => <FriendListItem key={index} data={friend} />)}
-                <div className='flex-center'>
-                    <Button variant='link' size='icon' onClick={handleToggleExpand}>
-                        <p className='text-caption'>{!expanded ? 'See more' : 'See less'}</p>
-                    </Button>
-                </div>
+        <div className='flex flex-col gap-4 rounded-xl p-4 shadow-md'>
+            {mounted &&
+                friends.slice(0, displayNumber).map((friend, index) => <FriendListItem key={index} data={friend} />)}
+            <div className='flex-center'>
+                <Button variant='link' size='icon' onClick={handleToggleExpand}>
+                    <p className='text-caption'>{!isExpanded ? 'See more' : 'See less'}</p>
+                </Button>
             </div>
-        </RightBarElement>
+        </div>
     );
 };

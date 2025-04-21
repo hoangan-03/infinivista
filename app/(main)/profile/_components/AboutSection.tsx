@@ -6,7 +6,7 @@ export const AboutSection: React.FC<{text?: string}> = ({text}) => {
     const about = text || 'Hello, nice to meet you!';
 
     return (
-        <div className='flex gap-8 rounded-lg bg-white py-6 pr-6 shadow-md'>
+        <div className='flex gap-8 rounded-lg bg-white py-6 pr-6 shadow-sm'>
             <div className='w-52 self-start border-b border-blue-600 pb-3'>
                 <h2 className='ml-6 text-[28px] font-bold text-blue-600'>About</h2>
             </div>
