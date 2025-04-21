@@ -73,7 +73,10 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({data, isOwner, classNam
                         </div>
                     ) : (
                         <div className='flex flex-row items-center justify-end gap-3'>
-                            <Button variant='iconSecondary' className='add-friend-button'>
+                            <Button
+                                variant='raw'
+                                className='border-2 border-primary bg-white text-primary flex-center hover:bg-primary hover:text-white'
+                            >
                                 <Icon name='user-add' />
                                 Add friend
                             </Button>

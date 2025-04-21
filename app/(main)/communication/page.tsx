@@ -258,8 +258,7 @@ export default function CommunicationPage() {
                             />
                             <Button
                                 variant='secondary'
-                                size='square'
-                                className='h-10 w-10 rounded-sm bg-white flex-center'
+                                className='aspect-square h-10 w-10 rounded-sm bg-white p-1 flex-center'
                             >
                                 <Icon name='arrow-send' width={20} height={20} />
                             </Button>

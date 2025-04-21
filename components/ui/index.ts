@@ -47,7 +47,6 @@ export {
     SheetTitle,
     SheetTrigger,
 } from './sheet';
-export {Sidebar} from './sidebar';
 export {Skeleton} from './skeleton';
 export {Switch} from './switch';
 export {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from './tooltip';

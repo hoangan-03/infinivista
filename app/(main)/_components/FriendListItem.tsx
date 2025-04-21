@@ -47,9 +47,9 @@ export const FriendListItem: React.FC<FriendListItemProps> = ({data, onViewProfi
             {data.isAllowToAdd && (
                 <Button
                     aria-label='Add friend'
-                    className='add-friend-button'
+                    className='aspect-square h-8 rounded-lg p-1'
                     variant='outline'
-                    size='square'
+                    size='raw'
                     onClick={onAddFriend}
                 >
                     <Icon name='user-add' />

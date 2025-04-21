@@ -52,10 +52,7 @@ export const Sidebar: React.FC = () => {
     });
 
     return (
-        <div
-            id='sidebar-wrapper'
-            className={cn('h-full overflow-hidden', 'sidebar-transition', sidebarExpanded ? 'w-64' : 'w-20')}
-        >
+        <div className={cn('h-full overflow-hidden', 'sidebar-transition', sidebarExpanded ? 'w-64' : 'w-20')}>
             <div
                 className={cn(
                     'custom-scrollbar-hidden fixed left-0 top-0 z-50 h-screen overflow-auto bg-white py-6 shadow-sm',
@@ -69,9 +66,9 @@ export const Sidebar: React.FC = () => {
                 </div>
                 <div className='mb-5 flex-center'>
                     <Button
-                        variant='iconDefault'
+                        variant='raw'
                         className={cn(
-                            'h-12 w-full gap-2 px-3 py-2 text-white',
+                            'h-12 w-full gap-2 bg-primary px-3 py-2 text-slate-50 flex-center hover:bg-slate-900/90',
                             'text-nowrap transition-all duration-500 ease-in-out', // sidebar-transition
                             !sidebarExpanded && 'flex w-12'
                         )}
@@ -128,31 +125,6 @@ export const Sidebar: React.FC = () => {
                             sidebarExpanded={sidebarExpanded}
                             onClick={() => router.push('/communication')}
                         />
-                        {/* <SidebarElement
-                            name='Shop'
-                            iconName='ShopCart'
-                            selected={updatedPageList[5].selected}
-                            sidebarExpanded={sidebarExpanded}
-                            onClick={() => router.push('/shop')}
-                        /> */}
-                        {/* <SidebarElement
-                            name='Mailbox'
-                            iconName='Mail'
-                            selected={updatedPageList[6].selected}
-                            withNumericalData
-                            numericalData={32}
-                            sidebarExpanded={sidebarExpanded}
-                            numericalDataClassName='bg-primary'
-                        />
-                        <SidebarElement
-                            name='Notifications'
-                            iconName='NotificationBell'
-                            selected={updatedPageList[7].selected}
-                            withNumericalData
-                            numericalData={10}
-                            sidebarExpanded={sidebarExpanded}
-                            numericalDataClassName='bg-green-600'
-                        /> */}
                         <SidebarElement
                             name='Settings'
                             iconName='settings-gear'

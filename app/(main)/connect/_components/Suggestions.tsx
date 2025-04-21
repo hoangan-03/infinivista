@@ -33,7 +33,7 @@ export const Suggestions: React.FC = () => {
                 suggestions.slice(0, displayNumber).map((person) => (
                     <a
                         key={person.username}
-                        className='friend-tag flex w-full cursor-pointer items-center justify-between gap-5 rounded-full p-1 hover:bg-gray-200'
+                        className='flex w-full cursor-pointer items-center justify-between gap-5 rounded-full p-1 hover:bg-gray-200'
                     >
                         <div className='flex w-full items-center gap-3'>
                             <Image
@@ -45,7 +45,10 @@ export const Suggestions: React.FC = () => {
                             />
                             <p className='text-caption font-bold text-gray-700'>{person.name}</p>
                         </div>
-                        <Button variant='iconDefault' className='add-friend-button h-fit p-2'>
+                        <Button
+                            variant='raw'
+                            className='h-fit bg-primary p-2 text-slate-50 flex-center hover:bg-slate-900/90'
+                        >
                             <p className='text-caption'>Add friend</p>
                         </Button>
                     </a>
