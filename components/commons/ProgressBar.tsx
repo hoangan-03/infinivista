@@ -1,35 +1,74 @@
 'use client';
 
-import {usePathname, useSearchParams} from 'next/navigation';
 import {useEffect, useState} from 'react';
 
 import {Progress} from '@/components/ui/progress';
 
 export const ProgressBar: React.FC = () => {
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
     const [isNavigating, setIsNavigating] = useState(false);
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
-        setIsNavigating(true);
-        setProgress(20);
+        const handleNavigationStart = () => {
+            setIsNavigating(true);
+            setProgress(20);
 
-        const timer1 = setTimeout(() => setProgress(60), 100);
-        const timer2 = setTimeout(() => setProgress(80), 200);
+            const timer1 = setTimeout(() => setProgress(60), 100);
+            const timer2 = setTimeout(() => setProgress(80), 200);
 
-        const timer3 = setTimeout(() => {
-            setProgress(100);
-            const hideTimer = setTimeout(() => setIsNavigating(false), 200);
-            return () => clearTimeout(hideTimer);
-        }, 300);
+            return () => {
+                clearTimeout(timer1);
+                clearTimeout(timer2);
+            };
+        };
+
+        const handleNavigationComplete = () => {
+            const progressTimer = setTimeout(() => {
+                setProgress(100);
+            }, 300);
+            const navigatingTimer = setTimeout(() => {
+                setIsNavigating(false);
+            }, 400);
+
+            return () => {
+                clearTimeout(progressTimer);
+                clearTimeout(navigatingTimer);
+            };
+        };
+
+        const handleClick = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            const link = target.closest('a');
+
+            if (link && link.href && !link.target && link.href.startsWith(window.location.origin)) {
+                handleNavigationStart();
+            }
+        };
+
+        const observer = new MutationObserver(() => {
+            const cleanup = handleNavigationComplete();
+
+            return () => {
+                cleanup();
+            };
+        });
+
+        observer.observe(document.documentElement, {
+            childList: true,
+            subtree: true,
+        });
+
+        // Show progress bar when navigating to a new page
+        document.addEventListener('click', handleClick);
+        // Show progress bar when reloading the page
+        window.addEventListener('beforeunload', handleNavigationStart);
 
         return () => {
-            clearTimeout(timer1);
-            clearTimeout(timer2);
-            clearTimeout(timer3);
+            document.removeEventListener('click', handleClick);
+            window.removeEventListener('beforeunload', handleNavigationStart);
+            observer.disconnect();
         };
-    }, [pathname, searchParams]);
+    }, []);
 
     if (!isNavigating) return null;
 

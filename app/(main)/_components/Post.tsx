@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {Avatar, Icon} from '@/components/commons';
 import {Button, Input, Separator} from '@/components/ui';
@@ -11,11 +11,37 @@ import {ModalComments, ModalMultimedia, ReactionButton} from '.';
 
 interface PostProps {
     data: IPost;
+    sharedPost?: IPost;
     className?: string;
 }
 
-export const Post: React.FC<PostProps> = ({data, className}) => {
+export const Post: React.FC<PostProps> = ({data, sharedPost, className}) => {
     const [showModalComments, setShowModalComments] = useState<boolean>(false);
+
+    const [displayCount, setDisplayCount] = useState<number>(0);
+
+    useEffect(() => {
+        const updateDisplayCount = () => {
+            const width = window.innerWidth;
+            if (width >= 1920) {
+                setDisplayCount(5);
+            } else if (width >= 1536) {
+                setDisplayCount(3);
+            } else if (width >= 1280) {
+                setDisplayCount(3);
+            } else if (width >= 768) {
+                setDisplayCount(2);
+            } else {
+                setDisplayCount(1);
+            }
+        };
+
+        updateDisplayCount();
+
+        window.addEventListener('resize', updateDisplayCount);
+
+        return () => window.removeEventListener('resize', updateDisplayCount);
+    }, []);
 
     return (
         <div
@@ -34,7 +60,29 @@ export const Post: React.FC<PostProps> = ({data, className}) => {
             <section>
                 <p className='text-justify text-paragraph1 font-medium'>{data.description}</p>
             </section>
-            <ModalMultimedia attachments={data.attachments} />
+            {sharedPost && (
+                <div
+                    className={cn(
+                        'flex min-w-fit flex-col gap-5 rounded-[1.5rem] border border-gray-100 bg-white p-7 shadow-md',
+                        className
+                    )}
+                >
+                    <section className='flex items-center gap-3'>
+                        <Avatar src={sharedPost.avatar} />
+                        <div>
+                            <h6 className='font-bold'>{sharedPost.author}</h6>
+                            <p className='text-caption font-medium text-gray-500'>
+                                {getTimeStamp(sharedPost.createdAt)}
+                            </p>
+                        </div>
+                    </section>
+                    <section>
+                        <p className='text-justify text-paragraph1 font-medium'>{sharedPost.description}</p>
+                    </section>
+                    <ModalMultimedia attachments={sharedPost.attachments} displayCount={displayCount} />
+                </div>
+            )}
+            {!sharedPost && <ModalMultimedia attachments={data.attachments} displayCount={displayCount} />}
             <section>
                 <div className='space-y-2'>
                     <Separator className='bg-gray-200' />

@@ -34,8 +34,10 @@ export default function RootLayout({
     return (
         <html lang='en'>
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning={true}>
-                <ProgressBar />
-                <div className='relative min-h-screen bg-white'>{children}</div>
+                <div className='relative min-h-screen bg-white'>
+                    <ProgressBar />
+                    {children}
+                </div>
             </body>
         </html>
     );

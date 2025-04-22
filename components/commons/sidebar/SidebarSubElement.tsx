@@ -5,31 +5,31 @@ import {Button} from '@/components/ui';
 import {cn} from '@/lib/utils';
 
 interface SidebarSubElementProps {
-    name: string;
+    label: string;
     href?: string;
-    selected?: boolean;
-    sidebarExpanded: boolean;
+    isSelected?: boolean;
+    isExpanded: boolean;
     className?: string;
 }
 
 export const SidebarSubElement: React.FC<SidebarSubElementProps> = ({
-    name,
+    label,
     href = '',
-    selected,
-    sidebarExpanded,
+    isSelected,
+    isExpanded,
     className,
 }) => {
     return (
-        <div className={cn('sidebar-transition', sidebarExpanded ? 'max-w-[250px]' : 'max-w-[90px]', className)}>
+        <div className={cn('sidebar-transition', isExpanded ? 'max-w-[250px]' : 'max-w-[90px]', className)}>
             <Link href={href}>
                 <Button
                     variant='raw'
                     className={cn(
-                        'w-full rounded-xs p-2 text-left text-paragraph2 text-black hover:bg-gray-100',
-                        selected && 'bg-gray-200'
+                        'w-full rounded-md p-2 text-left text-paragraph2 text-black hover:bg-slate-100',
+                        isSelected && 'bg-slate-200'
                     )}
                 >
-                    <div>{name}</div>
+                    <div>{label}</div>
                 </Button>
             </Link>
         </div>

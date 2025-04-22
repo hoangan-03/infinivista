@@ -7,3 +7,4 @@ export {PasswordInput} from './PasswordInput';
 export {ProgressBar} from './ProgressBar';
 export {Provider} from './Provider';
 export * from './Sidebar';
+export {Spinner} from './Spinner';

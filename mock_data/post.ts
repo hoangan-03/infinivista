@@ -8,7 +8,11 @@ export enum ATTACHMENT_TYPE {
 export enum REACTION_TYPE {
     LIKE = 'like',
     LOVE = 'love',
+    CARE = 'care',
+    HAHA = 'haha',
+    WOW = 'wow',
     SAD = 'sad',
+    ANGRY = 'angry',
 }
 
 export interface IAttachment {

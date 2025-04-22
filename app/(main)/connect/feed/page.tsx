@@ -1,6 +1,6 @@
 'use client';
 
-import {Post, SharedPost} from '@/app/(main)/_components';
+import {Post} from '@/app/(main)/_components';
 import {useFeedContext} from '@/context';
 import {posts} from '@/mock_data/post';
 
@@ -13,7 +13,7 @@ function FeedPage() {
     return (
         <div className='space-y-7'>
             {filteredPosts.map((post) => (
-                <SharedPost key={post.id} data={post} />
+                <Post key={post.id} data={post} sharedPost={post} />
             ))}
             {filteredPosts.map((post) => (
                 <Post key={post.id} data={post} />

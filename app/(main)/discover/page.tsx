@@ -1,6 +1,6 @@
 import {posts} from '@/mock_data/post';
 
-import {Post, SharedPost} from '../_components';
+import {Post} from '../_components';
 
 function DiscoverPage() {
     const filteredPosts = posts;
@@ -12,7 +12,7 @@ function DiscoverPage() {
             </div>
             <div className='space-y-7 px-4'>
                 {filteredPosts.map((post) => (
-                    <SharedPost key={post.id} data={post} />
+                    <Post key={post.id} data={post} sharedPost={post} />
                 ))}
                 {filteredPosts.map((post) => (
                     <Post key={post.id} data={post} />

@@ -5,13 +5,16 @@ export enum ROUTES {
     REGISTER = '/auth/register',
     FORGOT_PASSWORD = '/auth/forgot-password',
 
+    CONNECT = '/connect',
     CONNECT_FEED = '/connect/feed',
     CONNECT_STORY = '/connect/story',
 
     PROFILE = '/profile',
 
     COMMUNICATION = '/communication',
-    COMMUNICATION_CHANNEL = '/communication/[channelId]',
+    // COMMUNICATION_CHANNEL = '/communication/[channelId]',
+
+    DISCOVER = '/discover',
 
     SETTINGS = '/settings',
     SETTINGS_PROFILE = '/settings/profile',

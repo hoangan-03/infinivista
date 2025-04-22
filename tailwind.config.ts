@@ -20,6 +20,18 @@ const config: Config = {
             screens: {
                 desktop: '1440px',
             },
+            keyframes: {
+                'scale-pulse': {
+                    '0%': {transform: 'scale(1)'},
+                    '25%': {transform: 'scale(1.2)'},
+                    '50%': {transform: 'scale(0.9)'},
+                    '75%': {transform: 'scale(1.1)'},
+                    '100%': {transform: 'scale(1)'},
+                },
+            },
+            animation: {
+                'scale-pulse': 'scale-pulse 4s ease-in-out infinite',
+            },
             colors: {
                 white: '#FCFCFC',
                 black: '#1E1E20',
