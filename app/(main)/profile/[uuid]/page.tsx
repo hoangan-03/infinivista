@@ -19,7 +19,7 @@ const ProfilePage: React.FC<{params: {uuid: string}}> = ({params}) => {
         <div className='flex min-h-screen flex-col bg-gray-100'>
             <div className='flex flex-col px-6 pt-6'>
                 <div className='mb-6 flex h-[27.5rem] items-center gap-4'>
-                    <ProfileCard data={profile} isOwner={true} className='flex-2' />
+                    <ProfileCard data={profile} isOwner={false} className='flex-2' />
                     <IntroductionSection data={profile} className='flex-1' />
                 </div>
 

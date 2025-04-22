@@ -3,6 +3,8 @@ import './globals.css';
 import type {Metadata, Viewport} from 'next';
 import localFont from 'next/font/local';
 
+import {ProgressBar} from '@/components/commons';
+
 const geistSans = localFont({
     src: './_fonts/GeistVF.woff',
     variable: '--font-geist-sans',
@@ -32,6 +34,7 @@ export default function RootLayout({
     return (
         <html lang='en'>
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning={true}>
+                <ProgressBar />
                 <div className='relative min-h-screen bg-white'>{children}</div>
             </body>
         </html>

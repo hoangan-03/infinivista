@@ -27,11 +27,11 @@ const tabList: Tab[] = [
         value: 'following',
         disabled: false,
     },
-    {
-        label: 'Popular',
-        value: 'popular',
-        disabled: false,
-    },
+    // {
+    //     label: 'Popular',
+    //     value: 'popular',
+    //     disabled: false,
+    // },
 ];
 
 interface ConnectNavbarProps {

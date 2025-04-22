@@ -66,7 +66,6 @@ export const Sidebar: React.FC = () => {
                 </div>
                 <div className='mb-5 flex-center'>
                     <Button
-                        variant='raw'
                         className={cn(
                             'h-12 w-full gap-2 bg-primary px-3 py-2 text-slate-50 flex-center hover:bg-slate-900/90',
                             'text-nowrap transition-all duration-500 ease-in-out', // sidebar-transition
@@ -74,7 +73,7 @@ export const Sidebar: React.FC = () => {
                         )}
                     >
                         <span>
-                            <Icon name='plus' width={16} height={16} />
+                            <Icon name='plus' width={16} height={16} className='text-white' />
                         </span>
                         <p
                             className={cn(

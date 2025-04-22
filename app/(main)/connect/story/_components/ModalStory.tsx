@@ -84,9 +84,6 @@ function ModalStory({open, data, onClose}: Props) {
                         <div className='mt-2 flex items-center justify-between'>
                             <p>100000 Likes</p>
                             <div className='mt-2 flex items-center gap-4'>
-                                {/* <Button variant='raw' size='icon' className='hover:scale-110'>
-                                    <Icon name='heart' />
-                                </Button> */}
                                 <ReactionButton
                                     onReact={(reaction) => {
                                         console.log(reaction);

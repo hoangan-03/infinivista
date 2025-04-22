@@ -4,7 +4,11 @@ import React from 'react';
 
 import {cn} from '@/lib/utils';
 
-import {Contacts, Suggestions, Trending} from '.';
+import {Contacts} from './Contacts';
+import {Suggestions} from './Suggestions';
+import {Trending} from './Trending';
+
+// import {Contacts, Suggestions, Trending} from '.';
 
 interface ConnectSidebarElement {
     title: string;

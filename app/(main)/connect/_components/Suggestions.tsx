@@ -45,10 +45,7 @@ export const Suggestions: React.FC = () => {
                             />
                             <p className='text-caption font-bold text-gray-700'>{person.name}</p>
                         </div>
-                        <Button
-                            variant='raw'
-                            className='h-fit bg-primary p-2 text-slate-50 flex-center hover:bg-slate-900/90'
-                        >
+                        <Button className='h-fit bg-primary p-2 text-slate-50 flex-center hover:bg-slate-900/90'>
                             <p className='text-caption'>Add friend</p>
                         </Button>
                     </a>

@@ -32,6 +32,7 @@ export {
 } from './dropdown-menu';
 export {Input, inputVariants} from './input';
 export {Label} from './label';
+export {Progress} from './progress';
 export {RadioGroup, RadioGroupItem} from './radio-group';
 export {ScrollArea, ScrollBar} from './scroll-area';
 export {Separator} from './separator';

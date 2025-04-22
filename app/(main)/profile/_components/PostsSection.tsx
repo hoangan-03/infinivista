@@ -26,7 +26,6 @@ export const PostsSection: React.FC<PostsSectionProps> = ({data, className}) => 
                     Videos
                 </Button>
                 <Button
-                    variant='raw'
                     size='default'
                     className='w-[120px] bg-white text-slate-900 shadow-md flex-center hover:shadow-lg'
                 >
