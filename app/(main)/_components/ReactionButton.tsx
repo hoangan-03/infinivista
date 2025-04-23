@@ -43,7 +43,6 @@ export const ReactionButton: React.FC<ReactButtonProps> = ({width = 24, height =
                         />
                     </Button>
                 </TooltipTrigger>
-                {/* TODO: List out all reaction icons */}
                 <TooltipContent className='flex h-12 items-center justify-center gap-2 bg-white' align='center'>
                     {icons.map((icon) => (
                         <Button

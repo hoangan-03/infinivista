@@ -37,7 +37,7 @@ export const ModalMultimedia: React.FC<ModalMultimediaProps> = ({attachments, di
             <DialogTrigger className='focus-visible:outline-none' asChild>
                 <section
                     className={cn(
-                        'relative grid auto-rows-fr grid-cols-[repeat(auto-fill,_minmax(188px,_1fr))] gap-3',
+                        'relative grid cursor-pointer auto-rows-fr grid-cols-[repeat(auto-fill,_minmax(188px,_1fr))] gap-3',
                         (displayCount === 0 || !attachments) && 'h-20 rounded-md bg-slate-100/70'
                     )}
                 >

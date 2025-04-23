@@ -30,7 +30,7 @@ const config: Config = {
                 },
             },
             animation: {
-                'scale-pulse': 'scale-pulse 4s ease-in-out infinite',
+                'scale-pulse': 'scale-pulse 2.5s ease-in-out infinite',
             },
             colors: {
                 white: '#FCFCFC',
