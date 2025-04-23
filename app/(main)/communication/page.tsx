@@ -11,117 +11,26 @@ import {
     Separator,
 } from '@/components/ui';
 import {cn} from '@/lib/utils';
+import {messages} from '@/mock_data/message';
+import {profile} from '@/mock_data/profile';
 import placeholderImage from '@/public/assets/images/placeholder.png';
 
-import {GroupCard, MessageArea, MessageUserCard} from './_components';
+import {GroupsSection, MessageItem, UsersSection} from './_components';
 
-interface IMessage {
-    username: string;
-    role: string;
-    message: string;
-    time: Date;
-    isCurrentUser: boolean;
-    showAvatar: boolean;
-}
-
-interface IUserCard {
+export interface IUserItem {
     name: string;
     message: string;
     lastActive: number;
 }
 
-interface IGroupCard {
+export interface IGroupItem {
     name: string;
-    tag1: string;
-    tag2?: string;
+    tags: string[];
     lastActive: number;
     className?: string;
 }
 
-const messages: IMessage[] = [
-    {
-        username: 'Khuong',
-        role: 'Backend',
-        message: 'Hi there, nice to meet you',
-        time: new Date(),
-        isCurrentUser: true,
-        showAvatar: true,
-    },
-    {
-        username: 'Dat',
-        role: 'Frontend',
-        message: 'Hello Khuong! How are you?',
-        time: new Date(),
-        isCurrentUser: false,
-        showAvatar: true,
-    },
-    {
-        username: 'An',
-        role: 'Project Manager',
-        message: 'Hi everyone, we will be discussing the upcoming Capstone Project.',
-        time: new Date(),
-        isCurrentUser: false,
-        showAvatar: true,
-    },
-    {
-        username: 'Khuong',
-        role: 'Backend',
-        message: 'Sure, I have some ideas for the backend architecture.',
-        time: new Date(),
-        isCurrentUser: true,
-        showAvatar: true,
-    },
-    {
-        username: 'Dat',
-        role: 'Frontend',
-        message: 'I can work on the frontend components.',
-        time: new Date(),
-        isCurrentUser: false,
-        showAvatar: true,
-    },
-    {
-        username: 'An',
-        role: 'Project Manager',
-        message: 'Great! I am going to set up a meeting to discuss the details.',
-        time: new Date(),
-        isCurrentUser: false,
-        showAvatar: true,
-    },
-    {
-        username: 'Khuong',
-        role: 'Backend',
-        message: 'I am available tomorrow afternoon.',
-        time: new Date(),
-        isCurrentUser: true,
-        showAvatar: true,
-    },
-    {
-        username: 'Dat',
-        role: 'Frontend',
-        message: 'Tomorrow afternoon works for me too.',
-        time: new Date(),
-        isCurrentUser: false,
-        showAvatar: true,
-    },
-    {
-        username: 'An',
-        role: 'Project Manager',
-        message: 'Perfect! We will meet at 2 PM.',
-        time: new Date(),
-        isCurrentUser: false,
-        showAvatar: true,
-    },
-    {
-        username: 'Khuong',
-        role: 'Backend',
-        message: 'Looking forward to it!',
-        time: new Date(),
-        isCurrentUser: true,
-        showAvatar: true,
-    },
-];
-
-const userCards: IUserCard[] = [
+const userItems: IUserItem[] = [
     {
         name: 'Khuong',
         message: 'Hi there, nice to meet you',
@@ -144,26 +53,40 @@ const userCards: IUserCard[] = [
     },
 ];
 
-const groupCards: IGroupCard[] = [
+const groupItems: IGroupItem[] = [
     {
         name: 'Capstone Project Team',
-        tag1: 'Backend',
-        tag2: 'Frontend',
+        tags: ['Backend', 'Frontend', 'Mobile', 'AI Research', 'Marketing', 'Design', 'Project Management'],
         lastActive: 12,
     },
     {
         name: 'Web Development Team',
-        tag1: 'Frontend',
+        tags: ['Frontend'],
         lastActive: 5,
     },
     {
         name: 'Mobile Development Team',
-        tag1: 'Mobile',
+        tags: ['Mobile'],
         lastActive: 2,
     },
     {
         name: 'Marketing Team',
-        tag1: 'Marketing',
+        tags: ['Marketing'],
+        lastActive: 30,
+    },
+    {
+        name: 'Marketing Team',
+        tags: ['Marketing'],
+        lastActive: 30,
+    },
+    {
+        name: 'Marketing Team',
+        tags: ['Marketing'],
+        lastActive: 30,
+    },
+    {
+        name: 'Marketing Team',
+        tags: ['Marketing'],
         lastActive: 30,
     },
 ];
@@ -213,20 +136,20 @@ export default function CommunicationPage() {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-                <div className='shadow-custom-1 relative flex h-[90vh] flex-col gap-2 rounded-b-xl bg-white p-4'>
+                <div className='shadow-custom-1 relative flex h-[89vh] flex-col gap-2 rounded-b-xl bg-white p-4'>
                     <ScrollArea className='h-[90%] pr-4'>
                         {messages.map((message, index) => (
                             <div
                                 key={index}
-                                className={cn('mt-4 flex', message.isCurrentUser ? 'justify-end' : 'justify-start')}
+                                className={cn(
+                                    'my-4 flex',
+                                    message.username === profile.username ? 'justify-end' : 'justify-start'
+                                )}
                             >
-                                <MessageArea
-                                    username={message.username}
-                                    role={message.role}
-                                    message={message.message}
-                                    time={message.time}
-                                    isCurrentUser={message.isCurrentUser}
-                                    showAvatar={message.showAvatar}
+                                <MessageItem
+                                    data={message}
+                                    isCurrentUser={message.username === profile.username}
+                                    showAvatar={message.username !== messages[index - 1]?.username}
                                     className='w-4/5'
                                 />
                             </div>
@@ -266,48 +189,12 @@ export default function CommunicationPage() {
                     </div>
                 </div>
             </div>
-            <div className='w-[30%]'>
-                <div className='mb-10'>
-                    <div className='mb-5 flex items-center gap-3'>
-                        <h5 className='text-heading5 font-bold'>Messages</h5>
-                        <Icon name='caret-down' width={16} height={16} />
-                        <p className='rounded-full bg-gray-200 px-2 py-1'>2</p>
-                    </div>
-                    <div>
-                        {userCards.map((user, index) => (
-                            <MessageUserCard
-                                key={index}
-                                name={user.name}
-                                message={user.message}
-                                lastActive={user.lastActive}
-                                className='mb-2'
-                            />
-                        ))}
-                    </div>
+            <ScrollArea className='h-[calc(100vh-32px)] w-[30%]'>
+                <div className='space-y-4 pr-2'>
+                    <UsersSection data={userItems} />
+                    <GroupsSection data={groupItems} />
                 </div>
-                <div>
-                    <div className='mb-5 flex items-center justify-between'>
-                        <h5 className='text-heading5 font-bold'>Groups</h5>
-                        <Button variant='raw' size='icon'>
-                            <div className='flex h-8 w-8 items-center justify-center rounded-full bg-blue-100'>
-                                <Icon name='more' width={18} height={4} className='rotate-90' />
-                            </div>
-                        </Button>
-                    </div>
-                    <div>
-                        {groupCards.map((group, index) => (
-                            <GroupCard
-                                key={index}
-                                name={group.name}
-                                tag1={group.tag1}
-                                tag2={group.tag2}
-                                lastActive={group.lastActive}
-                                className='mb-2'
-                            />
-                        ))}
-                    </div>
-                </div>
-            </div>
+            </ScrollArea>
         </div>
     );
 }

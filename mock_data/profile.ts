@@ -27,6 +27,7 @@ export interface IProfile {
     posts: number;
     socialLinks: {
         type: SOCIAL_LINKS;
+        icon: string;
         url: string;
     }[];
     introduction: {
@@ -37,9 +38,9 @@ export interface IProfile {
 
 export const profile: IProfile = {
     id: '3f5d8e69-c812-4f0b-b3e4-a1b26f9c7d85',
-    username: 'john_doe',
-    firstName: 'John',
-    lastName: 'Doe',
+    username: 'Khuong',
+    firstName: 'Do',
+    lastName: 'Khuong',
     email: 'someone@example.com',
     backgroundImage: '/assets/images/back_image.png',
     avatar: '/assets/images/avatar.jpg',
@@ -48,10 +49,10 @@ export const profile: IProfile = {
     following: 300,
     posts: 45,
     socialLinks: [
-        {type: SOCIAL_LINKS.FACEBOOK, url: 'https://www.facebook.com/johndoe'},
-        {type: SOCIAL_LINKS.INSTAGRAM, url: 'https://www.instagram.com/johndoe'},
-        {type: SOCIAL_LINKS.TIKTOK, url: 'https://www.tiktok.com/@johndoe'},
-        {type: SOCIAL_LINKS.LINKEDIN, url: 'https://www.linkedin.com/in/johndoe'},
+        {type: SOCIAL_LINKS.FACEBOOK, icon: 'facebook-outline', url: 'https://www.facebook.com/do_khuong.42'},
+        {type: SOCIAL_LINKS.INSTAGRAM, icon: 'instagram-outline', url: 'https://www.instagram.com/do_khuong.42'},
+        {type: SOCIAL_LINKS.TIKTOK, icon: 'tiktok-outline', url: 'https://www.tiktok.com/@do_khuong.42'},
+        {type: SOCIAL_LINKS.LINKEDIN, icon: 'linkedin-outline', url: 'https://www.linkedin.com/in/do_khuong.42'},
     ],
     introduction: [
         {type: INTRODUCTION.EDUCATION, value: 'Harvard University'},

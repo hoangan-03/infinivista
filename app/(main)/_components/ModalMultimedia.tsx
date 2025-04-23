@@ -91,7 +91,7 @@ export const ModalMultimedia: React.FC<ModalMultimediaProps> = ({attachments, di
                         })}
                 </section>
             </DialogTrigger>
-            <DialogContent className={cn('sm:max-w-[425px] md:max-w-[600px] lg:max-w-[800px]', className)}>
+            <DialogContent className={cn('grid sm:max-w-[425px] md:max-w-[600px] lg:max-w-[800px]', className)}>
                 <DialogHeader>
                     <DialogTitle className='sticky top-0 z-10 flex items-center justify-center gap-4 bg-white py-2'>
                         {imageCount && imageCount.toString() + ' Images'}

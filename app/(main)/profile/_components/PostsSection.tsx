@@ -1,11 +1,14 @@
-import {ArrowRightIcon} from '@heroicons/react/solid';
-import React from 'react';
+'use client';
 
-import {Post} from '@/app/(main)/_components';
+import {ArrowRightIcon} from '@heroicons/react/solid';
+import React, {useState} from 'react';
+
+import {ModalNewPost, Post} from '@/app/(main)/_components';
 import {Icon} from '@/components/commons';
 import {Button, ScrollArea} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import {IPost} from '@/mock_data/post';
+import {profile} from '@/mock_data/profile';
 
 interface PostsSectionProps {
     data: IPost[];
@@ -13,6 +16,8 @@ interface PostsSectionProps {
 }
 
 export const PostsSection: React.FC<PostsSectionProps> = ({data, className}) => {
+    const [showModalNewPost, setShowModalNewPost] = useState<boolean>(false);
+
     return (
         <div className={cn('space-y-4', className)}>
             <div className='flex flex-row gap-3'>
@@ -42,7 +47,8 @@ export const PostsSection: React.FC<PostsSectionProps> = ({data, className}) => 
                         <Button
                             variant='raw'
                             size='raw'
-                            className='inline-flex w-fit items-center justify-center gap-2 rounded-[12px] border border-black px-5 py-[6px] font-bold'
+                            className='inline-flex w-fit items-center justify-center gap-2 rounded-[12px] border border-black px-5 py-[6px] font-bold hover:bg-slate-100'
+                            onClick={() => setShowModalNewPost(true)}
                         >
                             <Icon name='upload' />
                             Post
@@ -50,7 +56,7 @@ export const PostsSection: React.FC<PostsSectionProps> = ({data, className}) => 
                         <Button
                             variant='raw'
                             size='raw'
-                            className='inline-flex items-center justify-center gap-2 rounded-[12px] border border-black px-5 py-[6px] font-bold'
+                            className='inline-flex items-center justify-center gap-2 rounded-[12px] border border-black px-5 py-[6px] font-bold hover:bg-slate-100'
                         >
                             <Icon name='settings-burger' />
                             Filter
@@ -58,7 +64,7 @@ export const PostsSection: React.FC<PostsSectionProps> = ({data, className}) => 
                         <Button
                             variant='raw'
                             size='raw'
-                            className='inline-flex items-center justify-center gap-2 rounded-[12px] border border-black px-5 py-[6px] font-bold'
+                            className='inline-flex items-center justify-center gap-2 rounded-[12px] border border-black px-5 py-[6px] font-bold hover:bg-slate-100'
                         >
                             <Icon name='settings-gear' />
                             Manage Posts
@@ -73,6 +79,7 @@ export const PostsSection: React.FC<PostsSectionProps> = ({data, className}) => 
                     </div>
                 </ScrollArea>
             </div>
+            <ModalNewPost open={showModalNewPost} onClose={() => setShowModalNewPost(false)} data={profile} />
         </div>
     );
 };

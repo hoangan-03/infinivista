@@ -55,7 +55,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     )}
                     <input
                         type={type}
-                        className={cn('rounded', inputVariants({variant, className}))}
+                        className={cn(
+                            'rounded',
+                            inputVariants({variant, className}),
+                            prefixIcon && 'pl-10',
+                            errorMessage && 'focus-visible:ring-error'
+                        )}
                         ref={ref}
                         {...props}
                     />

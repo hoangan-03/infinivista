@@ -26,7 +26,7 @@ export const ModalComments: React.FC<ModalCommentsProps> = ({open, onClose, reac
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent autoFocus={false}>
+            <DialogContent autoFocus={false} className='grid'>
                 <DialogHeader>
                     <DialogTitle className='flex gap-4'>
                         <div className='flex items-center gap-1'>

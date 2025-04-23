@@ -1,5 +1,6 @@
 export {Avatar} from './Avatar';
 export {ClientVideo} from './ClientVideo';
+export {EmptyState} from './EmptyState';
 export {Header} from './Header';
 export {Icon} from './Icon';
 export {LogoName} from './LogoName';

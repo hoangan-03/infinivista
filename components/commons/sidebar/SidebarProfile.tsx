@@ -14,7 +14,7 @@ interface SidebarProfileProps {
 
 export const SidebarProfile: React.FC<SidebarProfileProps> = ({href, data, isExpanded, className}) => {
     return (
-        <div className={cn('mb-5', className)}>
+        <div className={cn('group mb-5', className)}>
             <Link href={href} className={cn('flex items-center', !isExpanded && 'justify-center')}>
                 <div className='relative h-10 w-10 rounded-full'>
                     <Image
@@ -26,7 +26,7 @@ export const SidebarProfile: React.FC<SidebarProfileProps> = ({href, data, isExp
                     />
                 </div>
                 <div className={cn('sidebar-transition', isExpanded ? 'ml-4 w-36' : 'text-collapsed')}>
-                    <p className='font-bold text-black'>
+                    <p className='font-bold text-black group-hover:text-primary group-hover:underline'>
                         {data.firstName} {data.lastName}
                     </p>
                     <p className='max-w-[140px] truncate text-[#A0ABBB]'>{data.email}</p>

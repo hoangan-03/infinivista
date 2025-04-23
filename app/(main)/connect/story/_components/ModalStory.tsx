@@ -24,7 +24,7 @@ interface Props {
 function ModalStory({open, data, onClose}: Props) {
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent className='h-fit min-h-[85vh] min-w-[1250px] items-start'>
+            <DialogContent className='grid h-fit min-h-[85vh] min-w-[1250px] items-start'>
                 <VisuallyHidden>
                     <DialogHeader className='sr-only h-fit space-y-2'>
                         <DialogTitle>Posted by {data?.username}</DialogTitle>
@@ -32,14 +32,17 @@ function ModalStory({open, data, onClose}: Props) {
                     </DialogHeader>
                 </VisuallyHidden>
                 <div className='flex h-full items-center gap-4'>
-                    <div className='flex h-full w-3/5 items-center justify-between'>
+                    <div className='flex h-[100%] w-3/5 items-center justify-between'>
                         {data?.videoUrl ? (
                             <div className='relative h-full'>
                                 <ClientVideo
+                                    autoPlay
+                                    loop
                                     controls
                                     playsInline
                                     className='h-full w-full rounded-lg object-cover'
                                     src={data.videoUrl}
+                                    // src='https://www.googleapis.com/drive/v3/files/1iyLo9BE3DJx9BH1Tb0bLqBd8rzWqq1at?alt=media&key=AIzaSyDZgTdgy24qBZn6zPrFP47Ejegear2sKY4'
                                 />
                             </div>
                         ) : (

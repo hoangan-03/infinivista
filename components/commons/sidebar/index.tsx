@@ -4,6 +4,7 @@ import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import React, {useState} from 'react';
 
+import {ModalNewPost} from '@/app/(main)/_components';
 import {Icon} from '@/components/commons';
 import {Button, Separator} from '@/components/ui';
 import {cn} from '@/lib/utils';
@@ -35,8 +36,9 @@ const menuSidebarContents: ISidebarContent[] = [
         ],
     },
     {label: 'Discover', iconName: 'navigation', href: ROUTES.DISCOVER},
-    {label: 'Message', iconName: 'chat-circle', href: ROUTES.COMMUNICATION},
+    {label: 'Messages', iconName: 'chat-circle', href: ROUTES.COMMUNICATION},
     {label: 'Settings', iconName: 'settings-gear', href: ROUTES.SETTINGS},
+    {label: 'Notifications', iconName: 'notification-bell', href: ROUTES.NOTIFICATIONS},
 ];
 
 const profileSidebarContents: ISidebarContent[] = [
@@ -46,6 +48,7 @@ const profileSidebarContents: ISidebarContent[] = [
 
 export const Sidebar: React.FC = () => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
+    const [showModalNewPost, setShowModalNewPost] = useState<boolean>(false);
     const currentURL = usePathname();
 
     const isRouteActive = (path: string): boolean => {
@@ -80,6 +83,7 @@ export const Sidebar: React.FC = () => {
                             'text-nowrap transition-all duration-500 ease-in-out',
                             !isExpanded && 'flex w-12'
                         )}
+                        onClick={() => setShowModalNewPost(true)}
                     >
                         <span>
                             <Icon name='plus' width={16} height={16} className='text-white' />
@@ -146,6 +150,7 @@ export const Sidebar: React.FC = () => {
                     />
                 </div>
             </div>
+            <ModalNewPost open={showModalNewPost} onClose={() => setShowModalNewPost(false)} data={profile} />
         </div>
     );
 };

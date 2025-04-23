@@ -6,6 +6,7 @@ import {cn} from '@/lib/utils';
 const badgeVariants = cva('inline-flex items-center rounded-sm transition-colors focus:outline-none', {
     variants: {
         variant: {
+            none: '',
             default: 'bg-primary text-white hover:bg-primary/80',
         },
         size: {

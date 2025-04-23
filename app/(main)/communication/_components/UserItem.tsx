@@ -3,7 +3,7 @@ import Image from 'next/image';
 import {cn} from '@/lib/utils';
 import placeholderImage from '@/public/assets/images/placeholder.png';
 
-interface MessageUserCardProps {
+interface Props {
     name: string;
     message: string;
     lastActive: number;
@@ -11,7 +11,7 @@ interface MessageUserCardProps {
     onClick?: () => void;
 }
 
-export const MessageUserCard: React.FC<MessageUserCardProps> = ({name, message, lastActive, className, onClick}) => {
+export const UserItem: React.FC<Props> = ({name, message, lastActive, className, onClick}) => {
     return (
         <div className={cn('flex cursor-pointer gap-4 rounded-md p-1 hover:bg-gray-100', className)} onClick={onClick}>
             <div className='relative h-12 w-12 overflow-hidden rounded-lg'>

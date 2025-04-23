@@ -3,9 +3,9 @@
 import React, {useEffect, useState} from 'react';
 
 import {Avatar, Icon} from '@/components/commons';
-import {Button, Input, Separator} from '@/components/ui';
+import {Button, Input, Separator, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui';
 import {cn, getSumReactions, getTimeStamp} from '@/lib/utils';
-import {IPost} from '@/mock_data/post';
+import {IPost, REACTION_TYPE} from '@/mock_data/post';
 
 import {ModalComments, ModalMultimedia, ReactionButton} from '.';
 
@@ -14,6 +14,16 @@ interface PostProps {
     sharedPost?: IPost;
     className?: string;
 }
+
+type Icon = {
+    name: string;
+    type: REACTION_TYPE;
+};
+
+const icons: Icon[] = Object.values(REACTION_TYPE).map((type) => ({
+    name: `emote-${type}`,
+    type,
+}));
 
 export const Post: React.FC<PostProps> = ({data, sharedPost, className}) => {
     const [showModalComments, setShowModalComments] = useState<boolean>(false);
@@ -115,16 +125,40 @@ export const Post: React.FC<PostProps> = ({data, sharedPost, className}) => {
                     <Separator className='bg-gray-200' />
                 </div>
             </section>
-            <section
-                className='flex cursor-pointer items-center justify-between gap-3 whitespace-nowrap'
-                onClick={() => setShowModalComments(true)}
-            >
-                <p className='w-fit text-subtitle2 font-bold'>{getSumReactions(data.reactions)} Reactions</p>
+            <section className='flex items-center justify-between gap-3 whitespace-nowrap'>
+                <TooltipProvider delayDuration={150}>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <p className='w-fit cursor-pointer text-subtitle2 font-bold'>
+                                {getSumReactions(data.reactions)} Reactions
+                            </p>
+                        </TooltipTrigger>
+                        <TooltipContent className='flex h-10 items-center justify-center gap-2 bg-white' align='center'>
+                            {data.reactions.map((reaction, index) => {
+                                const icon = icons.find((i) => i.type === reaction.type);
+                                return (
+                                    <div key={index} className='flex items-center gap-1'>
+                                        <p>{reaction.count}</p>
+                                        <Icon name={icon?.name || reaction.type} width={20} height={20} />
+                                    </div>
+                                );
+                            })}
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
                 <div className='flex gap-3 text-gray-600'>
-                    <p className='w-fit text-paragraph2'>{data.viewCount} Views</p>
-                    <p className='w-fit text-paragraph2'>{data.comments.length} Comments</p>
-                    <p className='w-fit text-paragraph2'>{data.repostCount} Reposts</p>
-                    <p className='w-fit text-paragraph2'>{data.shareCount} Shares</p>
+                    <p className='w-fit cursor-pointer text-paragraph2 hover:underline hover:underline-offset-2'>
+                        {data.viewCount} Views
+                    </p>
+                    <p className='w-fit cursor-pointer text-paragraph2 hover:underline hover:underline-offset-2'>
+                        {data.comments.length} Comments
+                    </p>
+                    <p className='w-fit cursor-pointer text-paragraph2 hover:underline hover:underline-offset-2'>
+                        {data.repostCount} Reposts
+                    </p>
+                    <p className='w-fit cursor-pointer text-paragraph2 hover:underline hover:underline-offset-2'>
+                        {data.shareCount} Shares
+                    </p>
                 </div>
             </section>
             <section>

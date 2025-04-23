@@ -30,6 +30,11 @@ const nextConfig = {
                 hostname: 'res.cloudinary.com',
                 // pathname: '/res.cloudinary.com/**'
             },
+            {
+                protocol: 'https',
+                hostname: 'drive.usercontent.google.com',
+                pathname: '/**',
+            },
         ],
     },
 };

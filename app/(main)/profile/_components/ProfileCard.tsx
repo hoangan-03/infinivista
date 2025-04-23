@@ -88,7 +88,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({data, isOwner, classNam
                     {data.socialLinks.map((social) => (
                         <div key={social.type} className='flex flex-row items-center gap-3'>
                             <div className='flex h-6 w-6 items-center justify-center'>
-                                <Icon name={social.type} />
+                                <Icon name={social.icon} />
                             </div>
                             <Link href={social.url}>
                                 <h3 className='text-base text-black hover:underline'>{social.url.split('/').pop()}</h3>

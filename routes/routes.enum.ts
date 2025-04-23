@@ -16,6 +16,8 @@ export enum ROUTES {
 
     DISCOVER = '/discover',
 
+    NOTIFICATIONS = '/notifications',
+
     SETTINGS = '/settings',
     SETTINGS_PROFILE = '/settings/profile',
     SETTINGS_PRIVACY = '/settings/privacy',

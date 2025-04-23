@@ -12,10 +12,6 @@ const Home: React.FC = () => {
         <div className='flex h-auto w-full flex-col bg-gray-900 text-white'>
             {/* Hero Section */}
             <div className='relative flex h-[1024px] w-full items-center justify-center bg-cover bg-center'>
-                {/* <video autoPlay loop muted className='absolute inset-0 h-full w-full object-cover'>
-                    <source src='/assets/images/back_video.mp4' type='video/mp4' />
-                    Your browser does not support the video tag.
-                </video> */}
                 <ClientVideo
                     autoPlay
                     loop
