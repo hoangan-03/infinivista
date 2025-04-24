@@ -1,21 +1,21 @@
-export interface ResponseAPI<IData> {
+export interface ResponseAPI<T> {
     status: number;
     message: string;
-    data: IData;
+    data: T;
     errors?: object; // object can be any key - value pair
 }
 
-export interface PaginationConfigRequest {
+export interface PaginationRequest {
     page?: number;
     limit?: number;
     keyword?: string;
 }
 
-export interface PaginationConfigResponse<IData> {
+export interface PaginationResponse<T> {
     pagination: {
         currentPage: number;
         perPage: number;
         totalItems: number;
     };
-    data: IData;
+    data: T;
 }

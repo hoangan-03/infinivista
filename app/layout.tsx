@@ -4,6 +4,7 @@ import type {Metadata, Viewport} from 'next';
 import localFont from 'next/font/local';
 
 import {ProgressBar} from '@/components/commons';
+import {AxiosInterceptor} from '@/context';
 
 const geistSans = localFont({
     src: './_fonts/GeistVF.woff',
@@ -36,7 +37,7 @@ export default function RootLayout({
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning={true}>
                 <div className='relative min-h-screen bg-white'>
                     <ProgressBar />
-                    {children}
+                    <AxiosInterceptor>{children}</AxiosInterceptor>
                 </div>
             </body>
         </html>
