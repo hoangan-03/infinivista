@@ -4,6 +4,7 @@ export {EmptyState} from './EmptyState';
 export {Header} from './Header';
 export {Icon} from './Icon';
 export {LogoName} from './LogoName';
+export {ModalConfirm} from './ModalConfirm';
 export {PasswordInput} from './PasswordInput';
 export {ProgressBar} from './ProgressBar';
 export {Provider} from './Provider';

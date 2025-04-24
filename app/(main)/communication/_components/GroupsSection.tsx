@@ -13,10 +13,8 @@ export const GroupsSection: React.FC<Props> = ({data}) => {
         <div className='space-y-5'>
             <div className='flex items-center justify-between'>
                 <h5 className='text-heading5 font-bold'>Groups</h5>
-                <Button variant='raw' size='icon'>
-                    <div className='flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 hover:bg-blue-200'>
-                        <Icon name='more' width={18} height={4} className='rotate-90' />
-                    </div>
+                <Button variant='icon' size='icon' className='size-8 rounded-full bg-blue-100 p-1 hover:bg-blue-200'>
+                    <Icon name='more' width={18} height={18} className='rotate-90' />
                 </Button>
             </div>
             <div className='space-y-2'>

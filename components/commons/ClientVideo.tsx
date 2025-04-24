@@ -11,7 +11,7 @@ interface Props extends React.VideoHTMLAttributes<HTMLVideoElement> {
     type?: string;
 }
 
-export const ClientVideo: React.FC<Props> = ({src, controls = true, type = 'video/mp4', className, ...props}) => {
+export const ClientVideo: React.FC<Props> = ({src, controls = false, type = 'video/mp4', className, ...props}) => {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {

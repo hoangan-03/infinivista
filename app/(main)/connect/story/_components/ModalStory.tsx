@@ -92,11 +92,16 @@ function ModalStory({open, data, onClose}: Props) {
                                         console.log(reaction);
                                     }}
                                 />
-                                <Button variant='raw' size='icon' className='hover:scale-110'>
-                                    <Icon name='chat-rectangle' />
+                                <Button variant='icon' size='icon'>
+                                    <Icon name='chat-rectangle' className='block group-hover:hidden' />
+                                    <Icon
+                                        name='chat-rectangle-filled'
+                                        className='hidden text-primary/80 group-hover:block'
+                                    />
                                 </Button>
-                                <Button variant='raw' size='icon' className='hover:scale-110'>
-                                    <Icon name='share' />
+                                <Button variant='icon' size='icon'>
+                                    <Icon name='share' className='block group-hover:hidden' />
+                                    <Icon name='share-filled' className='hidden text-primary/80 group-hover:block' />
                                 </Button>
                             </div>
                         </div>

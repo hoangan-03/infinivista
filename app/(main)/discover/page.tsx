@@ -10,7 +10,7 @@ function DiscoverPage() {
     return (
         <div className='relative flex justify-center px-10 py-4'>
             <div className='w-4/5'>
-                <div className='sticky top-0 z-20 flex h-[3.875rem] w-full items-center justify-between bg-white py-8'>
+                <div className='sticky top-0 z-20 flex h-[3.875rem] w-full items-center justify-between bg-white pb-10 pt-8'>
                     <h5 className='font-extrabold text-blue-700'>Discover</h5>
                     <div className='w-4/5'>
                         <Input

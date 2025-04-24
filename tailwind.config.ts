@@ -38,6 +38,9 @@ const config: Config = {
                 primary: {
                     DEFAULT: '#0369A1',
                 },
+                secondary: {
+                    DEFAULT: '#3D90D7',
+                },
                 gray: {
                     100: '#EFEFEF',
                     200: '#DCDCDC',
@@ -96,6 +99,8 @@ const config: Config = {
             },
             backgroundImage: {
                 'custom-gradient': 'linear-gradient(180deg, #2583FE, #F2C2FF, #FFF6A2)',
+                'custom-conic':
+                    'conic-gradient(from 180deg at 50% 50%, #003743 0deg, #1C597F 96.05deg, #313B6E 187.85deg, #3A4C60 272.45deg, #003743 360deg)',
             },
             fontFamily: {
                 montserrat: ['Montserrat', 'sans-serif'],
@@ -131,9 +136,11 @@ const config: Config = {
                 4: '4 4 0%', // Grow 4 times compared to others
             },
             boxShadow: {
+                xs: '0 1px 2px 0 rgba(0, 0, 0, 0.25)',
                 sm: '0 4px 4px 0 rgba(0, 0, 0, 0.25)',
                 md: '0 4px 8px 0 rgba(0, 0, 0, 0.25)',
                 lg: '0 8px 25px 0 rgba(0, 0, 0, 0.25)',
+                callSection: '0 4px 8px 0 #00000040',
             },
             transitionProperty: {
                 width: 'width',

@@ -18,7 +18,7 @@ const nextConfig = {
             },
             {
                 source: '/settings',
-                destination: '/settings/profile',
+                destination: '/settings/privacy',
                 permanent: true,
             },
         ];

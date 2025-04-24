@@ -1,3 +1,5 @@
+'use client';
+
 import {Sidebar} from '@/components/commons';
 
 export default function MainLayout({children}: {children: React.ReactNode}) {

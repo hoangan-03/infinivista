@@ -1,8 +1,14 @@
 import Image from 'next/image';
 
-import * as LoginWallpapers from '@/public/assets/images/login_wallpapers';
+const loginWallpapers = [
+    '/assets/images/login_wallpapers/login_1.jpg',
+    '/assets/images/login_wallpapers/login_2.jpg',
+    '/assets/images/login_wallpapers/login_3.jpg',
+    '/assets/images/login_wallpapers/login_4.jpg',
+    '/assets/images/login_wallpapers/login_5.jpg',
+];
 
-const wallpaperList = Object.values(LoginWallpapers);
+const wallpaperList = Object.values(loginWallpapers);
 
 export default function LoginRegisterLayout({children}: {children: React.ReactNode}) {
     const getRandomWallpaper = () => {
@@ -14,12 +20,13 @@ export default function LoginRegisterLayout({children}: {children: React.ReactNo
 
     return (
         <div className='flex h-screen'>
-            <aside className='w-250px hidden flex-2 bg-gray-100 md:flex'>
-                <div style={{position: 'relative', width: '100%', height: '100%'}}>
+            <aside className='hidden w-[250px] flex-2 bg-gray-100 md:flex'>
+                <div className='relative h-full w-full'>
                     <Image
                         src={randomWallpaper}
                         alt='Login wallpaper'
-                        layout='fill'
+                        // layout='fill'
+                        fill
                         className='object-cover'
                         quality={100}
                     />
