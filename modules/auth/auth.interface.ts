@@ -9,7 +9,7 @@ export interface ILoginRequest {
 }
 
 export interface IRegisterRequest {
-    username: string;
     email: string;
+    username: string;
     password: string;
 }

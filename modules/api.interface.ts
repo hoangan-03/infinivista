@@ -8,14 +8,15 @@ export interface ResponseAPI<T> {
 export interface PaginationRequest {
     page?: number;
     limit?: number;
-    keyword?: string;
+    // keyword?: string;
 }
 
 export interface PaginationResponse<T> {
-    pagination: {
-        currentPage: number;
-        perPage: number;
-        totalItems: number;
+    data: T[];
+    metadata: {
+        total: number; // total number of items
+        page: number;
+        limit: number; // number of items per page
+        totalPages: number;
     };
-    data: T;
 }

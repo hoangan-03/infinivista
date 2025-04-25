@@ -12,6 +12,13 @@ const showToastError = (error: string, toastId: string) => {
     }
 };
 
+const printError = (error: AxiosError) => {
+    const requestURL = error.config?.url || 'unknown URL';
+    const requestMethod = error.config?.method?.toUpperCase() || 'UNKNOWN';
+
+    console.error(`${requestMethod} ${requestURL} failed:`, error);
+};
+
 type Context = {
     state: {
         isUnauthorized: boolean;
@@ -47,6 +54,7 @@ export const AxiosInterceptor: React.FC<Props> = ({children}) => {
         };
 
         const errorResponseInterceptor = async (error: AxiosError) => {
+            printError(error);
             const toastId = 'error';
             if (error.code === 'ERR_NETWORK' && error.message === 'Network Error') {
                 showToastError('Network Error', toastId);

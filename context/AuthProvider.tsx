@@ -1,16 +1,16 @@
+'use client';
+
 import {useRouter} from 'next/navigation';
 import {createContext, ReactNode, useContext, useState} from 'react';
 import {toast} from 'react-toastify';
 
-// import {useAxiosInterceptorContext} from '@/lib/axios/AxiosInterceptor';
-// import {OAUTH_PROVIDER} from '@/modules/auth/auth.enum';
-import {ILoginRequest, IProfile} from '@/modules/auth/auth.interface';
+import {ILoginRequest} from '@/modules/auth/auth.interface';
 import {AuthService} from '@/modules/auth/auth.service';
 import {useGetProfile} from '@/modules/auth/auth.swr';
+import {IProfile} from '@/modules/profile/profile.interface';
 import {ROUTES} from '@/routes/routes.enum';
 
 import {useAxiosInterceptorContext} from './AxiosInterceptor';
-// import {ENUM_ROUTES} from '@/routes/routes.enum';
 
 type Authentication = {
     state: {
@@ -44,6 +44,7 @@ const AuthContext = createContext<Authentication>(initialState);
 
 export const AuthProvider = ({children}: {children: ReactNode}) => {
     const {data, mutate: mutateUser, error, isLoading} = useGetProfile();
+    console.log('data', data);
     const {
         state: {isUnauthorized},
         resetState,
@@ -51,7 +52,6 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
     const isAuth = !isLoading && !!data?.id && !error && !isUnauthorized;
     const [didClickLogout, setDidClickLogout] = useState<boolean>(false);
 
-    // const navigate = useNavigate();
     const router = useRouter();
 
     const onLogin = async (data: ILoginRequest) => {
@@ -59,11 +59,9 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
             await AuthService.login(data);
             await mutateUser();
             resetState();
-            // navigate(ENUM_ROUTES.HOME, {replace: true});
             router.replace(ROUTES.CONNECT_FEED);
             toast.success('Login successful');
         } catch (error) {
-            console.error(error);
             toast.error('Login failed');
         } finally {
             setDidClickLogout(false);
@@ -83,11 +81,9 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
         try {
             await AuthService.logout();
             await mutateUser();
-            // navigate(ENUM_ROUTES.LOGIN, {replace: true});
             router.replace(ROUTES.LOGIN);
             toast.success('Logout successful');
         } catch (error) {
-            console.error(error);
             toast.error('Logout failed');
         }
     };

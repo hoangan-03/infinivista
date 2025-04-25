@@ -67,9 +67,11 @@ export const Post: React.FC<PostProps> = ({data, sharedPost, className}) => {
                     <p className='text-caption font-medium text-gray-500'>{getTimeStamp(data.createdAt)}</p>
                 </div>
             </section>
-            <section>
-                <p className='text-justify text-paragraph1 font-medium'>{data.description}</p>
-            </section>
+            {!sharedPost && (
+                <section>
+                    <p className='text-justify text-paragraph1 font-medium'>{data.description}</p>
+                </section>
+            )}
             {sharedPost && (
                 <div
                     className={cn(
@@ -112,10 +114,12 @@ export const Post: React.FC<PostProps> = ({data, sharedPost, className}) => {
                             </Button>
                         </div>
                         <div className='flex gap-4'>
-                            <Button variant='icon' size='icon'>
-                                <Icon name='share' className='block group-hover:hidden' />
-                                <Icon name='share-filled' className='hidden text-primary/80 group-hover:block' />
-                            </Button>
+                            {!sharedPost && (
+                                <Button variant='icon' size='icon'>
+                                    <Icon name='share' className='block group-hover:hidden' />
+                                    <Icon name='share-filled' className='hidden text-primary/80 group-hover:block' />
+                                </Button>
+                            )}
                             <Button variant='icon' size='icon'>
                                 <Icon name='save' className='block group-hover:hidden' />
                                 <Icon name='save-filled' className='hidden text-primary/80 group-hover:block' />
