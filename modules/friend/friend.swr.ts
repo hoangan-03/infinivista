@@ -75,4 +75,4 @@ function useGetInfiniteFriendRequests() {
     };
 }
 
-export {useGetInfiniteFriendRequests,useGetInfiniteFriends};
+export {useGetInfiniteFriendRequests, useGetInfiniteFriends};
