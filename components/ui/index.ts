@@ -32,8 +32,21 @@ export {
 } from './dropdown-menu';
 export {Input, inputVariants} from './input';
 export {Label} from './label';
+export {Progress} from './progress';
 export {RadioGroup, RadioGroupItem} from './radio-group';
 export {ScrollArea, ScrollBar} from './scroll-area';
+export {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectScrollDownButton,
+    SelectScrollUpButton,
+    SelectSeparator,
+    SelectTrigger,
+    SelectValue,
+} from './select';
 export {Separator} from './separator';
 export {
     Sheet,
@@ -47,8 +60,8 @@ export {
     SheetTitle,
     SheetTrigger,
 } from './sheet';
-export {Sidebar} from './sidebar';
 export {Skeleton} from './skeleton';
 export {Switch} from './switch';
+export {Textarea} from './textarea';
 export {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from './tooltip';
 export {VisuallyHidden} from './visually-hidden';

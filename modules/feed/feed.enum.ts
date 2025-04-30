@@ -1,0 +1,5 @@
+export enum FEED_VISIBILITY {
+    PUBLIC = 'PUBLIC',
+    PRIVATE = 'PRIVATE',
+    FRIENDS_ONLY = 'FRIENDS_ONLY',
+}

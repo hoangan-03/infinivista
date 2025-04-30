@@ -1,4 +1,4 @@
-export interface Friend {
+export interface IFriend {
     id: string;
     username: string;
     name: string;
@@ -10,7 +10,7 @@ export interface Friend {
 }
 
 // id is the same for mocking purpose
-export const friends: Friend[] = [
+export const friends: IFriend[] = [
     {
         id: '3f5d8e69-c812-4f0b-b3e4-a1b26f9c7d85',
         username: 'alexandratan',

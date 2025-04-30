@@ -1,12 +1,15 @@
 'use client';
 
-import {usePathname, useRouter} from 'next/navigation';
-import React from 'react';
+import Link from 'next/link';
+import {usePathname} from 'next/navigation';
+import React, {useState} from 'react';
 
+import {ModalNewPost} from '@/app/(main)/_components';
 import {Icon} from '@/components/commons';
 import {Button, Separator} from '@/components/ui';
+import {useAuthContext} from '@/context';
 import {cn} from '@/lib/utils';
-import {profile} from '@/mock_data/profile';
+// import {profile} from '@/mock_data/profile';
 import LogoIcon from '@/public/assets/images/logo_icon.svg';
 import LogoText from '@/public/assets/images/logo_text.svg';
 import {ROUTES} from '@/routes/routes.enum';
@@ -15,179 +18,147 @@ import {SidebarElement} from './SidebarElement';
 import {SidebarProfile} from './SidebarProfile';
 import {SidebarSubElement} from './SidebarSubElement';
 
-const pageList = [
-    {id: 1, pageName: 'Connect', pathname: 'connect', selected: false},
-    {id: 2, pageName: 'Feed', pathname: 'connect/feed', selected: false},
-    {id: 3, pageName: 'Story', pathname: 'connect/story', selected: false},
-    {id: 4, pageName: 'Discover', pathname: 'discover', selected: false},
-    {id: 5, pageName: 'Message', pathname: 'communication', selected: false},
-    {id: 6, pageName: 'Shop', pathname: 'shop', selected: false},
-    {id: 7, pageName: 'Mailbox', pathname: 'mailbox', selected: false},
-    {id: 8, pageName: 'Notifications', pathname: 'notifications', selected: false},
-    {id: 9, pageName: 'Settings', pathname: 'settings', selected: false},
+interface ISidebarContent {
+    label: string;
+    iconName: string;
+    children?: ISidebarContent[];
+    href?: string;
+    onClick?: () => void;
+}
+
+const menuSidebarContents: ISidebarContent[] = [
+    {
+        label: 'Connect',
+        iconName: 'globe',
+        href: ROUTES.CONNECT,
+        children: [
+            {label: 'Feed', iconName: 'globe', href: ROUTES.CONNECT_FEED},
+            {label: 'Story', iconName: 'globe', href: ROUTES.CONNECT_STORY},
+        ],
+    },
+    {label: 'Discover', iconName: 'navigation', href: ROUTES.DISCOVER},
+    {label: 'Messages', iconName: 'chat-circle', href: ROUTES.COMMUNICATION},
+    {label: 'Settings', iconName: 'settings-gear', href: ROUTES.SETTINGS},
+    {label: 'Notifications', iconName: 'notification-bell', href: ROUTES.NOTIFICATIONS},
+];
+
+const profileSidebarContents: ISidebarContent[] = [
+    {label: 'Switch Account', iconName: 'left-right'},
+    {label: 'Log Out', iconName: 'logout'},
 ];
 
 export const Sidebar: React.FC = () => {
-    const router = useRouter();
-    const [sidebarExpanded, setSidebarExpanded] = React.useState(true);
-
+    const [isExpanded, setIsExpanded] = useState<boolean>(true);
+    const [showModalNewPost, setShowModalNewPost] = useState<boolean>(false);
     const currentURL = usePathname();
-    const updatedPageList = pageList.map((page) => {
-        if (page.pathname === 'connect') {
-            // Only select 'connect' if it is the exact match and not a child path
-            return {
-                ...page,
-                selected:
-                    currentURL === '/connect' ||
-                    (!currentURL.includes('/connect/feed') &&
-                        !currentURL.includes('/connect/story') &&
-                        currentURL.includes('/connect')),
-            };
-        }
 
-        return {
-            ...page,
-            selected: currentURL.includes(page.pathname), // Standard match for other pages
-        };
-    });
+    const {state} = useAuthContext();
+    const profile = state.user;
+
+    const isRouteActive = (path: string): boolean => {
+        if (!path) return false;
+        return currentURL === path;
+    };
+
+    const isChildRouteActive = (path: string): boolean => {
+        if (!path) return false;
+        return currentURL.startsWith(`${path}/`) || currentURL === path;
+    };
 
     return (
-        <div
-            id='sidebar-wrapper'
-            className={cn('h-full overflow-hidden', 'sidebar-transition', sidebarExpanded ? 'w-64' : 'w-20')}
-        >
+        <div className={cn('h-full overflow-hidden', 'sidebar-transition', isExpanded ? 'w-64' : 'w-20')}>
             <div
                 className={cn(
-                    'custom-scrollbar-hidden fixed left-0 top-0 z-50 h-screen overflow-auto bg-white py-6 shadow-sm',
+                    'custom-scrollbar-hidden fixed left-0 top-0 z-50 h-screen space-y-4 overflow-auto bg-white py-6 shadow-sm',
                     'sidebar-transition',
-                    sidebarExpanded ? 'w-64 px-6' : 'w-20 px-3'
+                    isExpanded ? 'w-64 px-6' : 'w-20 px-3'
                 )}
             >
-                <div className='relative mb-5 h-[33px] flex-center'>
-                    <LogoIcon />
-                    <LogoText className={cn('sidebar-transition', sidebarExpanded ? 'ml-2' : 'w-0')} />
-                </div>
-                <div className='mb-5 flex-center'>
+                <Link href={ROUTES.CONNECT_FEED}>
+                    <div className='relative h-[33px] flex-center'>
+                        <LogoIcon />
+                        <LogoText className={cn('sidebar-transition', isExpanded ? 'ml-2' : 'w-0')} />
+                    </div>
+                </Link>
+                <div className='flex-center'>
                     <Button
-                        variant='iconDefault'
                         className={cn(
-                            'h-12 w-full gap-2 px-3 py-2 text-white',
-                            'text-nowrap transition-all duration-500 ease-in-out', // sidebar-transition
-                            !sidebarExpanded && 'flex w-12'
+                            'h-12 w-full gap-2 bg-primary px-3 py-2 text-slate-50 flex-center hover:bg-slate-900/90',
+                            'text-nowrap transition-all duration-500 ease-in-out',
+                            !isExpanded && 'flex w-12'
                         )}
+                        onClick={() => setShowModalNewPost(true)}
                     >
                         <span>
-                            <Icon name='plus' width={16} height={16} />
+                            <Icon name='plus' width={16} height={16} className='text-white' />
                         </span>
-                        <p
-                            className={cn(
-                                'font-bold',
-                                'sidebar-transition',
-                                !sidebarExpanded && 'text-collapsed absolute'
-                            )}
-                        >
+                        <p className={cn('font-bold', 'sidebar-transition', !isExpanded && 'text-collapsed absolute')}>
                             New Post
                         </p>
                     </Button>
                 </div>
-                <div>
-                    <p className='mb-5 font-bold text-gray-500'>Menu</p>
-                    <div className='mb-5'>
-                        <SidebarElement
-                            name='Connect'
-                            iconName='globe'
-                            selected={updatedPageList[0].selected}
-                            sidebarExpanded={sidebarExpanded}
-                            onClick={() => router.push('/connect')}
-                            childSelected={updatedPageList[1].selected || updatedPageList[2].selected}
-                        >
-                            <SidebarSubElement
-                                name='Feed'
-                                href={ROUTES.CONNECT_FEED}
-                                selected={updatedPageList[1].selected}
-                                sidebarExpanded={sidebarExpanded}
-                            />
-                            <SidebarSubElement
-                                name='Story'
-                                href={ROUTES.CONNECT_STORY}
-                                selected={updatedPageList[2].selected}
-                                sidebarExpanded={sidebarExpanded}
-                            />
-                        </SidebarElement>
-                        <SidebarElement
-                            name='Discover'
-                            iconName='navigation'
-                            selected={updatedPageList[3].selected}
-                            sidebarExpanded={sidebarExpanded}
-                            onClick={() => router.push('/discover')}
-                        />
-                        <SidebarElement
-                            name='Message'
-                            iconName='chat-circle'
-                            selected={updatedPageList[4].selected}
-                            sidebarExpanded={sidebarExpanded}
-                            onClick={() => router.push('/communication')}
-                        />
-                        {/* <SidebarElement
-                            name='Shop'
-                            iconName='ShopCart'
-                            selected={updatedPageList[5].selected}
-                            sidebarExpanded={sidebarExpanded}
-                            onClick={() => router.push('/shop')}
-                        /> */}
-                        {/* <SidebarElement
-                            name='Mailbox'
-                            iconName='Mail'
-                            selected={updatedPageList[6].selected}
-                            withNumericalData
-                            numericalData={32}
-                            sidebarExpanded={sidebarExpanded}
-                            numericalDataClassName='bg-primary'
-                        />
-                        <SidebarElement
-                            name='Notifications'
-                            iconName='NotificationBell'
-                            selected={updatedPageList[7].selected}
-                            withNumericalData
-                            numericalData={10}
-                            sidebarExpanded={sidebarExpanded}
-                            numericalDataClassName='bg-green-600'
-                        /> */}
-                        <SidebarElement
-                            name='Settings'
-                            iconName='settings-gear'
-                            selected={updatedPageList[8].selected}
-                            sidebarExpanded={sidebarExpanded}
-                            onClick={() => router.push('/settings')}
-                        />
+                <div className='space-y-4'>
+                    <p className='font-bold text-gray-500'>Menu</p>
+                    <div className='space-y-4'>
+                        {menuSidebarContents.map((item, index) => {
+                            const hasActiveChild =
+                                item.children?.some((child) => isChildRouteActive(child.href || '')) || false;
+                            return (
+                                <SidebarElement
+                                    key={index}
+                                    label={item.label}
+                                    iconName={item.iconName}
+                                    isSelected={isRouteActive(item.href || '') || hasActiveChild}
+                                    isExpanded={isExpanded}
+                                    href={item.href}
+                                    onClick={item.onClick}
+                                >
+                                    {item.children?.map((child, childIndex) => (
+                                        <SidebarSubElement
+                                            key={childIndex}
+                                            label={child.label}
+                                            href={child.href}
+                                            isSelected={isChildRouteActive(child.href || '')}
+                                            isExpanded={isExpanded}
+                                            className='mt-1'
+                                        />
+                                    ))}
+                                </SidebarElement>
+                            );
+                        })}
                         <Separator className='bg-gray-200' />
                     </div>
-                    <div className='mb-5'>
-                        <p className='mb-5 font-bold text-gray-500'>Profile</p>
-                        <SidebarProfile href={ROUTES.PROFILE} data={profile} sidebarExpanded={sidebarExpanded} />
-                        <SidebarElement
-                            name='Switch Account'
-                            iconName='left-right'
-                            sidebarExpanded={sidebarExpanded}
-                            onClick={() => console.log('Switching account...')}
+                    <div className='space-y-4'>
+                        <p className='font-bold text-gray-500'>Profile</p>
+                        <SidebarProfile
+                            href={ROUTES.PROFILE + `/${profile?.id}`}
+                            data={profile || undefined}
+                            isExpanded={isExpanded}
                         />
-                        <SidebarElement
-                            name='Log Out'
-                            iconName='logout'
-                            sidebarExpanded={sidebarExpanded}
-                            onClick={() => console.log('Logging out...')}
-                        />
+                        {profileSidebarContents.map((item, index) => (
+                            <SidebarElement
+                                key={index}
+                                label={item.label}
+                                iconName={item.iconName}
+                                isExpanded={isExpanded}
+                                onClick={item.onClick}
+                            />
+                        ))}
                         <Separator className='bg-gray-200' />
                     </div>
                     <SidebarElement
-                        name='Collapse'
-                        iconName={sidebarExpanded ? 'zoom-out' : 'zoom-in'}
-                        sidebarExpanded={sidebarExpanded}
-                        onClick={() => setSidebarExpanded(!sidebarExpanded)}
-                        className='mb-0'
+                        label='Collapse'
+                        iconName={isExpanded ? 'zoom-out' : 'zoom-in'}
+                        isExpanded={isExpanded}
+                        onClick={() => setIsExpanded(!isExpanded)}
                     />
                 </div>
             </div>
+            <ModalNewPost
+                open={showModalNewPost}
+                onClose={() => setShowModalNewPost(false)}
+                data={profile || undefined}
+            />
         </div>
     );
 };

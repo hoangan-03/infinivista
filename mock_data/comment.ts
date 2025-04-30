@@ -1,4 +1,4 @@
-export interface Comment {
+export interface IComment {
     id: number;
     username: string;
     text: string;
@@ -8,7 +8,7 @@ export interface Comment {
     createdAt: Date;
 }
 
-export const comments: Comment[] = [
+export const comments: IComment[] = [
     {
         id: 1,
         username: 'User 1',

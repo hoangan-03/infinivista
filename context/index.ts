@@ -1,2 +1,4 @@
-export type {FeedType} from './FeedContext';
-export {FeedProvider, useFeedContext} from './FeedContext';
+export {AuthProvider, useAuthContext} from './AuthProvider';
+export {AxiosInterceptor, useAxiosInterceptorContext} from './AxiosInterceptor';
+export type {FeedType} from './FeedProvider';
+export {FeedProvider, useFeedContext} from './FeedProvider';

@@ -1,0 +1,58 @@
+import {ATTACHMENT_TYPE, REACTION_TYPE} from '../common.enum';
+import {BaseEntity} from '../common.interface';
+import {POST_VISIBILITY} from './post.enum';
+
+export interface IPost extends BaseEntity {
+    id: string;
+    // title: string;
+    content: string;
+    userOwner: IPostUser;
+    postAttachments: IPostAttachment[];
+    topics: IPostTopic[];
+    visibility: POST_VISIBILITY;
+}
+
+export interface IPostUser {
+    id: string;
+    email: string;
+    username: string;
+    phoneNumber: string | null;
+    firstName: string;
+    lastName: string;
+    profileImageUrl: string | null;
+}
+
+export interface IPostAttachment {
+    id: string;
+    attachment_url: string;
+    attachmentType: ATTACHMENT_TYPE;
+}
+
+export interface IPostTopic {
+    name: string;
+    description: string;
+}
+
+export interface IPostCreate {
+    newsFeedId: string;
+    content: string;
+    files: FileList;
+    attachmentTypes: ATTACHMENT_TYPE[];
+}
+
+export interface IPostComment extends BaseEntity {
+    id: string;
+    text: string;
+    attachment_url: string;
+    user: IPostUser;
+}
+
+export interface IPostReactionCount {
+    [REACTION_TYPE.LIKE]: number;
+    [REACTION_TYPE.HEART]: number;
+    [REACTION_TYPE.CARE]: number;
+    [REACTION_TYPE.HAHA]: number;
+    [REACTION_TYPE.SAD]: number;
+    [REACTION_TYPE.WOW]: number;
+    [REACTION_TYPE.ANGRY]: number;
+}

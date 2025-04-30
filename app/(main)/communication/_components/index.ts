@@ -1,3 +1,3 @@
-export {GroupCard} from './GroupCard';
-export {MessageArea} from './MessageArea';
-export {MessageUserCard} from './MessageUserCard';
+export {GroupsSection} from './GroupsSection';
+export {MessageItem} from './MessageItem';
+export {UsersSection} from './UsersSection';

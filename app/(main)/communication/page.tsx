@@ -1,6 +1,9 @@
-import Image from 'next/image';
+'use client';
 
-import {Icon} from '@/components/commons';
+import Image from 'next/image';
+import {useState} from 'react';
+
+import {ClientVideo, Icon} from '@/components/commons';
 import {
     Button,
     DropdownMenu,
@@ -11,117 +14,26 @@ import {
     Separator,
 } from '@/components/ui';
 import {cn} from '@/lib/utils';
+import {messages} from '@/mock_data/message';
+import {profile} from '@/mock_data/profile';
 import placeholderImage from '@/public/assets/images/placeholder.png';
 
-import {GroupCard, MessageArea, MessageUserCard} from './_components';
+import {GroupsSection, MessageItem, UsersSection} from './_components';
 
-interface IMessage {
-    username: string;
-    role: string;
-    message: string;
-    time: Date;
-    isCurrentUser: boolean;
-    showAvatar: boolean;
-}
-
-interface IUserCard {
+export interface IUserItem {
     name: string;
     message: string;
     lastActive: number;
 }
 
-interface IGroupCard {
+export interface IGroupItem {
     name: string;
-    tag1: string;
-    tag2?: string;
+    tags: string[];
     lastActive: number;
     className?: string;
 }
 
-const messages: IMessage[] = [
-    {
-        username: 'Khuong',
-        role: 'Backend',
-        message: 'Hi there, nice to meet you',
-        time: new Date(),
-        isCurrentUser: true,
-        showAvatar: true,
-    },
-    {
-        username: 'Dat',
-        role: 'Frontend',
-        message: 'Hello Khuong! How are you?',
-        time: new Date(),
-        isCurrentUser: false,
-        showAvatar: true,
-    },
-    {
-        username: 'An',
-        role: 'Project Manager',
-        message: 'Hi everyone, we will be discussing the upcoming Capstone Project.',
-        time: new Date(),
-        isCurrentUser: false,
-        showAvatar: true,
-    },
-    {
-        username: 'Khuong',
-        role: 'Backend',
-        message: 'Sure, I have some ideas for the backend architecture.',
-        time: new Date(),
-        isCurrentUser: true,
-        showAvatar: true,
-    },
-    {
-        username: 'Dat',
-        role: 'Frontend',
-        message: 'I can work on the frontend components.',
-        time: new Date(),
-        isCurrentUser: false,
-        showAvatar: true,
-    },
-    {
-        username: 'An',
-        role: 'Project Manager',
-        message: 'Great! I am going to set up a meeting to discuss the details.',
-        time: new Date(),
-        isCurrentUser: false,
-        showAvatar: true,
-    },
-    {
-        username: 'Khuong',
-        role: 'Backend',
-        message: 'I am available tomorrow afternoon.',
-        time: new Date(),
-        isCurrentUser: true,
-        showAvatar: true,
-    },
-    {
-        username: 'Dat',
-        role: 'Frontend',
-        message: 'Tomorrow afternoon works for me too.',
-        time: new Date(),
-        isCurrentUser: false,
-        showAvatar: true,
-    },
-    {
-        username: 'An',
-        role: 'Project Manager',
-        message: 'Perfect! We will meet at 2 PM.',
-        time: new Date(),
-        isCurrentUser: false,
-        showAvatar: true,
-    },
-    {
-        username: 'Khuong',
-        role: 'Backend',
-        message: 'Looking forward to it!',
-        time: new Date(),
-        isCurrentUser: true,
-        showAvatar: true,
-    },
-];
-
-const userCards: IUserCard[] = [
+const userItems: IUserItem[] = [
     {
         name: 'Khuong',
         message: 'Hi there, nice to meet you',
@@ -144,31 +56,47 @@ const userCards: IUserCard[] = [
     },
 ];
 
-const groupCards: IGroupCard[] = [
+const groupItems: IGroupItem[] = [
     {
         name: 'Capstone Project Team',
-        tag1: 'Backend',
-        tag2: 'Frontend',
+        tags: ['Backend', 'Frontend', 'Mobile', 'AI Research', 'Marketing', 'Design', 'Project Management'],
         lastActive: 12,
     },
     {
         name: 'Web Development Team',
-        tag1: 'Frontend',
+        tags: ['Frontend'],
         lastActive: 5,
     },
     {
         name: 'Mobile Development Team',
-        tag1: 'Mobile',
+        tags: ['Mobile'],
         lastActive: 2,
     },
     {
         name: 'Marketing Team',
-        tag1: 'Marketing',
+        tags: ['Marketing'],
+        lastActive: 30,
+    },
+    {
+        name: 'Marketing Team',
+        tags: ['Marketing'],
+        lastActive: 30,
+    },
+    {
+        name: 'Marketing Team',
+        tags: ['Marketing'],
+        lastActive: 30,
+    },
+    {
+        name: 'Marketing Team',
+        tags: ['Marketing'],
         lastActive: 30,
     },
 ];
 
 export default function CommunicationPage() {
+    const [isCalling] = useState<boolean>(false);
+
     return (
         <div className='flex gap-10'>
             <div className='w-[70%]'>
@@ -202,7 +130,7 @@ export default function CommunicationPage() {
                     </div>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild className='outline-none ring-0 focus-visible:ring-0'>
-                            <Button variant='raw' size='icon'>
+                            <Button variant='icon' size='icon'>
                                 <Icon name='more' width={15} height={15} />
                             </Button>
                         </DropdownMenuTrigger>
@@ -213,102 +141,110 @@ export default function CommunicationPage() {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-                <div className='shadow-custom-1 relative flex h-[90vh] flex-col gap-2 rounded-b-xl bg-white p-4'>
-                    <ScrollArea className='h-[90%] pr-4'>
-                        {messages.map((message, index) => (
-                            <div
-                                key={index}
-                                className={cn('mt-4 flex', message.isCurrentUser ? 'justify-end' : 'justify-start')}
-                            >
-                                <MessageArea
-                                    username={message.username}
-                                    role={message.role}
-                                    message={message.message}
-                                    time={message.time}
-                                    isCurrentUser={message.isCurrentUser}
-                                    showAvatar={message.showAvatar}
-                                    className='w-4/5'
-                                />
-                            </div>
-                        ))}
-                    </ScrollArea>
-                    <div className='flex h-[10%] items-center gap-2 rounded-xl bg-primary px-5 py-3'>
-                        <div className='flex gap-2'>
-                            <div className='relative h-6 w-6'>
-                                <Button variant='raw' size='icon'>
-                                    <Icon name='image' className='absolute inset-0 h-full w-full text-white' />
+                {!isCalling && (
+                    <div className='shadow-custom-1 relative flex h-[89vh] flex-col gap-2 rounded-b-xl bg-white p-4'>
+                        <ScrollArea className='h-[90%] pr-4'>
+                            {messages.map((message, index) => (
+                                <div
+                                    key={index}
+                                    className={cn(
+                                        'my-4 flex',
+                                        message.username === profile.username ? 'justify-end' : 'justify-start'
+                                    )}
+                                >
+                                    <MessageItem
+                                        data={message}
+                                        isCurrentUser={message.username === profile.username}
+                                        showAvatar={message.username !== messages[index - 1]?.username}
+                                        className='w-4/5'
+                                    />
+                                </div>
+                            ))}
+                        </ScrollArea>
+                        <div className='flex h-[10%] items-center gap-2 rounded-xl bg-primary px-5 py-3'>
+                            <div className='flex gap-2'>
+                                <Button variant='icon' size='icon' className='size-6'>
+                                    <Icon name='image' className='text-white' />
+                                </Button>
+                                <Button variant='icon' size='icon'>
+                                    <Icon name='attachment' className='text-white' />
+                                </Button>
+                                <Button variant='icon' size='icon'>
+                                    <Icon name='smile' className='text-white' />
+                                </Button>
+                                <Button variant='icon' size='icon'>
+                                    <Icon name='mention' className='text-white' />
                                 </Button>
                             </div>
-                            <Button variant='raw' size='icon'>
-                                <Icon name='attachment' className='text-white' />
-                            </Button>
-                            <Button variant='raw' size='icon'>
-                                <Icon name='smile' className='text-white' />
-                            </Button>
-                            <Button variant='raw' size='icon'>
-                                <Icon name='mention' className='text-white' />
-                            </Button>
-                        </div>
-                        <div className='flex h-5 flex-grow items-center gap-2'>
-                            <Separator className='h-full bg-white' orientation='vertical' />
-                            <input
-                                type='text'
-                                className='w-full rounded-sm border border-white bg-primary py-1 pl-2 text-white placeholder:text-white focus:outline-1 focus:outline-white'
-                                placeholder='Start typing...'
-                            />
-                            <Button
-                                variant='secondary'
-                                size='square'
-                                className='h-10 w-10 rounded-sm bg-white flex-center'
-                            >
-                                <Icon name='arrow-send' width={20} height={20} />
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className='w-[30%]'>
-                <div className='mb-10'>
-                    <div className='mb-5 flex items-center gap-3'>
-                        <h5 className='text-heading5 font-bold'>Messages</h5>
-                        <Icon name='caret-down' width={16} height={16} />
-                        <p className='rounded-full bg-gray-200 px-2 py-1'>2</p>
-                    </div>
-                    <div>
-                        {userCards.map((user, index) => (
-                            <MessageUserCard
-                                key={index}
-                                name={user.name}
-                                message={user.message}
-                                lastActive={user.lastActive}
-                                className='mb-2'
-                            />
-                        ))}
-                    </div>
-                </div>
-                <div>
-                    <div className='mb-5 flex items-center justify-between'>
-                        <h5 className='text-heading5 font-bold'>Groups</h5>
-                        <Button variant='raw' size='icon'>
-                            <div className='flex h-8 w-8 items-center justify-center rounded-full bg-blue-100'>
-                                <Icon name='more' width={18} height={4} className='rotate-90' />
+                            <div className='flex h-5 flex-grow items-center gap-2'>
+                                <Separator className='h-full bg-white' orientation='vertical' />
+                                <input
+                                    type='text'
+                                    className='w-full rounded-sm border border-white bg-primary py-1 pl-2 text-white placeholder:text-white focus:outline-1 focus:outline-white'
+                                    placeholder='Start typing...'
+                                />
+                                <Button
+                                    variant='secondary'
+                                    className='aspect-square h-10 w-10 rounded-sm bg-white p-1 flex-center'
+                                >
+                                    <Icon name='arrow-send' width={20} height={20} />
+                                </Button>
                             </div>
-                        </Button>
+                        </div>
                     </div>
-                    <div>
-                        {groupCards.map((group, index) => (
-                            <GroupCard
-                                key={index}
-                                name={group.name}
-                                tag1={group.tag1}
-                                tag2={group.tag2}
-                                lastActive={group.lastActive}
-                                className='mb-2'
+                )}
+                {isCalling && (
+                    <div className='relative flex h-[89vh] flex-col gap-5 rounded-xl bg-custom-conic p-6 shadow-callSection'>
+                        <h4 className='font-bold text-white'>Capstone Project Team</h4>
+                        <div className='flex items-center justify-between'>
+                            <div className='flex items-center gap-2'>
+                                <div className='relative size-4 rounded-full bg-red-500'>
+                                    <div className='absolute left-1/2 top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white' />
+                                </div>
+                                <p className='text-gray-300'>REC</p>
+                                <p className='text-gray-300'>00:02:18</p>
+                            </div>
+                            <p className='text-gray-300'>4 people joined</p>
+                        </div>
+                        <div className='relative flex-grow overflow-hidden rounded-xl'>
+                            <div className='absolute bottom-4 z-10 flex w-full items-center justify-center gap-6'>
+                                <Button
+                                    variant='icon'
+                                    size='icon'
+                                    className='size-12 rounded-full bg-white hover:bg-slate-200'
+                                >
+                                    <Icon name='video-camera' width={16} height={16} />
+                                </Button>
+                                <Button
+                                    variant='icon'
+                                    size='icon'
+                                    className='h-[72px] w-[72px] rounded-lg bg-red-500 hover:bg-red-600'
+                                >
+                                    <Icon name='phone' className='text-white' width={36} height={36} />
+                                </Button>
+                                <Button
+                                    variant='icon'
+                                    size='icon'
+                                    className='size-12 rounded-full bg-white hover:bg-slate-200'
+                                >
+                                    <Icon name='microphone' />
+                                </Button>
+                            </div>
+                            <ClientVideo
+                                controls={false}
+                                src='https://res.cloudinary.com/dght74v9o/video/upload/v1735408641/samples/cld-sample-video.mp4'
+                                className='absolute inset-0 h-full w-full object-cover'
                             />
-                        ))}
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
+            <ScrollArea className='h-[calc(100vh-32px)] w-[30%]'>
+                <div className='space-y-4 pr-2'>
+                    <UsersSection data={userItems} />
+                    <GroupsSection data={groupItems} />
+                </div>
+            </ScrollArea>
         </div>
     );
 }

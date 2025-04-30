@@ -17,11 +17,11 @@ type LinkInfo = {
 
 function SettingsLayout({children}: Props) {
     const links: LinkInfo[] = [
-        {
-            label: 'Profile',
-            href: ROUTES.SETTINGS_PROFILE,
-            icon: <Icon name='user' />,
-        },
+        // {
+        //     label: 'Profile',
+        //     href: ROUTES.SETTINGS_PROFILE,
+        //     icon: <Icon name='user' />,
+        // },
         {
             label: 'Privacy',
             href: ROUTES.SETTINGS_PRIVACY,

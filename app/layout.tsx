@@ -1,7 +1,12 @@
 import './globals.css';
+import 'react-toastify/ReactToastify.css';
 
 import type {Metadata, Viewport} from 'next';
 import localFont from 'next/font/local';
+import {ToastContainer} from 'react-toastify';
+
+import {ProgressBar} from '@/components/commons';
+import {AuthProvider, AxiosInterceptor} from '@/context';
 
 const geistSans = localFont({
     src: './_fonts/GeistVF.woff',
@@ -32,7 +37,13 @@ export default function RootLayout({
     return (
         <html lang='en'>
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning={true}>
-                <div className='relative min-h-screen bg-white'>{children}</div>
+                <div className='relative min-h-screen bg-white'>
+                    <ProgressBar />
+                    <AxiosInterceptor>
+                        <AuthProvider>{children}</AuthProvider>
+                    </AxiosInterceptor>
+                    <ToastContainer position='bottom-right' autoClose={2000} />
+                </div>
             </body>
         </html>
     );

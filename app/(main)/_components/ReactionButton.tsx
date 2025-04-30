@@ -4,21 +4,37 @@ import React from 'react';
 
 import {Icon} from '@/components/commons';
 import {Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui';
-import {REACTION_TYPE} from '@/mock_data/post';
+import {REACTION_TYPE} from '@/modules/common.enum';
 
 interface ReactButtonProps {
     width?: number;
     height?: number;
+    reacted?: boolean;
     onReact: (reaction: REACTION_TYPE) => void;
 }
 
-export const ReactionButton: React.FC<ReactButtonProps> = ({width = 24, height = 24}) => {
+type Icon = {
+    name: string;
+    type: REACTION_TYPE;
+};
+
+const icons: Icon[] = Object.values(REACTION_TYPE).map((type) => ({
+    name: `emote-${type.toLowerCase()}`,
+    type,
+}));
+
+export const ReactionButton: React.FC<ReactButtonProps> = ({width = 24, height = 24, onReact, reacted}) => {
     return (
         <TooltipProvider delayDuration={150}>
             <Tooltip>
                 <TooltipTrigger asChild>
                     <Button variant='icon' size='icon'>
-                        <Icon name='heart' width={width} height={height} className='block group-hover:hidden' />
+                        <Icon
+                            name={!reacted ? 'heart' : 'heart-filled'}
+                            width={width}
+                            height={height}
+                            className='block group-hover:hidden'
+                        />
                         <Icon
                             name='heart-filled'
                             width={width}
@@ -27,8 +43,19 @@ export const ReactionButton: React.FC<ReactButtonProps> = ({width = 24, height =
                         />
                     </Button>
                 </TooltipTrigger>
-                {/* TODO: List out all reaction icons */}
-                <TooltipContent>Hello</TooltipContent>
+                <TooltipContent className='flex h-12 items-center justify-center gap-2 bg-white' align='center'>
+                    {icons.map((icon) => (
+                        <Button
+                            key={icon.type}
+                            variant='icon'
+                            size='icon'
+                            onClick={() => onReact(icon.type)}
+                            className='hover:animate-scale-pulse'
+                        >
+                            <Icon name={icon.name} width={32} height={32} />
+                        </Button>
+                    ))}
+                </TooltipContent>
             </Tooltip>
         </TooltipProvider>
     );

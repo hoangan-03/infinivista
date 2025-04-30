@@ -22,7 +22,7 @@ const PasswordInput = forwardRef<HTMLInputElement, InputProps>(({className, ...p
                     <Icon name={`${icon}-filled`} className='hidden group-hover:block' />
                 </>
             }
-            onChangePasswordVisibility={() => setShowPassword((showPassword) => !showPassword)}
+            onClickSuffixIcon={() => setShowPassword((showPassword) => !showPassword)}
             {...props}
         />
     );

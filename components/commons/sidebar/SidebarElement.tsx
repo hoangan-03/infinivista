@@ -1,90 +1,75 @@
-import React from 'react';
+import Link from 'next/link';
+import React, {useCallback, useState} from 'react';
 
 import {Icon} from '@/components/commons';
 import {Button, Separator} from '@/components/ui';
 import {cn} from '@/lib/utils';
 
 interface SidebarElementProps {
-    name: string;
+    label: string;
+    href?: string;
     iconName: string;
-    selected?: boolean;
-    withNumericalData?: boolean;
-    numericalData?: number;
-    numericalDataClassName?: string;
-    sidebarExpanded: boolean;
-    onClick?: () => void;
-    className?: string;
+    isSelected?: boolean;
+    isExpanded: boolean;
     children?: React.ReactNode;
-    childSelected?: boolean;
+    className?: string;
+    onClick?: () => void;
 }
 
 export const SidebarElement: React.FC<SidebarElementProps> = ({
-    name,
+    label,
     iconName,
-    selected,
-    withNumericalData,
-    numericalData,
-    sidebarExpanded,
+    isSelected,
+    isExpanded,
     onClick,
+    href,
     className,
-    numericalDataClassName,
     children,
-    childSelected,
 }) => {
-    const [dropdownExpanded, setDropdownExpanded] = React.useState(true);
+    const [isDropdownExpanded, setIsDropdownExpanded] = useState<boolean>(true);
 
-    /*
-    If no children => based on the value of selected
-    If children => only selected when one of the children is selected and the dropdown is collapsed
-    */
-    const hasNoChildrenAndSelected = !children && selected;
-    const hasChildrenAndChildSelected = children && childSelected && !dropdownExpanded;
-    const realSelected = hasNoChildrenAndSelected || hasChildrenAndChildSelected;
+    const buttonContent = useCallback(
+        (onClick?: () => void) => (
+            <Button
+                variant='raw'
+                className={cn('flex w-full items-center', !isExpanded && 'justify-center')}
+                onClick={onClick}
+            >
+                <Icon name={iconName} className='text-black' />
+                <div
+                    className={cn(
+                        'flex flex-grow items-center justify-between',
+                        'sidebar-transition',
+                        isExpanded ? 'w-40' : 'w-0'
+                    )}
+                >
+                    <div className={cn('sidebar-transition', isExpanded ? 'mx-2' : 'text-collapsed')}>
+                        <p className='font-bold text-black'>{label}</p>
+                    </div>
+                </div>
+            </Button>
+        ),
+        [iconName, isExpanded, label]
+    );
 
     return (
-        <div className={cn('mb-5', className)}>
-            <div className={cn('relative rounded-xs px-3 py-2 hover:bg-gray-100', realSelected && 'bg-gray-200')}>
-                <Button
-                    variant='raw'
-                    className={cn('flex w-full items-center', !sidebarExpanded && 'justify-center')}
-                    onClick={onClick}
-                >
-                    <Icon name={iconName} className='text-black' />
-                    <div
-                        className={cn(
-                            'flex flex-grow items-center justify-between',
-                            'sidebar-transition',
-                            sidebarExpanded ? 'w-40' : 'w-0'
-                        )}
-                    >
-                        <div className={cn('sidebar-transition', sidebarExpanded ? 'mx-2' : 'text-collapsed')}>
-                            <p className='font-bold text-black'>{name}</p>
-                        </div>
-
-                        {withNumericalData && (
-                            <p
-                                className={cn(
-                                    'rounded-xs px-2 text-white',
-                                    'sidebar-transition',
-                                    !sidebarExpanded && 'origin-bottom-left -translate-x-3 translate-y-2 scale-75',
-                                    numericalDataClassName
-                                )}
-                            >
-                                {numericalData}
-                            </p>
-                        )}
-                    </div>
-                </Button>
+        <div className={className}>
+            <div className={cn('relative rounded-md px-3 py-2 hover:bg-slate-100', isSelected && 'bg-slate-200')}>
+                {href && <Link href={href}>{buttonContent()}</Link>}
+                {!href && buttonContent(onClick)}
                 {children && (
                     <span
-                        className='absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer'
-                        onClick={() => setDropdownExpanded(!dropdownExpanded)}
+                        className={cn(
+                            'absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer',
+                            !isExpanded && 'right-0'
+                        )}
+                        onClick={() => setIsDropdownExpanded(!isDropdownExpanded)}
                     >
                         <Icon
                             name='caret-down'
                             width={16}
                             height={16}
-                            className={cn('text-black', 'sidebar-transition', dropdownExpanded && '-scale-y-100')}
+                            className={cn('text-black', 'sidebar-transition', isDropdownExpanded && '-scale-y-100')}
                         />
                     </span>
                 )}
@@ -94,19 +79,19 @@ export const SidebarElement: React.FC<SidebarElementProps> = ({
                     className={cn(
                         'mb-5 flex overflow-hidden',
                         'sidebar-transition',
-                        dropdownExpanded ? 'max-h-52' : 'max-h-0',
-                        sidebarExpanded && 'pl-6'
+                        isDropdownExpanded ? 'max-h-52' : 'max-h-0',
+                        isExpanded && 'pl-6'
                     )}
                 >
                     <Separator
                         orientation='vertical'
-                        className={cn('h-22 bg-gray-200', 'sidebar-transition', !sidebarExpanded && 'opacity-0')}
+                        className={cn('h-22 bg-gray-200', 'sidebar-transition', !isExpanded && 'opacity-0')}
                     />
                     <div
                         className={cn(
                             'mt-2 flex w-full flex-col gap-2',
                             'sidebar-transition',
-                            sidebarExpanded ? 'pl-2' : '-translate-x-0'
+                            isExpanded ? 'pl-2' : '-translate-x-0'
                         )}
                     >
                         {children}

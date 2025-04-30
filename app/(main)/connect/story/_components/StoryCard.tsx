@@ -1,13 +1,15 @@
 import Image from 'next/image';
 
 import {Icon} from '@/components/commons';
-import {cn} from '@/lib/utils';
-import {Story} from '@/mock_data/story';
+import {cn, getSumReactions} from '@/lib/utils';
+import {ATTACHMENT_TYPE} from '@/modules/common.enum';
+import {IStory} from '@/modules/story/story.interface';
+import {useGetInfiniteStoryComments, useGetStoryReactionCount} from '@/modules/story/story.swr';
 
 interface Props {
     width: 1 | 2 | 3;
     height: 1 | 2 | 3;
-    data?: Story; // TODO: change to interface Story once API is ready
+    data?: IStory;
     onClick?: () => void;
 }
 
@@ -35,6 +37,9 @@ const getImageSizes = (width: number) => {
 };
 
 function StoryCard({width, height, data, onClick}: Props) {
+    const {data: reactionCounts} = useGetStoryReactionCount(data?.id);
+    const {pagination} = useGetInfiniteStoryComments(data?.id);
+
     return (
         <div
             className={cn(
@@ -45,9 +50,12 @@ function StoryCard({width, height, data, onClick}: Props) {
             onClick={onClick}
         >
             <Image
-                // src='/assets/images/bg_placeholder.jpg'
-                src={data?.image || '/assets/images/bg_placeholder.jpg'}
-                alt=''
+                src={
+                    data?.attachmentType === ATTACHMENT_TYPE.IMAGE && data?.story_url
+                        ? data.story_url
+                        : '/assets/images/bg_placeholder.jpg'
+                }
+                alt={`Image of ${data?.story_url}`}
                 fill
                 sizes={getImageSizes(width)}
                 className='object-cover transition-transform duration-200 group-hover:scale-105'
@@ -58,11 +66,11 @@ function StoryCard({width, height, data, onClick}: Props) {
 
             <div className='absolute inset-0 flex items-center justify-center gap-4 p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100'>
                 <div className='flex items-center justify-between gap-2'>
-                    <p className='text-white'>188K</p>
+                    <p className='text-white'>{getSumReactions(reactionCounts)}</p>
                     <Icon name='heart-filled' className='text-white' />
                 </div>
                 <div className='flex items-center justify-between gap-2'>
-                    <p className='text-white'>23K</p>
+                    <p className='text-white'>{pagination[0]?.total}</p>
                     <Icon name='chat-rectangle-filled' className='text-white' />
                 </div>
             </div>
