@@ -1,4 +1,4 @@
-import {IStory} from '@/mock_data/story';
+import {IStory} from '@/modules/story/story.interface';
 
 import {StoryCard} from '.';
 

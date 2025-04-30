@@ -7,8 +7,9 @@ import React, {useState} from 'react';
 import {ModalNewPost} from '@/app/(main)/_components';
 import {Icon} from '@/components/commons';
 import {Button, Separator} from '@/components/ui';
+import {useAuthContext} from '@/context';
 import {cn} from '@/lib/utils';
-import {profile} from '@/mock_data/profile';
+// import {profile} from '@/mock_data/profile';
 import LogoIcon from '@/public/assets/images/logo_icon.svg';
 import LogoText from '@/public/assets/images/logo_text.svg';
 import {ROUTES} from '@/routes/routes.enum';
@@ -50,6 +51,9 @@ export const Sidebar: React.FC = () => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const [showModalNewPost, setShowModalNewPost] = useState<boolean>(false);
     const currentURL = usePathname();
+
+    const {state} = useAuthContext();
+    const profile = state.user;
 
     const isRouteActive = (path: string): boolean => {
         if (!path) return false;
@@ -127,8 +131,8 @@ export const Sidebar: React.FC = () => {
                     <div className='space-y-4'>
                         <p className='font-bold text-gray-500'>Profile</p>
                         <SidebarProfile
-                            href={ROUTES.PROFILE + `/${profile.username}`}
-                            data={profile}
+                            href={ROUTES.PROFILE + `/${profile?.id}`}
+                            data={profile || undefined}
                             isExpanded={isExpanded}
                         />
                         {profileSidebarContents.map((item, index) => (
@@ -150,7 +154,11 @@ export const Sidebar: React.FC = () => {
                     />
                 </div>
             </div>
-            <ModalNewPost open={showModalNewPost} onClose={() => setShowModalNewPost(false)} data={profile} />
+            <ModalNewPost
+                open={showModalNewPost}
+                onClose={() => setShowModalNewPost(false)}
+                data={profile || undefined}
+            />
         </div>
     );
 };

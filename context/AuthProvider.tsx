@@ -44,7 +44,6 @@ const AuthContext = createContext<Authentication>(initialState);
 
 export const AuthProvider = ({children}: {children: ReactNode}) => {
     const {data, mutate: mutateUser, error, isLoading} = useGetProfile();
-    console.log('data', data);
     const {
         state: {isUnauthorized},
         resetState,

@@ -4,7 +4,7 @@ import React from 'react';
 
 import {Icon} from '@/components/commons';
 import {Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui';
-import {REACTION_TYPE} from '@/mock_data/post';
+import {REACTION_TYPE} from '@/modules/common.enum';
 
 interface ReactButtonProps {
     width?: number;
@@ -19,7 +19,7 @@ type Icon = {
 };
 
 const icons: Icon[] = Object.values(REACTION_TYPE).map((type) => ({
-    name: `emote-${type}`,
+    name: `emote-${type.toLowerCase()}`,
     type,
 }));
 

@@ -1,6 +1,8 @@
 import {type ClassValue, clsx} from 'clsx';
 import {twMerge} from 'tailwind-merge';
 
+import {IPostReactionCount} from '@/modules/post/post.interface';
+
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
@@ -39,7 +41,11 @@ export function getTimeStamp(time: Date | string): string {
     return timeStamp;
 }
 
-export function getSumReactions(reactionList: {count: number}[]): number {
-    if (!reactionList || reactionList.length === 0) return 0;
-    return reactionList.reduce((sum, reaction) => sum + reaction.count, 0);
+export function getSumReactions(
+    reactionCounts: IPostReactionCount | Record<string, number> | null | undefined
+): number {
+    if (!reactionCounts) return 0;
+
+    // Sum all reaction counts
+    return Object.values(reactionCounts).reduce((sum, count) => sum + (count || 0), 0);
 }

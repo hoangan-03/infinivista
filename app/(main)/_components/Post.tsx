@@ -5,13 +5,16 @@ import React, {useEffect, useState} from 'react';
 import {Avatar, Icon} from '@/components/commons';
 import {Button, Input, Separator, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui';
 import {cn, getSumReactions, getTimeStamp} from '@/lib/utils';
-import {IPost, REACTION_TYPE} from '@/mock_data/post';
+import {REACTION_TYPE} from '@/modules/common.enum';
+import {IPost} from '@/modules/post/post.interface';
+import {useGetInfinitePostComments, useGetPostReactionCount} from '@/modules/post/post.swr';
 
 import {ModalComments, ModalMultimedia, ReactionButton} from '.';
 
 interface PostProps {
     data: IPost;
-    sharedPost?: IPost;
+    // sharedPost?: IPost;
+    isShared?: boolean;
     className?: string;
 }
 
@@ -21,15 +24,14 @@ type Icon = {
 };
 
 const icons: Icon[] = Object.values(REACTION_TYPE).map((type) => ({
-    name: `emote-${type}`,
+    name: `emote-${type.toLowerCase()}`,
     type,
 }));
 
-export const Post: React.FC<PostProps> = ({data, sharedPost, className}) => {
+export const Post: React.FC<PostProps> = ({data, isShared, className}) => {
     const [showModalComments, setShowModalComments] = useState<boolean>(false);
 
     const [displayCount, setDisplayCount] = useState<number>(0);
-
     useEffect(() => {
         const updateDisplayCount = () => {
             const width = window.innerWidth;
@@ -53,6 +55,10 @@ export const Post: React.FC<PostProps> = ({data, sharedPost, className}) => {
         return () => window.removeEventListener('resize', updateDisplayCount);
     }, []);
 
+    // TODO: add infinite scrolling for comments
+    const {data: comments} = useGetInfinitePostComments(data.id);
+    const {data: reactionCounts} = useGetPostReactionCount(data.id);
+
     return (
         <div
             className={cn(
@@ -61,18 +67,18 @@ export const Post: React.FC<PostProps> = ({data, sharedPost, className}) => {
             )}
         >
             <section className='flex items-center gap-3'>
-                <Avatar src={data.avatar} />
+                <Avatar src={data.userOwner.profileImageUrl || undefined} />
                 <div>
-                    <h6 className='font-bold'>{data.author}</h6>
+                    <h6 className='font-bold'>{data.userOwner.username}</h6>
                     <p className='text-caption font-medium text-gray-500'>{getTimeStamp(data.createdAt)}</p>
                 </div>
             </section>
-            {!sharedPost && (
+            {!isShared && (
                 <section>
-                    <p className='text-justify text-paragraph1 font-medium'>{data.description}</p>
+                    <p className='text-justify text-paragraph1 font-medium'>{data.content}</p>
                 </section>
             )}
-            {sharedPost && (
+            {isShared && (
                 <div
                     className={cn(
                         'flex min-w-fit flex-col gap-5 rounded-[1.5rem] border border-gray-100 bg-white p-7 shadow-md',
@@ -80,21 +86,19 @@ export const Post: React.FC<PostProps> = ({data, sharedPost, className}) => {
                     )}
                 >
                     <section className='flex items-center gap-3'>
-                        <Avatar src={sharedPost.avatar} />
+                        <Avatar src={data.userOwner.profileImageUrl || undefined} />
                         <div>
-                            <h6 className='font-bold'>{sharedPost.author}</h6>
-                            <p className='text-caption font-medium text-gray-500'>
-                                {getTimeStamp(sharedPost.createdAt)}
-                            </p>
+                            <h6 className='font-bold'>{'sharedPost.author'}</h6>
+                            <p className='text-caption font-medium text-gray-500'>{getTimeStamp(data.createdAt)}</p>
                         </div>
                     </section>
                     <section>
-                        <p className='text-justify text-paragraph1 font-medium'>{sharedPost.description}</p>
+                        <p className='text-justify text-paragraph1 font-medium'>{'sharedPost.description'}</p>
                     </section>
-                    <ModalMultimedia attachments={sharedPost.attachments} displayCount={displayCount} />
+                    <ModalMultimedia attachments={data.postAttachments} displayCount={displayCount} />
                 </div>
             )}
-            {!sharedPost && <ModalMultimedia attachments={data.attachments} displayCount={displayCount} />}
+            {!isShared && <ModalMultimedia attachments={data.postAttachments} displayCount={displayCount} />}
             <section>
                 <div className='space-y-2'>
                     <Separator className='bg-gray-200' />
@@ -114,7 +118,7 @@ export const Post: React.FC<PostProps> = ({data, sharedPost, className}) => {
                             </Button>
                         </div>
                         <div className='flex gap-4'>
-                            {!sharedPost && (
+                            {!isShared && (
                                 <Button variant='icon' size='icon'>
                                     <Icon name='share' className='block group-hover:hidden' />
                                     <Icon name='share-filled' className='hidden text-primary/80 group-hover:block' />
@@ -134,34 +138,42 @@ export const Post: React.FC<PostProps> = ({data, sharedPost, className}) => {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <p className='w-fit cursor-pointer text-subtitle2 font-bold'>
-                                {getSumReactions(data.reactions)} Reactions
+                                {getSumReactions(reactionCounts)} Reactions
                             </p>
                         </TooltipTrigger>
                         <TooltipContent className='flex h-10 items-center justify-center gap-2 bg-white' align='center'>
-                            {data.reactions.map((reaction, index) => {
-                                const icon = icons.find((i) => i.type === reaction.type);
-                                return (
-                                    <div key={index} className='flex items-center gap-1'>
-                                        <p>{reaction.count}</p>
-                                        <Icon name={icon?.name || reaction.type} width={20} height={20} />
-                                    </div>
-                                );
-                            })}
+                            {reactionCounts &&
+                                Object.entries(reactionCounts).map(([type, count]) => {
+                                    if (!count) return null;
+
+                                    const icon = icons.find((i) => i.type === type);
+
+                                    return (
+                                        <div key={type} className='flex items-center gap-1'>
+                                            <p>{count}</p>
+                                            <Icon
+                                                name={icon?.name || `emote-${type.toLowerCase()}`}
+                                                width={20}
+                                                height={20}
+                                            />
+                                        </div>
+                                    );
+                                })}
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
                 <div className='flex gap-3 text-gray-600'>
                     <p className='w-fit cursor-pointer text-paragraph2 hover:underline hover:underline-offset-2'>
-                        {data.viewCount} Views
+                        1000 Views
                     </p>
                     <p className='w-fit cursor-pointer text-paragraph2 hover:underline hover:underline-offset-2'>
-                        {data.comments.length} Comments
+                        {comments.length} Comments
                     </p>
                     <p className='w-fit cursor-pointer text-paragraph2 hover:underline hover:underline-offset-2'>
-                        {data.repostCount} Reposts
+                        1000 Reposts
                     </p>
                     <p className='w-fit cursor-pointer text-paragraph2 hover:underline hover:underline-offset-2'>
-                        {data.shareCount} Shares
+                        1000 Shares
                     </p>
                 </div>
             </section>
@@ -181,8 +193,8 @@ export const Post: React.FC<PostProps> = ({data, sharedPost, className}) => {
             <ModalComments
                 open={showModalComments}
                 onClose={() => setShowModalComments(false)}
-                reactions={data.reactions}
-                comments={data.comments}
+                reactions={reactionCounts}
+                comments={comments}
             />
         </div>
     );

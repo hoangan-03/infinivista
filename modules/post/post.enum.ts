@@ -1,4 +1,5 @@
-export enum ATTACHMENT_TYPE {
-    IMAGE = 'IMAGE',
-    VIDEO = 'VIDEO',
+export enum POST_VISIBILITY {
+    PUBLIC = 'PUBLIC',
+    PRIVATE = 'PRIVATE',
+    FRIENDS_ONLY = 'FRIENDS_ONLY',
 }

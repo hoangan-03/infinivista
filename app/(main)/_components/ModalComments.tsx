@@ -4,16 +4,16 @@ import {Avatar, Icon} from '@/components/commons';
 import {Input, Separator} from '@/components/ui';
 import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle} from '@/components/ui/dialog';
 import {getSumReactions, getTimeStamp} from '@/lib/utils';
-import {IComment} from '@/mock_data/comment';
-import {REACTION_TYPE} from '@/mock_data/post';
+import {REACTION_TYPE} from '@/modules/common.enum';
+import {IPostComment, IPostReactionCount} from '@/modules/post/post.interface';
 
 import {ReactionButton} from '.';
 
 interface ModalCommentsProps {
     open: boolean;
     onClose: () => void;
-    reactions: {count: number}[];
-    comments: IComment[];
+    reactions?: IPostReactionCount;
+    comments: IPostComment[];
 }
 
 export const ModalComments: React.FC<ModalCommentsProps> = ({open, onClose, reactions, comments}) => {
@@ -49,13 +49,13 @@ export const ModalComments: React.FC<ModalCommentsProps> = ({open, onClose, reac
                                 className='flex w-full items-center gap-3 rounded-md bg-gray-100 px-3 py-2'
                             >
                                 <Avatar
-                                    src={comment.avatar}
-                                    alt={'Avatar of ' + comment.username}
+                                    src={comment.user.profileImageUrl || undefined}
+                                    alt={'Avatar of ' + comment.user.firstName + ' ' + comment.user.lastName}
                                     className='min-w-10'
                                 />
                                 <div className={'w-full'}>
                                     <div className='flex items-center justify-between gap-2'>
-                                        <p className='text-paragraph1 font-bold'>{comment.username}</p>
+                                        <p className='text-paragraph1 font-bold'>{`${comment.user.firstName} ${comment.user.lastName}`}</p>
                                         <p className='text-caption'>{getTimeStamp(comment.createdAt)}</p>
                                     </div>
                                     <p className='text-paragraph2'>{comment.text}</p>

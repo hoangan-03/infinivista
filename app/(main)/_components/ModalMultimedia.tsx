@@ -12,25 +12,18 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import {cn} from '@/lib/utils';
-
-type AttachmentType = 'image' | 'video';
-
-interface Attachment {
-    id: number;
-    type: AttachmentType;
-    src: string;
-    alt: string;
-}
+import {ATTACHMENT_TYPE} from '@/modules/common.enum';
+import {IPostAttachment} from '@/modules/post/post.interface';
 
 interface ModalMultimediaProps {
-    attachments?: Attachment[];
+    attachments?: IPostAttachment[];
     displayCount?: number;
     className?: string;
 }
 
 export const ModalMultimedia: React.FC<ModalMultimediaProps> = ({attachments, displayCount = 4, className}) => {
-    const imageCount = attachments?.filter((attachment) => attachment.type === 'image').length;
-    const videoCount = attachments?.filter((attachment) => attachment.type === 'video').length;
+    const imageCount = attachments?.filter((attachment) => attachment.attachmentType === ATTACHMENT_TYPE.IMAGE).length;
+    const videoCount = attachments?.filter((attachment) => attachment.attachmentType === ATTACHMENT_TYPE.VIDEO).length;
 
     return (
         <Dialog>
@@ -54,7 +47,7 @@ export const ModalMultimedia: React.FC<ModalMultimediaProps> = ({attachments, di
                                 index < displayCount && (
                                     <div
                                         key={media.id}
-                                        className='relative h-full w-full rounded-xl object-cover shadow-sm'
+                                        className='relative h-[220px] w-[210px] rounded-xl object-cover shadow-sm'
                                     >
                                         {index === lastDisplayIndex && overflow && (
                                             <div className='absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transform select-none text-[4rem] text-white'>
@@ -67,21 +60,21 @@ export const ModalMultimedia: React.FC<ModalMultimediaProps> = ({attachments, di
                                                 index === lastDisplayIndex && overflow && 'brightness-[10%] filter'
                                             )}
                                         >
-                                            {media.type === 'image' && (
+                                            {media.attachmentType === ATTACHMENT_TYPE.IMAGE && (
                                                 <Image
-                                                    src={media.src}
-                                                    alt={media.alt}
+                                                    src={media.attachment_url}
+                                                    alt={`Image from ${media.attachment_url}`}
                                                     width={0}
                                                     height={0}
                                                     sizes='100vw'
                                                     className='h-full w-full rounded-xl object-cover'
                                                 />
                                             )}
-                                            {media.type === 'video' && (
+                                            {media.attachmentType === ATTACHMENT_TYPE.VIDEO && (
                                                 <ClientVideo
                                                     controls={!(lastDisplayIndex && overflow)}
                                                     className='h-full w-full rounded-xl object-cover'
-                                                    src={media.src}
+                                                    src={media.attachment_url}
                                                 />
                                             )}
                                         </div>
@@ -91,7 +84,7 @@ export const ModalMultimedia: React.FC<ModalMultimediaProps> = ({attachments, di
                         })}
                 </section>
             </DialogTrigger>
-            <DialogContent className={cn('grid sm:max-w-[425px] md:max-w-[600px] lg:max-w-[800px]', className)}>
+            <DialogContent className={cn('grid h-fit sm:max-w-[425px] md:max-w-[600px] lg:max-w-[800px]', className)}>
                 <DialogHeader>
                     <DialogTitle className='sticky top-0 z-10 flex items-center justify-center gap-4 bg-white py-2'>
                         {imageCount && imageCount.toString() + ' Images'}
@@ -100,22 +93,24 @@ export const ModalMultimedia: React.FC<ModalMultimediaProps> = ({attachments, di
                     </DialogTitle>
                 </DialogHeader>
                 <DialogDescription />
-                <div className='flex h-full flex-col justify-between gap-5'>
+                <div className='h-full justify-between space-y-5'>
                     {attachments &&
                         attachments.map((media) => (
-                            <div key={media.id}>
-                                {media.type === 'image' && (
+                            <div key={media.id} className='relative h-[550px] w-[750px]'>
+                                {media.attachmentType === ATTACHMENT_TYPE.IMAGE && (
                                     <Image
-                                        src={media.src}
-                                        alt={media.alt}
-                                        width={0}
-                                        height={0}
-                                        sizes='100vw'
+                                        src={media.attachment_url}
+                                        alt={`Image from ${media.attachment_url}`}
+                                        fill
                                         className='h-auto w-full rounded-xl object-cover'
                                     />
                                 )}
-                                {media.type === 'video' && (
-                                    <ClientVideo controls className='h-fit w-full rounded-xl' src={media.src} />
+                                {media.attachmentType === ATTACHMENT_TYPE.VIDEO && (
+                                    <ClientVideo
+                                        controls
+                                        className='h-[550px] w-[750px] rounded-xl'
+                                        src={media.attachment_url}
+                                    />
                                 )}
                             </div>
                         ))}

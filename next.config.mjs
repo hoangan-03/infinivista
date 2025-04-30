@@ -25,15 +25,32 @@ const nextConfig = {
     },
     images: {
         remotePatterns: [
+            // {
+            //     protocol: 'https',
+            //     hostname: 'res.cloudinary.com',
+            //     // pathname: '/res.cloudinary.com/**'
+            // },
+            // {
+            //     protocol: 'https',
+            //     hostname: 'drive.usercontent.google.com',
+            //     pathname: '/**',
+            // },
+            // {
+            //     protocol: 'https',
+            //     hostname: 'cdn.jsdelivr.net',
+            //     pathname: '/gh/faker-js/**',
+            // },
+            // {
+            //     protocol: 'https',
+            //     hostname: 'picsum.photos',
+            // },
             {
                 protocol: 'https',
-                hostname: 'res.cloudinary.com',
-                // pathname: '/res.cloudinary.com/**'
+                hostname: '**',
             },
             {
-                protocol: 'https',
-                hostname: 'drive.usercontent.google.com',
-                pathname: '/**',
+                protocol: 'http',
+                hostname: '**',
             },
         ],
     },

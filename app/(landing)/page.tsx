@@ -24,7 +24,7 @@ const Home: React.FC = () => {
                     <h2 className='mb-10 text-6xl font-bold text-white'>
                         Where the <br /> world connects
                     </h2>
-                    <Link href={ROUTES.CONNECT_FEED}>
+                    <Link href={ROUTES.LOGIN}>
                         <Button
                             variant='default'
                             className={cn(

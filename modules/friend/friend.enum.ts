@@ -1,0 +1,5 @@
+export enum FRIEND_PROFILE_PRIVACY {
+    PUBLIC = 'PUBLIC',
+    PRIVATE = 'PRIVATE',
+    FRIENDS = 'FRIENDS',
+}

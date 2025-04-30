@@ -1,41 +1,34 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 
 import {FriendListItem} from '@/app/(main)/_components';
-import {Button} from '@/components/ui';
-import {connectSidebarConfig} from '@/constants/common';
-import {friends} from '@/mock_data/friend';
-
-const minContacts = connectSidebarConfig.contacts.min;
-const maxContacts = connectSidebarConfig.contacts.max;
+import {Spinner} from '@/components/commons';
+import {ScrollArea} from '@/components/ui';
+import {useInfiniteScrolling} from '@/hooks/useInfiniteScrolling';
+import {useGetInfiniteFriends} from '@/modules/friend/friend.swr';
 
 export const Contacts: React.FC = () => {
-    const [displayNumber, setDisplayNumber] = useState<number>(0);
-    const [isExpanded, setIsExpanded] = useState<boolean>(false);
-    const [mounted, setMounted] = useState<boolean>(false);
-
-    const handleToggleExpand = () => {
-        const newDisplayNumber = isExpanded ? minContacts : maxContacts;
-        setDisplayNumber(Math.min(newDisplayNumber, friends.length));
-        setIsExpanded(!isExpanded);
-    };
-
-    useEffect(() => {
-        setDisplayNumber(Math.min(minContacts, friends.length));
-        setIsExpanded(false);
-        setMounted(true);
-    }, []);
+    const {data: friends, pagination, size, setSize, isValidating, isLoading} = useGetInfiniteFriends();
+    const {loadMoreRef} = useInfiniteScrolling({
+        data: friends,
+        pagination,
+        size,
+        isValidating,
+        setSize,
+    });
 
     return (
-        <div className='flex flex-col gap-4 rounded-xl p-4 shadow-md'>
-            {mounted &&
-                friends.slice(0, displayNumber).map((friend, index) => <FriendListItem key={index} data={friend} />)}
-            <div className='flex-center'>
-                <Button variant='link' size='icon' onClick={handleToggleExpand}>
-                    <p className='text-caption'>{!isExpanded ? 'See more' : 'See less'}</p>
-                </Button>
+        <ScrollArea className='h-[30vh] rounded-xl p-4 shadow-md'>
+            <div className='space-y-4'>
+                {friends.map((friend, index) => (
+                    <FriendListItem key={index} data={friend} />
+                ))}
             </div>
-        </div>
+
+            <div ref={loadMoreRef} className='flex justify-center'>
+                {isValidating && !isLoading && <Spinner width={60} height={60} />}
+            </div>
+        </ScrollArea>
     );
 };

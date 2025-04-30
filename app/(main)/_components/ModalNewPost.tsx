@@ -20,11 +20,11 @@ import {
 } from '@/components/ui';
 import {capitalize} from '@/lib/utils';
 import {POST_PRIVACY_TYPES} from '@/mock_data/post-privacy';
-import {IProfile} from '@/mock_data/profile';
+import {IProfile} from '@/modules/profile/profile.interface';
 
 interface Props {
     open: boolean;
-    data: IProfile;
+    data?: IProfile;
     onClose: () => void;
 }
 
@@ -42,12 +42,10 @@ export const ModalNewPost: React.FC<Props> = ({open, data, onClose}) => {
                 <form className='space-y-4'>
                     <div className='flex items-center gap-4'>
                         <div className='size-10'>
-                            <Avatar />
+                            <Avatar src={data?.profileImageUrl} />
                         </div>
                         <div className='space-y-1'>
-                            <p className='font-semibold'>
-                                {data.firstName} {data.lastName}
-                            </p>
+                            <p className='font-semibold'>{data?.username}</p>
                             <Select value={postPrivacyTypes[0]} onValueChange={() => {}}>
                                 <SelectTrigger className='h-7 w-[100px] border-2 border-slate-300 text-sm'>
                                     <SelectValue placeholder='Friends' className='placeholder:text-sm' />
