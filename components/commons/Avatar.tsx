@@ -10,6 +10,7 @@ interface AvatarProps {
     alt?: string; // Default to 'avatar'
     variant?: 'default' | 'border';
     className?: string;
+    onClick?: () => void;
 }
 
 export const Avatar: React.FC<AvatarProps> = ({
@@ -18,6 +19,7 @@ export const Avatar: React.FC<AvatarProps> = ({
     alt = 'Avatar',
     variant = 'default',
     className,
+    onClick,
 }) => {
     const resolvedSrc = src || DefaultAvatar;
     return (
@@ -29,6 +31,7 @@ export const Avatar: React.FC<AvatarProps> = ({
                     className
                 )}
                 style={{width: size, height: size}}
+                onClick={onClick}
             >
                 <Image fill sizes={`${size}px`} src={resolvedSrc} alt={alt} className='object-cover' />
             </div>

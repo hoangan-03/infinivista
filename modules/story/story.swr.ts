@@ -53,7 +53,7 @@ function useGetInfiniteStoryComments(storyId?: string) {
         return storyId ? {storyId, pagination} : null;
     };
 
-    const {data, error, size, setSize, isValidating, isLoading} = useSWRInfinite(
+    const {data, mutate, error, size, setSize, isValidating, isLoading} = useSWRInfinite(
         getKey,
         StoryService.getStoryComments,
         {
@@ -68,6 +68,7 @@ function useGetInfiniteStoryComments(storyId?: string) {
     return {
         data: comments,
         pagination,
+        mutate,
         error,
         size,
         setSize,
@@ -96,4 +97,24 @@ function useGetStoryReactionCount(storyId?: string) {
     };
 }
 
-export {useGetInfiniteStories, useGetInfiniteStoryComments, useGetStoryReactionCount};
+function useGetStoryReactions(storyId?: string) {
+    const url = storyId ? StoryService.ROUTES.storyReactions(storyId) : null;
+
+    const {data, mutate, error, isValidating, isLoading} = useSWR(
+        storyId ? {key: url, storyId} : null,
+        StoryService.getStoryReactions,
+        {
+            keepPreviousData: false,
+        }
+    );
+
+    return {
+        data,
+        mutate,
+        error,
+        isValidating,
+        isLoading,
+    };
+}
+
+export {useGetInfiniteStories, useGetInfiniteStoryComments, useGetStoryReactionCount, useGetStoryReactions};

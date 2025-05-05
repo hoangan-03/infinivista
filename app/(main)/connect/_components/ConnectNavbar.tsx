@@ -36,33 +36,36 @@ const tabList: Tab[] = [
 
 interface ConnectNavbarProps {
     title: string;
+    showTab?: boolean;
     className?: string;
 }
 
-export const ConnectNavbar: React.FC<ConnectNavbarProps> = ({title, className}) => {
+export const ConnectNavbar: React.FC<ConnectNavbarProps> = ({title, showTab, className}) => {
     const {feedType, setFeedType} = useFeedContext();
 
     return (
         <div className={cn('flex w-full items-center justify-between', className)}>
             <h5 className='font-extrabold text-blue-700'>{title}</h5>
-            <div className='flex items-center gap-4'>
-                {tabList.map((tab, index) => (
-                    <p
-                        key={index}
-                        onClick={() => setFeedType(tab.value)}
-                        className={cn(
-                            'cursor-pointer text-subtitle2 font-bold',
-                            tab.disabled
-                                ? 'cursor-not-allowed text-gray-300'
-                                : feedType === tab.value
-                                  ? 'text-blue-700'
-                                  : 'text-gray-300'
-                        )}
-                    >
-                        {tab.label}
-                    </p>
-                ))}
-            </div>
+            {showTab && (
+                <div className='flex items-center gap-4'>
+                    {tabList.map((tab, index) => (
+                        <p
+                            key={index}
+                            onClick={() => setFeedType(tab.value)}
+                            className={cn(
+                                'cursor-pointer text-subtitle2 font-bold',
+                                tab.disabled
+                                    ? 'cursor-not-allowed text-gray-300'
+                                    : feedType === tab.value
+                                      ? 'text-blue-700'
+                                      : 'text-gray-300'
+                            )}
+                        >
+                            {tab.label}
+                        </p>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

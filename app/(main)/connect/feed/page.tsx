@@ -28,7 +28,7 @@ function FeedPage() {
     return (
         <div className='space-y-7'>
             {posts.map((post) => (
-                <Post key={post.id} data={post} isShared={post.userOwner.id !== userId} />
+                <Post key={post.id} post={post} isShared={post.userOwner.id !== userId} />
             ))}
 
             <div ref={loadMoreRef} className='flex justify-center'>

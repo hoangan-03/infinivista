@@ -29,8 +29,6 @@ function StoryPage() {
         setSize,
     });
 
-    console.log('stories', stories);
-
     const [storyRows, setStoryRows] = useState<RowData[]>([]);
     const processedStoriesCount = useRef<number>(0);
 
@@ -103,7 +101,7 @@ function StoryPage() {
             <div ref={loadMoreRef} className='flex justify-center'>
                 {isValidating && !isLoading && <Spinner width={60} height={60} />}
             </div>
-            <ModalStory open={showStoryModal} data={showStory} onClose={() => setShowStoryModal(false)} />
+            <ModalStory open={showStoryModal} story={showStory} onClose={() => setShowStoryModal(false)} />
         </>
     );
 }

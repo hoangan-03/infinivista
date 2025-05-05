@@ -2,7 +2,16 @@ import {axiosInstance} from '@/lib/axios';
 
 import {PaginationRequest, PaginationResponse} from '../api.interface';
 import {APIBaseService} from '../main.service';
-import {IPost, IPostComment, IPostReactionCount} from './post.interface';
+import {
+    IPost,
+    IPostComment,
+    IPostCommentCreate,
+    IPostCommentUpdate,
+    IPostReaction,
+    IPostReactionAdd,
+    IPostReactionCount,
+    IPostReactionDelete,
+} from './post.interface';
 
 export class PostService extends APIBaseService {
     public static readonly ROUTES = {
@@ -10,7 +19,11 @@ export class PostService extends APIBaseService {
         post: APIBaseService.BASE_API_URL + '/post',
         postDiscover: APIBaseService.BASE_API_URL + '/newsfeed/discover',
         postComments: (postId: string) => APIBaseService.BASE_API_URL + `/post/${postId}/comments`,
+        postComment: (postId: string) => APIBaseService.BASE_API_URL + `/post/${postId}/comment`,
+        postReactions: (postId: string) => APIBaseService.BASE_API_URL + `/post/${postId}/reactions`,
+        postReaction: (postId: string) => APIBaseService.BASE_API_URL + `/post/${postId}/reaction`,
         postReactionCount: (postId: string) => APIBaseService.BASE_API_URL + `/post/${postId}/reaction-counts`,
+        comment: (commentId: string) => APIBaseService.BASE_API_URL + `/post/comment/${commentId}`,
     };
 
     public static async getPosts({newsFeedId, pagination}: {newsFeedId: string; pagination?: PaginationRequest}) {
@@ -46,9 +59,51 @@ export class PostService extends APIBaseService {
             .then((res) => res.data);
     }
 
+    public static async createPostComment(postId: string, payload: IPostCommentCreate) {
+        const formData = new FormData();
+        formData.append('text', payload.text);
+
+        return await axiosInstance
+            .post<null>(PostService.ROUTES.postComment(postId), formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+            .then((res) => res.data);
+    }
+
+    public static async updatePostComment(commentId: string, payload: IPostCommentUpdate) {
+        const formData = new FormData();
+        formData.append('text', payload.text);
+
+        return await axiosInstance.patch<null>(PostService.ROUTES.comment(commentId), formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+    }
+
+    public static async deletePostComment(commentId: string) {
+        return await axiosInstance.delete<null>(PostService.ROUTES.comment(commentId));
+    }
+
+    public static async getPostReactions({postId}: {postId: string}) {
+        return await axiosInstance
+            .get<IPostReaction[]>(PostService.ROUTES.postReactions(postId))
+            .then((res) => res.data);
+    }
+
     public static async getPostReactionCount({postId}: {postId: string}) {
         return await axiosInstance
             .get<IPostReactionCount>(PostService.ROUTES.postReactionCount(postId))
             .then((res) => res.data);
+    }
+
+    public static async addPostReaction(postId: string, payload: IPostReactionAdd) {
+        return await axiosInstance.post<null>(PostService.ROUTES.postReaction(postId), payload);
+    }
+
+    public static async deletePostReaction(postId: string, payload: IPostReactionDelete) {
+        return await axiosInstance.delete<null>(PostService.ROUTES.postReaction(postId), {data: payload});
     }
 }

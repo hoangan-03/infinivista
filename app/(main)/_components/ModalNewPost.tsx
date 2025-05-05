@@ -19,7 +19,7 @@ import {
     Textarea,
 } from '@/components/ui';
 import {capitalize} from '@/lib/utils';
-import {POST_PRIVACY_TYPES} from '@/mock_data/post-privacy';
+import {POST_VISIBILITY} from '@/modules/post/post.enum';
 import {IProfile} from '@/modules/profile/profile.interface';
 
 interface Props {
@@ -28,7 +28,7 @@ interface Props {
     onClose: () => void;
 }
 
-const postPrivacyTypes = Object.values(POST_PRIVACY_TYPES);
+const postPrivacyTypes = Object.values(POST_VISIBILITY);
 
 export const ModalNewPost: React.FC<Props> = ({open, data, onClose}) => {
     const [toggle, setToggle] = useState<boolean>(false);
