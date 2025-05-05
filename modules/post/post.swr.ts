@@ -30,7 +30,7 @@ function useGetInfinitePosts(newsFeedId?: string, type: PostType = 'all') {
         fetcher = PostService.getDiscoverPosts;
     }
 
-    const {data, error, size, setSize, isValidating, isLoading} = useSWRInfinite(getKey, fetcher, {
+    const {data, mutate, error, size, setSize, isValidating, isLoading} = useSWRInfinite(getKey, fetcher, {
         keepPreviousData: false,
         revalidateFirstPage: false,
     });
@@ -41,6 +41,7 @@ function useGetInfinitePosts(newsFeedId?: string, type: PostType = 'all') {
     return {
         data: posts,
         pagination,
+        mutate,
         error,
         size,
         setSize,
@@ -64,10 +65,14 @@ function useGetInfinitePostComments(postId?: string) {
         return postId ? {postId, pagination} : null;
     };
 
-    const {data, error, size, setSize, isValidating, isLoading} = useSWRInfinite(getKey, PostService.getPostComments, {
-        keepPreviousData: false,
-        revalidateFirstPage: false,
-    });
+    const {data, mutate, error, size, setSize, isValidating, isLoading} = useSWRInfinite(
+        getKey,
+        PostService.getPostComments,
+        {
+            keepPreviousData: false,
+            revalidateFirstPage: false,
+        }
+    );
 
     const comments = data ? data.flatMap((page) => page.data || []) : [];
     const pagination = data ? data.map((page) => page.metadata).filter(Boolean) : [];
@@ -75,6 +80,7 @@ function useGetInfinitePostComments(postId?: string) {
     return {
         data: comments,
         pagination,
+        mutate,
         error,
         size,
         setSize,
@@ -103,4 +109,24 @@ function useGetPostReactionCount(postId?: string) {
     };
 }
 
-export {useGetInfinitePostComments, useGetInfinitePosts, useGetPostReactionCount};
+function useGetPostReactions(postId?: string) {
+    const url = postId ? PostService.ROUTES.postReactions(postId) : null;
+
+    const {data, mutate, error, isValidating, isLoading} = useSWR(
+        postId ? {key: url, postId} : null,
+        PostService.getPostReactions,
+        {
+            keepPreviousData: false,
+        }
+    );
+
+    return {
+        data,
+        mutate,
+        error,
+        isValidating,
+        isLoading,
+    };
+}
+
+export {useGetInfinitePostComments, useGetInfinitePosts, useGetPostReactionCount, useGetPostReactions};

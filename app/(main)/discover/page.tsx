@@ -42,7 +42,7 @@ function DiscoverPage() {
                 </div>
                 <div className='space-y-7 px-4'>
                     {posts.map((post) => (
-                        <Post key={post.id} data={post} isShared={post.userOwner.id !== userId} />
+                        <Post key={post.id} post={post} isShared={post.userOwner.id !== userId} />
                     ))}
                 </div>
                 <div ref={loadMoreRef} className={cn('flex justify-center', isValidating && !isLoading && 'py-8')}>

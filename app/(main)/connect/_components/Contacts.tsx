@@ -26,8 +26,8 @@ export const Contacts: React.FC = () => {
                 ))}
             </div>
 
-            <div ref={loadMoreRef} className='flex justify-center'>
-                {isValidating && !isLoading && <Spinner width={60} height={60} />}
+            <div ref={loadMoreRef} className='flex justify-center py-4'>
+                {isValidating && !isLoading && <Spinner width={40} height={40} />}
             </div>
         </ScrollArea>
     );

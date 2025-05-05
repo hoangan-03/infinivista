@@ -56,3 +56,23 @@ export interface IPostReactionCount {
     [REACTION_TYPE.WOW]: number;
     [REACTION_TYPE.ANGRY]: number;
 }
+
+export interface IPostReaction extends BaseEntity {
+    id: string;
+    reactionType: REACTION_TYPE;
+    user_id: string;
+    post_id: string;
+    user: IPostUser;
+}
+
+export interface IPostCommentCreate {
+    text: string;
+}
+
+export type IPostCommentUpdate = IPostCommentCreate;
+
+export interface IPostReactionAdd {
+    reactionType: REACTION_TYPE;
+}
+
+export type IPostReactionDelete = IPostReactionAdd;

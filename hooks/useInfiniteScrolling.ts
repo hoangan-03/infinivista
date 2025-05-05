@@ -10,14 +10,29 @@ interface Props<T> {
     size: number;
     isValidating: boolean;
     setSize: (size: number) => void;
+    scrollAreaRef?: React.RefObject<HTMLDivElement>;
 }
 
-function useInfiniteScrolling<T>({data, pagination, size, isValidating, setSize}: Props<T>) {
+function useInfiniteScrolling<T>({data, pagination, size, isValidating, setSize, scrollAreaRef}: Props<T>) {
     const observerRef = useRef<IntersectionObserver | null>(null);
     const loadMoreRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (!loadMoreRef.current) return;
+
+        function findScrollableParent(node: HTMLElement): HTMLElement | null {
+            if (!node) return document.documentElement;
+
+            if (node.scrollHeight > node.clientHeight) {
+                return node;
+            }
+
+            return findScrollableParent(node.parentElement as HTMLElement);
+        }
+
+        const scrollableRoot =
+            scrollAreaRef?.current?.querySelector('[data-radix-scroll-area-viewport]') ||
+            findScrollableParent(loadMoreRef.current);
 
         observerRef.current = new IntersectionObserver(
             (entries) => {
@@ -30,7 +45,7 @@ function useInfiniteScrolling<T>({data, pagination, size, isValidating, setSize}
                     setSize(size + 1);
                 }
             },
-            {rootMargin: '200px'}
+            {root: scrollableRoot, rootMargin: '200px', threshold: 0.1}
         );
 
         observerRef.current.observe(loadMoreRef.current);
@@ -40,7 +55,7 @@ function useInfiniteScrolling<T>({data, pagination, size, isValidating, setSize}
                 observerRef.current.disconnect();
             }
         };
-    }, [isValidating, setSize, size, data.length, pagination]);
+    }, [isValidating, setSize, size, data.length, pagination, scrollAreaRef]);
 
     return {
         loadMoreRef,

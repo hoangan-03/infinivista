@@ -1,25 +1,25 @@
-'use client';
-
 import Image from 'next/image';
 
-import {ClientVideo} from '@/components/commons';
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui';
 import {cn} from '@/lib/utils';
-import {IMessage} from '@/mock_data/message';
-import {REACTION_TYPE} from '@/mock_data/post';
-import placeholderImage from '@/public/assets/images/placeholder.png';
+import {REACTION_TYPE} from '@/modules/common.enum';
+import {IGroupChatMessage} from '@/modules/groupchat/groupchat.interface';
 
 import {ReactionButton} from '../../_components';
 
 interface Props {
-    data: IMessage;
+    message: IGroupChatMessage;
     isCurrentUser?: boolean;
     showAvatar?: boolean;
     className?: string;
 }
 
-export const MessageItem: React.FC<Props> = ({data, isCurrentUser = false, showAvatar = false, className}) => {
-    const formattedTime = data.time.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: true});
+export const MessageItemGroup: React.FC<Props> = ({message, isCurrentUser = false, showAvatar = false, className}) => {
+    const formattedTime = new Date(message.sent_at).toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+    });
 
     const handleClickReact = (reaction: REACTION_TYPE) => {
         console.log('reaction', reaction);
@@ -31,11 +31,16 @@ export const MessageItem: React.FC<Props> = ({data, isCurrentUser = false, showA
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <div className='relative h-8 w-8 cursor-pointer overflow-hidden rounded-full'>
-                                <Image src={placeholderImage} alt='User Placeholder' width={32} height={32} />
+                                <Image
+                                    src={message.sender.profileImageUrl || '/assets/images/placeholder.png'}
+                                    alt='User Placeholder'
+                                    width={32}
+                                    height={32}
+                                />
                             </div>
                         </TooltipTrigger>
                         <TooltipContent>
-                            <p>{data.username}</p>
+                            <p>{message.sender.username}</p>
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
@@ -45,19 +50,21 @@ export const MessageItem: React.FC<Props> = ({data, isCurrentUser = false, showA
             <div
                 className={cn(
                     'relative w-full rounded-md',
-                    data.message && 'py-1 pl-2 pr-4',
-                    (data.image || data.video) && 'space-y-1',
-                    data.message ? (isCurrentUser ? 'bg-primary' : 'bg-gray-100') : ''
+                    // message.type === MESSAGE_TYPE.MESSAGE && 'py-1 pl-2 pr-4',
+                    // message.type === MESSAGE_TYPE.ATTACHMENT && 'space-y-1',
+                    // message.type === MESSAGE_TYPE.MESSAGE ? (isCurrentUser ? 'bg-primary' : 'bg-gray-100') : ''
+                    message.textMessage && 'py-1 pl-2 pr-4',
+                    message.textMessage ? (isCurrentUser ? 'bg-primary' : 'bg-gray-100') : ''
                 )}
             >
                 {!isCurrentUser && (
                     <div className='flex items-center gap-3'>
-                        <p className='text-black'>{data.username}</p>
-                        <p className='text-caption text-gray-500'>{data.role}</p>
+                        <p className='text-black'>{message.sender.username}</p>
+                        {/* <p className='text-caption text-gray-500'>{message.role}</p> */}
                     </div>
                 )}
                 <div className='w-full'>
-                    {data.message && (
+                    {message.textMessage && (
                         <>
                             <p
                                 className={cn(
@@ -65,26 +72,30 @@ export const MessageItem: React.FC<Props> = ({data, isCurrentUser = false, showA
                                     'w-[90%] text-justify text-[14px]'
                                 )}
                             >
-                                {data.message}
+                                {message.textMessage}
                             </p>
                             <p className={cn(isCurrentUser ? 'text-white' : 'text-gray-500', 'text-right text-[12px]')}>
                                 {formattedTime}
                             </p>
                         </>
                     )}
-                    {data.image && (
+                    {/* {message.type === MESSAGE_TYPE.ATTACHMENT && message.attachmentType === ATTACHMENT_TYPE.IMAGE && (
                         <Image
-                            src={data.image}
-                            alt={`${data.username}'s image`}
+                            src={message.attachment_url}
+                            alt={message.attachment_name}
                             width={200}
                             height={100}
                             unoptimized={true}
                             className='h-auto w-full rounded-md object-cover'
                         />
                     )}
-                    {data.video && (
-                        <ClientVideo playsInline src={data.video} className='h-auto w-full rounded-md object-cover' />
-                    )}
+                    {message.type === MESSAGE_TYPE.ATTACHMENT && message.attachmentType === ATTACHMENT_TYPE.VIDEO && (
+                        <ClientVideo
+                            playsInline
+                            src={message.attachment_url}
+                            className='h-auto w-full rounded-md object-cover'
+                        />
+                    )} */}
                 </div>
                 {!isCurrentUser && (
                     <div className='absolute -bottom-2 -right-1 z-10 flex items-center rounded-full bg-slate-100'>
@@ -97,11 +108,16 @@ export const MessageItem: React.FC<Props> = ({data, isCurrentUser = false, showA
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <div className='relative h-8 w-8 cursor-pointer overflow-hidden rounded-full'>
-                                <Image src={placeholderImage} alt='User Placeholder' width={32} height={32} />
+                                <Image
+                                    src={message.sender.profileImageUrl || '/assets/images/placeholder.png'}
+                                    alt='User Placeholder'
+                                    width={32}
+                                    height={32}
+                                />
                             </div>
                         </TooltipTrigger>
                         <TooltipContent>
-                            <p>{data.username}</p>
+                            <p>{message.sender.username}</p>
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>

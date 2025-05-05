@@ -34,3 +34,23 @@ export interface IStoryReactionCount {
     [REACTION_TYPE.WOW]: number;
     [REACTION_TYPE.ANGRY]: number;
 }
+
+export interface IStoryReaction extends BaseEntity {
+    id: string;
+    reactionType: REACTION_TYPE;
+    user_id: string;
+    story_id: string;
+    user: IStoryUser;
+}
+
+export interface IStoryCommentCreate {
+    text: string;
+}
+
+export type IStoryCommentUpdate = IStoryCommentCreate;
+
+export interface IStoryReactionAdd {
+    reactionType: REACTION_TYPE;
+}
+
+export type IStoryReactionDelete = IStoryReactionAdd;

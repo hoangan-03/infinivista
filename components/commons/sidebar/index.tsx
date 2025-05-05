@@ -9,7 +9,6 @@ import {Icon} from '@/components/commons';
 import {Button, Separator} from '@/components/ui';
 import {useAuthContext} from '@/context';
 import {cn} from '@/lib/utils';
-// import {profile} from '@/mock_data/profile';
 import LogoIcon from '@/public/assets/images/logo_icon.svg';
 import LogoText from '@/public/assets/images/logo_text.svg';
 import {ROUTES} from '@/routes/routes.enum';
