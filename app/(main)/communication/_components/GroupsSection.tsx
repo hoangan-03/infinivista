@@ -2,9 +2,9 @@ import {Icon, Spinner} from '@/components/commons';
 import {Button, ScrollArea} from '@/components/ui';
 import {useInfiniteScrolling} from '@/hooks';
 import {PaginationMetadata} from '@/modules/api.interface';
+import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';
 import {IGroupChat} from '@/modules/groupchat/groupchat.interface';
 
-import {MESSAGE_TARGET_TYPE} from '../page';
 import {GroupItem} from './GroupItem';
 
 interface Props {

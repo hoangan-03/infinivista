@@ -3,6 +3,8 @@
 import {Sidebar} from '@/components/commons';
 import {FeedProvider} from '@/context';
 
+import {ModalCallNotification} from './_components';
+
 export default function MainLayout({children}: {children: React.ReactNode}) {
     return (
         <div className='flex w-full'>
@@ -12,6 +14,7 @@ export default function MainLayout({children}: {children: React.ReactNode}) {
             <main className='flex-grow bg-white'>
                 <FeedProvider>{children}</FeedProvider>
             </main>
+            <ModalCallNotification />
         </div>
     );
 }

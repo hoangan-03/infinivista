@@ -13,3 +13,8 @@ export enum REACTION_TYPE {
     SAD = 'SAD',
     ANGRY = 'ANGRY',
 }
+
+export enum MESSAGE_TARGET_TYPE {
+    USER = 'user',
+    GROUP = 'group',
+}
