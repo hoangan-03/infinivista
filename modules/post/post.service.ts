@@ -7,6 +7,7 @@ import {
     IPostComment,
     IPostCommentCreate,
     IPostCommentUpdate,
+    IPostCreate,
     IPostReaction,
     IPostReactionAdd,
     IPostReactionCount,
@@ -24,6 +25,7 @@ export class PostService extends APIBaseService {
         postReaction: (postId: string) => APIBaseService.BASE_API_URL + `/post/${postId}/reaction`,
         postReactionCount: (postId: string) => APIBaseService.BASE_API_URL + `/post/${postId}/reaction-counts`,
         comment: (commentId: string) => APIBaseService.BASE_API_URL + `/post/comment/${commentId}`,
+        createPost: APIBaseService.BASE_API_URL + '/newsfeed/post',
     };
 
     public static async getPosts({newsFeedId, pagination}: {newsFeedId: string; pagination?: PaginationRequest}) {
@@ -43,6 +45,28 @@ export class PostService extends APIBaseService {
                 params: {
                     page: pagination?.page,
                     limit: pagination?.limit,
+                },
+            })
+            .then((res) => res.data);
+    }
+
+    public static async createPost({payload}: {payload: IPostCreate}) {
+        const formData = new FormData();
+        formData.append('newsFeedId', payload.newsFeedId);
+        formData.append('content', payload.content);
+
+        for (let i = 0; i < payload.files.length; i++) {
+            formData.append('files', payload.files[i]);
+        }
+
+        for (let i = 0; i < payload.attachmentTypes.length; i++) {
+            formData.append('attachmentTypes', payload.attachmentTypes[i]);
+        }
+
+        return await axiosInstance
+            .post<null>(PostService.ROUTES.createPost, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
                 },
             })
             .then((res) => res.data);

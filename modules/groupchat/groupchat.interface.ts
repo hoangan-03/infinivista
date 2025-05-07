@@ -29,6 +29,11 @@ export interface IGroupChatMessage extends BaseEntity {
     textMessage: string;
 }
 
+export interface IGroupChatMessageCreate {
+    messageText: string;
+    groupChatId: string;
+}
+
 // interface TextMessage extends BaseMessage {
 //     type: MESSAGE_TYPE.MESSAGE;
 //     textMessage: string;

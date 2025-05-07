@@ -18,16 +18,23 @@ function useGetInfiniteMessages(targetId?: string) {
         return targetId ? {targetId, pagination} : null;
     };
 
-    const {data, error, size, setSize, isValidating, isLoading} = useSWRInfinite(getKey, MessageService.getMessages, {
-        keepPreviousData: false,
-        revalidateFirstPage: false,
-    });
+    const {data, mutate, error, size, setSize, isValidating, isLoading} = useSWRInfinite(
+        getKey,
+        MessageService.getMessages,
+        {
+            keepPreviousData: false,
+            revalidateFirstPage: false,
+            // refreshInterval: 1000,
+            // refreshWhenHidden: true,
+        }
+    );
 
     const messages = data ? data.flatMap((page) => page.data || []) : [];
     const pagination = data ? data.map((page) => page.metadata).filter(Boolean) : [];
 
     return {
         data: messages,
+        mutate,
         pagination,
         error,
         size,

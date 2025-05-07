@@ -2,13 +2,14 @@ import {axiosInstance} from '@/lib/axios';
 
 import {PaginationRequest, PaginationResponse} from '../api.interface';
 import {APIBaseService} from '../main.service';
-import {IGroupChat, IGroupChatMessage, IGroupChatUser} from './groupchat.interface';
+import {IGroupChat, IGroupChatMessage, IGroupChatMessageCreate, IGroupChatUser} from './groupchat.interface';
 
 export class GroupChatService extends APIBaseService {
     public static readonly ROUTES = {
         groupChat: APIBaseService.BASE_API_URL + '/groupchat',
         groupChatMessages: (groupChatId: string) => APIBaseService.BASE_API_URL + `/groupchat/messages/${groupChatId}`,
         groupChatUsers: (groupChatId: string) => APIBaseService.BASE_API_URL + `/groupchat/users/${groupChatId}`,
+        groupChatMessage: APIBaseService.BASE_API_URL + '/groupchat/message',
     };
 
     public static async getGroupChats({pagination}: {pagination?: PaginationRequest}) {
@@ -37,6 +38,10 @@ export class GroupChatService extends APIBaseService {
                 },
             })
             .then((res) => res.data);
+    }
+
+    public static async createGroupChatMessage({payload}: {payload: IGroupChatMessageCreate}) {
+        return await axiosInstance.post<IGroupChatMessage>(GroupChatService.ROUTES.groupChatMessage, payload);
     }
 
     public static async getGroupChatUsers({

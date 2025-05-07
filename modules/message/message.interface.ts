@@ -42,3 +42,8 @@ interface AttachmentMessage extends BaseMessage {
 }
 
 export type IMessage = TextMessage | AttachmentMessage;
+
+export interface IMessageCreate {
+    messageText: string;
+    recipientId: string;
+}

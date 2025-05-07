@@ -36,7 +36,7 @@ export interface IPostTopic {
 export interface IPostCreate {
     newsFeedId: string;
     content: string;
-    files: FileList;
+    files: File[];
     attachmentTypes: ATTACHMENT_TYPE[];
 }
 
