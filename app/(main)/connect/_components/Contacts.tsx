@@ -5,11 +5,14 @@ import React from 'react';
 import {FriendListItem} from '@/app/(main)/_components';
 import {Spinner} from '@/components/commons';
 import {ScrollArea} from '@/components/ui';
+import {useGetProfileInfo} from '@/hooks';
 import {useInfiniteScrolling} from '@/hooks/useInfiniteScrolling';
 import {useGetInfiniteFriends} from '@/modules/friend/friend.swr';
 
 export const Contacts: React.FC = () => {
-    const {data: friends, pagination, size, setSize, isValidating, isLoading} = useGetInfiniteFriends();
+    const {userId: currentUserId} = useGetProfileInfo();
+
+    const {data: friends, pagination, size, setSize, isValidating, isLoading} = useGetInfiniteFriends(currentUserId);
     const {loadMoreRef} = useInfiniteScrolling({
         data: friends,
         pagination,

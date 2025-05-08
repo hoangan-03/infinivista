@@ -19,9 +19,7 @@ interface FriendsSectionProps {
 export const FriendsSection: React.FC<FriendsSectionProps> = ({profile, className}) => {
     const router = useRouter();
 
-    // TODO: Get friends by profile id when API is ready
-    console.log('USE THE PROFILE', profile);
-    const {data: friends, pagination, size, setSize, isValidating, isLoading} = useGetInfiniteFriends();
+    const {data: friends, pagination, size, setSize, isValidating, isLoading} = useGetInfiniteFriends(profile?.id);
     const {loadMoreRef} = useInfiniteScrolling({
         data: friends,
         pagination,

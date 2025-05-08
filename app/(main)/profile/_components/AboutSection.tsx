@@ -9,9 +9,7 @@ interface Props {
 }
 
 export const AboutSection: React.FC<Props> = ({profile}) => {
-    // TODO: Get profile biography by id when API is ready
-    console.log('USE THE PROFILE', profile);
-    const {data: biography} = useGetProfileBiography();
+    const {data: biography} = useGetProfileBiography(profile?.id);
 
     return (
         <div className='flex gap-8 rounded-lg bg-white py-6 pr-6 shadow-sm'>

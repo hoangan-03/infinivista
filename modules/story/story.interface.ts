@@ -1,13 +1,6 @@
 import {ATTACHMENT_TYPE, REACTION_TYPE} from '../common.enum';
 import {BaseEntity} from '../common.interface';
 
-export interface IStory extends BaseEntity {
-    id: string;
-    story_url: string;
-    duration: number;
-    attachmentType: ATTACHMENT_TYPE;
-}
-
 export interface IStoryUser {
     id: string;
     email: string;
@@ -16,6 +9,14 @@ export interface IStoryUser {
     firstName: string;
     lastName: string;
     profileImageUrl: string | null;
+}
+
+export interface IStory extends BaseEntity {
+    id: string;
+    story_url: string;
+    duration: number;
+    attachmentType: ATTACHMENT_TYPE;
+    userOwner: IStoryUser;
 }
 
 export interface IStoryComment extends BaseEntity {

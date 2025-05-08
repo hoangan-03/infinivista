@@ -4,27 +4,11 @@ import React from 'react';
 
 import {Icon} from '@/components/commons';
 import {Button} from '@/components/ui/button';
+import {useGetProfileInfo} from '@/hooks';
 import {cn} from '@/lib/utils';
+import {SOCIAL_LINK_TYPE} from '@/modules/common.enum';
 import {IProfile} from '@/modules/profile/profile.interface';
-
-enum SOCIAL_LINK_TYPE {
-    FACEBOOK = 'FACEBOOK',
-    INSTAGRAM = 'INSTAGRAM',
-    TIKTOK = 'TIKTOK',
-    LINKEDIN = 'LINKEDIN',
-}
-
-interface ISocialLink {
-    type: SOCIAL_LINK_TYPE;
-    url: string;
-}
-
-const socialLinks: ISocialLink[] = [
-    {type: SOCIAL_LINK_TYPE.FACEBOOK, url: 'https://www.facebook.com/do_khuong.42'},
-    {type: SOCIAL_LINK_TYPE.INSTAGRAM, url: 'https://www.instagram.com/do_khuong.42'},
-    {type: SOCIAL_LINK_TYPE.TIKTOK, url: 'https://www.tiktok.com/@do_khuong.42'},
-    {type: SOCIAL_LINK_TYPE.LINKEDIN, url: 'https://www.linkedin.com/in/do_khuong.42'},
-];
+import {useGetProfileSocialLinks} from '@/modules/profile/profile.swr';
 
 type IconName = {
     name: string;
@@ -38,11 +22,15 @@ const icons: IconName[] = Object.values(SOCIAL_LINK_TYPE).map((type) => ({
 
 interface ProfileCardProps {
     profile?: IProfile;
-    isOwner: boolean;
     className?: string;
 }
 
-export const ProfileCard: React.FC<ProfileCardProps> = ({profile, isOwner, className}) => {
+export const ProfileCard: React.FC<ProfileCardProps> = ({profile, className}) => {
+    const {userId: currentUserId} = useGetProfileInfo();
+    const isOwner = currentUserId === profile?.id;
+
+    const {data: socialLinks} = useGetProfileSocialLinks(profile?.id);
+
     return (
         <div className={cn('relative h-full rounded-3xl bg-white shadow-sm', className)}>
             <div className='relative h-52 w-full'>
@@ -70,12 +58,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({profile, isOwner, class
                         <h2 className='text-2xl font-bold'>{profile?.username}</h2>
                         <div className='flex flex-row gap-1'>
                             <Icon name='work' />
-                            <p className='text-gray-400'>
-                                {/* TODO: Add city, country when API done */}
-                                {/* {data.introduction.find((intro) => intro.type === INTRODUCTION.CITY)?.value || ''},{' '}
-                                {data.introduction.find((intro) => intro.type === INTRODUCTION.COUNTRY)?.value || ''} */}
-                                Ho Chi Minh City, Vietnam
-                            </p>
+                            <p className='text-gray-400'>{profile?.address}</p>
                         </div>
                     </div>
 
@@ -116,23 +99,26 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({profile, isOwner, class
                     )}
                 </div>
                 <div className='absolute bottom-4 right-8 flex flex-col gap-2'>
-                    {/* TODO: Add socialLinks when API done */}
-                    {socialLinks.map((social) => {
-                        const icon = icons.find((icon) => icon.type === social.type);
+                    {socialLinks
+                        ?.filter(
+                            (social) => social.type !== 'YOUTUBE' && social.type !== 'TELEGRAM' && social.type !== 'X'
+                        )
+                        .map((social) => {
+                            const icon = icons.find((icon) => icon.type === social.type);
 
-                        return (
-                            <div key={social.type} className='flex flex-row items-center gap-3'>
-                                <div className='flex h-6 w-6 items-center justify-center'>
-                                    <Icon name={icon?.name || `${social.type.toLowerCase()}-outline`} />
+                            return (
+                                <div key={social.type} className='flex flex-row items-center gap-3'>
+                                    <div className='flex h-6 w-6 items-center justify-center'>
+                                        <Icon name={icon?.name || `${social.type.toLowerCase()}-outline`} />
+                                    </div>
+                                    <Link href={social.link}>
+                                        <h3 className='text-base text-black hover:underline'>
+                                            {social.link.split('/').pop()}
+                                        </h3>
+                                    </Link>
                                 </div>
-                                <Link href={social.url}>
-                                    <h3 className='text-base text-black hover:underline'>
-                                        {social.url.split('/').pop()}
-                                    </h3>
-                                </Link>
-                            </div>
-                        );
-                    })}
+                            );
+                        })}
                 </div>
             </div>
         </div>

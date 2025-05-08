@@ -21,7 +21,6 @@ export const PostsSection: React.FC<PostsSectionProps> = ({profile, className}) 
     const [showModalNewPost, setShowModalNewPost] = useState<boolean>(false);
 
     const {data: newsFeed} = useGetNewsFeedByUserId(profile?.id);
-    console.log('newsFeed', newsFeed);
 
     const {data: posts, pagination, size, setSize, isValidating, isLoading} = useGetInfinitePosts(newsFeed?.id);
     const {loadMoreRef} = useInfiniteScrolling({
@@ -92,7 +91,7 @@ export const PostsSection: React.FC<PostsSectionProps> = ({profile, className}) 
                 <ScrollArea className='h-[650px]'>
                     <div className='space-y-7 p-7'>
                         {posts.map((post) => (
-                            <Post key={post.id} post={post} isShared={post.userOwner.id !== profile?.id} />
+                            <Post key={post.id} post={post} isShared={post?.userOwner.id !== profile?.id} />
                         ))}
                     </div>
                     <div ref={loadMoreRef} className={cn('flex justify-center', isValidating && !isLoading && 'py-8')}>

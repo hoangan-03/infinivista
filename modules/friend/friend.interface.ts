@@ -22,3 +22,7 @@ export interface IFriendRequest {
     recipient_id: string;
     status: string;
 }
+
+export interface IFriendRequestStatus {
+    accept: boolean;
+}

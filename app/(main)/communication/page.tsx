@@ -6,6 +6,7 @@ import {useEffect, useState} from 'react';
 import {Icon} from '@/components/commons';
 import {Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from '@/components/ui';
 import {useWebRTCContext} from '@/context';
+import {useGetProfileInfo} from '@/hooks';
 import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';
 import {useGetInfiniteFriends} from '@/modules/friend/friend.swr';
 import {useGetInfiniteGroupChats} from '@/modules/groupchat/groupchat.swr';
@@ -15,6 +16,8 @@ import {CallSection, GroupsSection, MessageSectionGroup, MessageSectionUser, Use
 
 export default function CommunicationPage() {
     // const [isCalling] = useState<boolean>(true);
+    const {userId: currentUserId} = useGetProfileInfo();
+
     const {isCalling, startCall} = useWebRTCContext();
     const [currentTargetId, setCurrentTargetId] = useState<string | undefined>(undefined);
     const [currentTargetType, setCurrentTargetType] = useState<MESSAGE_TARGET_TYPE>(MESSAGE_TARGET_TYPE.USER);
@@ -27,7 +30,7 @@ export default function CommunicationPage() {
         setSize: setSizeFriends,
         isValidating: isValidatingFriends,
         isLoading: isLoadingFriends,
-    } = useGetInfiniteFriends();
+    } = useGetInfiniteFriends(currentUserId);
 
     const {
         data: groupChats,

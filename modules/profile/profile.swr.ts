@@ -23,30 +23,17 @@ function useGetProfileById(userId?: string) {
     };
 }
 
-function useGetProfileBiography() {
-    const url = ProfileService.ROUTES.profileBiography;
+function useGetProfileBiography(userId?: string) {
+    const url = userId ? ProfileService.ROUTES.profileBiography(userId) : null;
 
-    const {data, mutate, error, isLoading, isValidating} = useSWR({key: url}, ProfileService.getProfileBiography, {
-        keepPreviousData: false,
-        revalidateOnFocus: false,
-    });
-
-    return {
-        data,
-        mutate,
-        error,
-        isLoading,
-        isValidating,
-    };
-}
-
-function useGetProfileSocialLinks() {
-    const url = ProfileService.ROUTES.profileSocialLinks;
-
-    const {data, mutate, error, isLoading, isValidating} = useSWR({key: url}, ProfileService.getProfileSocialLinks, {
-        keepPreviousData: false,
-        revalidateOnFocus: false,
-    });
+    const {data, mutate, error, isLoading, isValidating} = useSWR(
+        userId ? {key: url, userId} : null,
+        ProfileService.getProfileBiography,
+        {
+            keepPreviousData: false,
+            revalidateOnFocus: false,
+        }
+    );
 
     return {
         data,
@@ -57,13 +44,38 @@ function useGetProfileSocialLinks() {
     };
 }
 
-function useGetProfileUserEvents() {
-    const url = ProfileService.ROUTES.profileUserEvents;
+function useGetProfileSocialLinks(userId?: string) {
+    const url = userId ? ProfileService.ROUTES.profileSocialLinks(userId) : null;
 
-    const {data, mutate, error, isLoading, isValidating} = useSWR(url, ProfileService.getProfileUserEvents, {
-        keepPreviousData: false,
-        revalidateOnFocus: false,
-    });
+    const {data, mutate, error, isLoading, isValidating} = useSWR(
+        userId ? {key: url, userId} : null,
+        ProfileService.getProfileSocialLinks,
+        {
+            keepPreviousData: false,
+            revalidateOnFocus: false,
+        }
+    );
+
+    return {
+        data,
+        mutate,
+        error,
+        isLoading,
+        isValidating,
+    };
+}
+
+function useGetProfileUserEvents(userId?: string) {
+    const url = userId ? ProfileService.ROUTES.profileUserEvents(userId) : null;
+
+    const {data, mutate, error, isLoading, isValidating} = useSWR(
+        userId ? {key: url, userId} : null,
+        ProfileService.getProfileUserEvents,
+        {
+            keepPreviousData: false,
+            revalidateOnFocus: false,
+        }
+    );
 
     return {
         data,
