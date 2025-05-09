@@ -26,7 +26,7 @@ const connectSidebarElements: ConnectSidebarElement[] = [
         children: <Trending />,
     },
     {
-        title: 'Contacts',
+        title: 'Friends',
         children: <Contacts />,
     },
 ];

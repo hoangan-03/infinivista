@@ -13,3 +13,15 @@ export enum REACTION_TYPE {
     SAD = 'SAD',
     ANGRY = 'ANGRY',
 }
+
+export enum MESSAGE_TARGET_TYPE {
+    USER = 'user',
+    GROUP = 'group',
+}
+
+export enum SOCIAL_LINK_TYPE {
+    FACEBOOK = 'FACEBOOK',
+    INSTAGRAM = 'INSTAGRAM',
+    TIKTOK = 'TIKTOK',
+    LINKEDIN = 'LINKEDIN',
+}

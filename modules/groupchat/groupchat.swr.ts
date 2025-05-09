@@ -56,7 +56,7 @@ function useGetInfiniteGroupChatMessages(groupChatId?: string) {
         return groupChatId ? {groupChatId, pagination} : null;
     };
 
-    const {data, error, size, setSize, isValidating, isLoading} = useSWRInfinite(
+    const {data, mutate, error, size, setSize, isValidating, isLoading} = useSWRInfinite(
         getKey,
         GroupChatService.getGroupChatMessages,
         {
@@ -71,6 +71,7 @@ function useGetInfiniteGroupChatMessages(groupChatId?: string) {
     return {
         data: messages,
         pagination,
+        mutate,
         error,
         size,
         setSize,

@@ -1,10 +1,9 @@
 import Image from 'next/image';
 
 import {cn} from '@/lib/utils';
+import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';
 import {IFriend} from '@/modules/friend/friend.interface';
 import placeholderImage from '@/public/assets/images/placeholder.png';
-
-import {MESSAGE_TARGET_TYPE} from '../page';
 
 interface Props {
     friend: IFriend;

@@ -18,7 +18,7 @@ import {ROUTES} from '@/routes/routes.enum';
 import {ModalComments, ModalMultimedia, ReactionButton} from '.';
 
 interface PostProps {
-    post: IPost;
+    post?: IPost;
     isShared?: boolean;
     className?: string;
 }
@@ -40,8 +40,8 @@ export const Post: React.FC<PostProps> = ({post, isShared, className}) => {
 
     const {userId: currentUserId} = useGetProfileInfo();
 
-    const {pagination, mutate} = useGetInfinitePostComments(post.id);
-    const {data: reactionCounts} = useGetPostReactionCount(post.id);
+    const {pagination, mutate} = useGetInfinitePostComments(post?.id);
+    const {data: reactionCounts} = useGetPostReactionCount(post?.id);
 
     const router = useRouter();
 
@@ -57,8 +57,9 @@ export const Post: React.FC<PostProps> = ({post, isShared, className}) => {
     });
 
     const onSubmit: SubmitHandler<FormValues> = async (data) => {
+        if (!post) return;
         try {
-            await PostService.createPostComment(post.id, data);
+            await PostService.createPostComment(post?.id, data);
             toast.success('Comment created successfully!');
             reset();
             mutate();
@@ -68,20 +69,21 @@ export const Post: React.FC<PostProps> = ({post, isShared, className}) => {
         }
     };
 
-    const {data: reactions, mutate: reactionMutate} = useGetPostReactions(post.id);
+    const {data: reactions, mutate: reactionMutate} = useGetPostReactions(post?.id);
     const currentUserReaction = reactions?.find((reaction) => reaction.user_id === currentUserId)?.reactionType;
     const handleReactPost = async (reaction: REACTION_TYPE) => {
+        if (!post) return;
         try {
             if (reaction === currentUserReaction) {
                 const payload: IPostReactionDelete = {
                     reactionType: reaction,
                 };
-                await PostService.deletePostReaction(post.id, payload);
+                await PostService.deletePostReaction(post?.id, payload);
             } else {
                 const payload: IPostReactionAdd = {
                     reactionType: reaction,
                 };
-                await PostService.addPostReaction(post.id, payload);
+                await PostService.addPostReaction(post?.id, payload);
             }
             reactionMutate();
         } catch (error) {
@@ -123,23 +125,25 @@ export const Post: React.FC<PostProps> = ({post, isShared, className}) => {
         >
             <section className='flex items-center gap-3'>
                 <Avatar
-                    src={post.userOwner.profileImageUrl || undefined}
+                    src={post?.userOwner.profileImageUrl || undefined}
                     className='cursor-pointer'
-                    onClick={() => router.push(ROUTES.PROFILE + `/${post.userOwner.id}`)}
+                    onClick={() => router.push(ROUTES.PROFILE + `/${post?.userOwner.id}`)}
                 />
                 <div>
                     <h6
                         className='cursor-pointer font-bold'
-                        onClick={() => router.push(ROUTES.PROFILE + `/${post.userOwner.id}`)}
+                        onClick={() => router.push(ROUTES.PROFILE + `/${post?.userOwner.id}`)}
                     >
-                        {post.userOwner.username}
+                        {post?.userOwner.username}
                     </h6>
-                    <p className='text-caption font-medium text-gray-500'>{getTimeStamp(post.createdAt)}</p>
+                    <p className='text-caption font-medium text-gray-500'>
+                        {getTimeStamp(post?.createdAt || new Date())}
+                    </p>
                 </div>
             </section>
             {!isShared && (
                 <section>
-                    <p className='text-justify text-paragraph1 font-medium'>{post.content}</p>
+                    <p className='text-justify text-paragraph1 font-medium'>{post?.content}</p>
                 </section>
             )}
             {isShared && (
@@ -150,19 +154,21 @@ export const Post: React.FC<PostProps> = ({post, isShared, className}) => {
                     )}
                 >
                     <section className='flex items-center gap-3'>
-                        <Avatar src={post.userOwner.profileImageUrl || undefined} />
+                        <Avatar src={post?.userOwner.profileImageUrl || undefined} />
                         <div>
                             <h6 className='font-bold'>{'sharedPost.author'}</h6>
-                            <p className='text-caption font-medium text-gray-500'>{getTimeStamp(post.createdAt)}</p>
+                            <p className='text-caption font-medium text-gray-500'>
+                                {getTimeStamp(post?.createdAt || new Date())}
+                            </p>
                         </div>
                     </section>
                     <section>
                         <p className='text-justify text-paragraph1 font-medium'>{'sharedPost.description'}</p>
                     </section>
-                    <ModalMultimedia attachments={post.postAttachments} displayCount={displayCount} />
+                    <ModalMultimedia attachments={post?.postAttachments} displayCount={displayCount} />
                 </div>
             )}
-            {!isShared && <ModalMultimedia attachments={post.postAttachments} displayCount={displayCount} />}
+            {!isShared && <ModalMultimedia attachments={post?.postAttachments} displayCount={displayCount} />}
             <section>
                 <div className='space-y-2'>
                     <Separator className='bg-gray-200' />
@@ -257,7 +263,7 @@ export const Post: React.FC<PostProps> = ({post, isShared, className}) => {
                 open={showModalComments}
                 onClose={() => setShowModalComments(false)}
                 reactionCounts={reactionCounts}
-                postId={post.id}
+                postId={post?.id}
             />
         </div>
     );

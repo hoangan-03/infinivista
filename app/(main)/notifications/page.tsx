@@ -7,7 +7,7 @@ import {useGetInfiniteFriendRequests} from '@/modules/friend/friend.swr';
 import {FriendRequest} from './_components';
 
 function NotificationsPage() {
-    const {data: friendRequests} = useGetInfiniteFriendRequests();
+    const {data: friendRequests, mutate} = useGetInfiniteFriendRequests();
 
     return (
         <div className='relative flex justify-center px-10 py-4'>
@@ -24,7 +24,7 @@ function NotificationsPage() {
                 </div>
                 <div className='space-y-4 px-4'>
                     {friendRequests.map((request, index) => (
-                        <FriendRequest friendRequest={request} key={index} />
+                        <FriendRequest request={request} mutate={mutate} key={index} />
                     ))}
                 </div>
             </div>

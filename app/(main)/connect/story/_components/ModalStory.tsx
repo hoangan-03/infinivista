@@ -176,7 +176,7 @@ function ModalStory({open, story, onClose}: Props) {
             <DialogContent autoFocus={false} className='grid h-fit min-h-[85vh] min-w-[1250px] items-start'>
                 <VisuallyHidden>
                     <DialogHeader className='sr-only h-fit space-y-2'>
-                        <DialogTitle>Posted by SOMEONE</DialogTitle>
+                        <DialogTitle>Posted by {story?.userOwner.username}</DialogTitle>
                         <DialogDescription />
                     </DialogHeader>
                 </VisuallyHidden>
@@ -198,7 +198,7 @@ function ModalStory({open, story, onClose}: Props) {
                             <div className='relative h-full w-full'>
                                 <Image
                                     src={story.story_url}
-                                    alt={'Image of SOMEONE'}
+                                    alt={`Image from ${story?.userOwner.username}`}
                                     fill
                                     sizes='(max-width: 768px) 100vw, 60vw'
                                     className='rounded-lg'
@@ -210,7 +210,7 @@ function ModalStory({open, story, onClose}: Props) {
                                 <div className='relative h-full'>
                                     <Image
                                         src={'/assets/images/bg_placeholder.jpg'}
-                                        alt={'Image of SOMEONE'}
+                                        alt={`Image from ${story?.userOwner.username}`}
                                         fill
                                         sizes='(max-width: 768px) 100vw, 60vw'
                                         className='rounded-lg'
@@ -222,7 +222,7 @@ function ModalStory({open, story, onClose}: Props) {
                         <div className='flex items-center gap-2'>
                             <Avatar />
                             <div>
-                                <p className='font-bold'>SOMEONE</p>
+                                <p className='font-bold'>{story?.userOwner.username}</p>
                                 <p className='text-sm text-gray-500'>{getTimeStamp(story?.createdAt || new Date())}</p>
                             </div>
                         </div>
@@ -236,7 +236,7 @@ function ModalStory({open, story, onClose}: Props) {
                                             {isEditingComment && editingCommentId === comment.id ? (
                                                 <div className='flex w-[90%] gap-2'>
                                                     <span className='w-fit max-w-[15%] overflow-hidden truncate font-bold text-black'>
-                                                        {comment.user.username}fdasdfdasfasdfadsfas
+                                                        {comment.user.username}
                                                     </span>
                                                     <form
                                                         onSubmit={handleSubmitCommentUpdate(onSubmitCommentUpdate)}

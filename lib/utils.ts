@@ -1,6 +1,7 @@
 import {type ClassValue, clsx} from 'clsx';
 import {twMerge} from 'tailwind-merge';
 
+import {ATTACHMENT_TYPE} from '@/modules/common.enum';
 import {IPostReactionCount} from '@/modules/post/post.interface';
 
 export function cn(...inputs: ClassValue[]) {
@@ -48,4 +49,13 @@ export function getSumReactions(
 
     // Sum all reaction counts
     return Object.values(reactionCounts).reduce((sum, count) => sum + (count || 0), 0);
+}
+
+export function getFileType(file: File): ATTACHMENT_TYPE {
+    if (file.type.startsWith('image/')) {
+        return ATTACHMENT_TYPE.IMAGE;
+    } else if (file.type.startsWith('video/')) {
+        return ATTACHMENT_TYPE.VIDEO;
+    }
+    return ATTACHMENT_TYPE.IMAGE;
 }

@@ -1,7 +1,15 @@
+'use client';
+import Image from 'next/image';
+import {useEffect, useRef} from 'react';
+import {Controller, SubmitHandler, useForm} from 'react-hook-form';
+
 import {Icon, Spinner} from '@/components/commons';
-import {Button, ScrollArea, Separator} from '@/components/ui';
+import {Button, Input, ScrollArea, Separator} from '@/components/ui';
 import {useGetProfileInfo, useInfiniteScrolling} from '@/hooks';
-import {cn} from '@/lib/utils';
+import {cn, getFileType} from '@/lib/utils';
+import {FileWithMetadata} from '@/modules/common.interface';
+import {IGroupChatMessageAttachmentCreate, IGroupChatMessageCreate} from '@/modules/groupchat/groupchat.interface';
+import {GroupChatService} from '@/modules/groupchat/groupchat.service';
 import {useGetInfiniteGroupChatMessages} from '@/modules/groupchat/groupchat.swr';
 
 import {MessageItemGroup} from './MessageItemGroup';
@@ -10,16 +18,36 @@ interface Props {
     targetId?: string;
 }
 
+type FormValues = {
+    message: string;
+    files: FileWithMetadata[];
+};
+
 export const MessageSectionGroup: React.FC<Props> = ({targetId}) => {
     const {userId: currentUserId} = useGetProfileInfo();
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const firstLoadRef = useRef(true);
+
     const {
         data: messages,
         pagination: pagination,
+        mutate,
         size: size,
         setSize: setSize,
         isValidating: isValidating,
         isLoading: isLoading,
     } = useGetInfiniteGroupChatMessages(targetId);
+
+    // TODO: ENABLE THIS CODE ONLY WHEN DEMO
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         mutate();
+    //     }, 1000);
+
+    //     return () => {
+    //         clearInterval(interval);
+    //     };
+    // }, [mutate]);
 
     const {loadMoreRef} = useInfiniteScrolling({
         data: messages,
@@ -27,15 +55,109 @@ export const MessageSectionGroup: React.FC<Props> = ({targetId}) => {
         size,
         isValidating,
         setSize,
+        scrollAreaRef: scrollContainerRef,
     });
+
+    useEffect(() => {
+        if (messages.length > 0 && firstLoadRef.current) {
+            scrollContainerRef.current?.scrollTo(0, 0);
+            firstLoadRef.current = false;
+        }
+    }, [messages]);
+
+    const {
+        control,
+        handleSubmit,
+        reset,
+        formState: {isSubmitting, isDirty},
+        setValue,
+        watch,
+    } = useForm<FormValues>({
+        defaultValues: {
+            message: '',
+            files: [],
+        },
+    });
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const files = watch('files');
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const inputFiles = e.target.files;
+        if (!inputFiles) return;
+
+        const fileArray = Array.from(inputFiles).map((file) => {
+            const fileType = getFileType(file);
+            return {
+                data: file,
+                objectUrl: URL.createObjectURL(file),
+                fileType,
+            } as FileWithMetadata;
+        });
+
+        setValue('files', [...files, ...fileArray], {shouldDirty: true});
+    };
+
+    const handleAddMedia = () => {
+        fileInputRef.current?.click();
+    };
+
+    const removeFile = (index: number) => {
+        const newFiles = [...files];
+        URL.revokeObjectURL(newFiles[index].objectUrl);
+        newFiles.splice(index, 1);
+        setValue('files', newFiles, {shouldDirty: true});
+    };
+
+    const onSubmit: SubmitHandler<FormValues> = async (data) => {
+        if (!targetId) return;
+        try {
+            if (data.files.length > 0) {
+                for (const file of data.files) {
+                    const payload: IGroupChatMessageAttachmentCreate = {
+                        file: file.data,
+                        groupChatId: targetId,
+                        attachmentType: file.fileType,
+                    };
+
+                    await GroupChatService.createGroupChatMessageAttachment({payload});
+                }
+            }
+            if (data.message) {
+                const payload: IGroupChatMessageCreate = {
+                    messageText: data.message,
+                    groupChatId: targetId,
+                };
+                await GroupChatService.createGroupChatMessage({payload});
+            }
+
+            await mutate();
+
+            setTimeout(() => {
+                scrollContainerRef.current?.scrollTo({
+                    top: 0,
+                    behavior: 'smooth',
+                });
+            }, 100);
+        } catch (error) {
+            console.error('Error sending message:', error);
+        } finally {
+            reset();
+        }
+    };
 
     return (
         <div className='shadow-custom-1 relative flex h-[89vh] flex-col gap-2 rounded-b-xl bg-white p-4'>
-            <ScrollArea className='h-[90%] pr-4'>
-                <>
-                    {messages.map((message, index) => (
+            <div className='relative h-[90%]'>
+                <div
+                    ref={scrollContainerRef}
+                    className={cn(
+                        'custom-scrollbar flex h-full flex-col-reverse overflow-y-auto pr-4',
+                        files.length > 0 && 'pb-32'
+                    )}
+                >
+                    {messages.map((message, index, arr) => (
                         <div
-                            key={index}
+                            key={message.id || index}
                             className={cn(
                                 'my-4 flex',
                                 message.sender.id === currentUserId ? 'justify-end' : 'justify-start'
@@ -44,24 +166,62 @@ export const MessageSectionGroup: React.FC<Props> = ({targetId}) => {
                             <MessageItemGroup
                                 message={message}
                                 isCurrentUser={message.sender.id === currentUserId}
-                                showAvatar={message.sender.id !== messages[index - 1]?.sender.id}
+                                showAvatar={index === 0 || message.sender.id !== arr[index + 1]?.sender.id}
                                 className='w-4/5'
                             />
                         </div>
                     ))}
-                    <div ref={loadMoreRef} className='flex justify-center'>
+
+                    <div ref={loadMoreRef} className='flex justify-center py-2'>
                         {isValidating && !isLoading && <Spinner width={60} height={60} />}
                     </div>
-                </>
-            </ScrollArea>
-            <div className='flex h-[10%] items-center gap-2 rounded-xl bg-primary px-5 py-3'>
+                </div>
+                {files.length > 0 && (
+                    <ScrollArea className='absolute bottom-32 left-0 z-10 h-32 bg-slate-100/70'>
+                        <div className='flex flex-wrap gap-2 pl-5'>
+                            {files.map((file, index) => (
+                                <div key={index} className='relative size-32 rounded-sm'>
+                                    <Image
+                                        src={file.objectUrl}
+                                        alt={`Image ${index + 1}`}
+                                        fill
+                                        sizes='128px'
+                                        className='object-cover'
+                                    />
+                                    <div className='absolute right-1 top-1 flex gap-1'>
+                                        <button
+                                            type='button'
+                                            onClick={() => removeFile(index)}
+                                            className='flex size-4 items-center justify-center rounded bg-red-500 text-white'
+                                        >
+                                            <Icon name='x-mark' className='size-3' />
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </ScrollArea>
+                )}
+            </div>
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className='flex h-[10%] items-center gap-2 rounded-xl bg-primary px-5 py-3'
+            >
                 <div className='flex gap-2'>
-                    <Button variant='icon' size='icon' className='size-6'>
+                    <Input
+                        type='file'
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        accept='image/*,video/*'
+                        multiple
+                        wrapperClassName='hidden'
+                    />
+                    <Button onClick={handleAddMedia} variant='icon' size='icon' className='size-6'>
                         <Icon name='image' className='text-white' />
                     </Button>
-                    <Button variant='icon' size='icon'>
+                    {/* <Button variant='icon' size='icon'>
                         <Icon name='attachment' className='text-white' />
-                    </Button>
+                    </Button> */}
                     <Button variant='icon' size='icon'>
                         <Icon name='smile' className='text-white' />
                     </Button>
@@ -71,16 +231,28 @@ export const MessageSectionGroup: React.FC<Props> = ({targetId}) => {
                 </div>
                 <div className='flex h-5 flex-grow items-center gap-2'>
                     <Separator className='h-full bg-white' orientation='vertical' />
-                    <input
-                        type='text'
-                        className='w-full rounded-sm border border-white bg-primary py-1 pl-2 text-white placeholder:text-white focus:outline-1 focus:outline-white'
-                        placeholder='Start typing...'
+                    <Controller
+                        control={control}
+                        name='message'
+                        render={({field}) => (
+                            <Input
+                                type='text'
+                                className='w-full rounded-sm border border-white bg-primary py-1 pl-2 text-white placeholder:text-white focus:outline-1 focus:outline-white'
+                                placeholder='Start typing...'
+                                autoComplete='off'
+                                {...field}
+                            />
+                        )}
                     />
-                    <Button variant='secondary' className='aspect-square h-10 w-10 rounded-sm bg-white p-1 flex-center'>
+                    <Button
+                        variant='secondary'
+                        className='aspect-square h-10 w-10 rounded-sm bg-white p-1 flex-center'
+                        disabled={!isDirty || isSubmitting}
+                    >
                         <Icon name='arrow-send' width={20} height={20} />
                     </Button>
                 </div>
-            </div>
+            </form>
         </div>
     );
 };

@@ -4,7 +4,6 @@ import {POST_VISIBILITY} from './post.enum';
 
 export interface IPost extends BaseEntity {
     id: string;
-    // title: string;
     content: string;
     userOwner: IPostUser;
     postAttachments: IPostAttachment[];
@@ -36,7 +35,7 @@ export interface IPostTopic {
 export interface IPostCreate {
     newsFeedId: string;
     content: string;
-    files: FileList;
+    files: File[];
     attachmentTypes: ATTACHMENT_TYPE[];
 }
 

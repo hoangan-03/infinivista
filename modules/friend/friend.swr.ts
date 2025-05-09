@@ -3,7 +3,7 @@ import useSWRInfinite from 'swr/infinite';
 import {PaginationRequest} from '../api.interface';
 import {FriendService} from './friend.service';
 
-function useGetInfiniteFriends() {
+function useGetInfiniteFriends(userId?: string) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getKey = (pageIndex: number, previousPageData: any) => {
         if (previousPageData && !previousPageData.data?.length) {
@@ -15,7 +15,7 @@ function useGetInfiniteFriends() {
             limit: 5,
         };
 
-        return {pagination};
+        return userId ? {userId, pagination} : null;
     };
 
     const {data, error, size, setSize, isValidating, isLoading} = useSWRInfinite(getKey, FriendService.getFriends, {
@@ -52,7 +52,7 @@ function useGetInfiniteFriendRequests() {
         return {pagination};
     };
 
-    const {data, error, size, setSize, isValidating, isLoading} = useSWRInfinite(
+    const {data, mutate, error, size, setSize, isValidating, isLoading} = useSWRInfinite(
         getKey,
         FriendService.getFriendRequests,
         {
@@ -67,6 +67,7 @@ function useGetInfiniteFriendRequests() {
     return {
         data: posts,
         pagination,
+        mutate,
         error,
         size,
         setSize,

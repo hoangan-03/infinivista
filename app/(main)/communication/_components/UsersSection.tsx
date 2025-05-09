@@ -2,9 +2,9 @@ import {Icon, Spinner} from '@/components/commons';
 import {ScrollArea} from '@/components/ui';
 import {useInfiniteScrolling} from '@/hooks';
 import {PaginationMetadata} from '@/modules/api.interface';
+import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';
 import {IFriend} from '@/modules/friend/friend.interface';
 
-import {MESSAGE_TARGET_TYPE} from '../page';
 import {UserItem} from './UserItem';
 
 interface Props {

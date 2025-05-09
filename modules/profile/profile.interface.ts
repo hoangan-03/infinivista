@@ -1,3 +1,4 @@
+import {SOCIAL_LINK_TYPE} from '../common.enum';
 import {BaseEntity} from '../common.interface';
 import {PROFILE_PRIVACY} from './profile.enum';
 
@@ -13,4 +14,10 @@ export interface IProfile extends BaseEntity {
     coverImageUrl: string;
     address: string;
     profilePrivacy: PROFILE_PRIVACY;
+}
+
+export interface IProfileSocialLink extends BaseEntity {
+    id: string;
+    type: SOCIAL_LINK_TYPE | 'YOUTUBE' | 'X' | 'TELEGRAM';
+    link: string;
 }

@@ -24,7 +24,7 @@ interface ModalCommentsProps {
     open: boolean;
     onClose: () => void;
     reactionCounts?: IPostReactionCount;
-    postId: string;
+    postId?: string;
 }
 
 type FormValuesCommentCreate = IPostCommentCreate;
@@ -69,6 +69,7 @@ export const ModalComments: React.FC<ModalCommentsProps> = ({open, onClose, reac
         },
     });
     const onSubmitCommentCreate: SubmitHandler<FormValuesCommentCreate> = async (data) => {
+        if (!postId) return;
         try {
             await PostService.createPostComment(postId, data);
             toast.success('Comment created successfully!');
@@ -108,6 +109,7 @@ export const ModalComments: React.FC<ModalCommentsProps> = ({open, onClose, reac
     const {data: reactions, mutate: reactionMutate} = useGetPostReactions(postId);
     const currentUserReaction = reactions?.find((reaction) => reaction.user_id === currentUserId)?.reactionType;
     const handleReactPost = async (reaction: REACTION_TYPE) => {
+        if (!postId) return;
         try {
             if (reaction === currentUserReaction) {
                 const payload: IPostReactionDelete = {

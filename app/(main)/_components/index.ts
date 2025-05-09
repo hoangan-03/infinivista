@@ -1,4 +1,5 @@
 export {FriendListItem} from './FriendListItem';
+export {ModalCallNotification} from './ModalCallNotification';
 export {ModalComments} from './ModalComments';
 export {ModalIncomingCall} from './ModalIncomingCall';
 export {ModalMultimedia} from './ModalMultimedia';
