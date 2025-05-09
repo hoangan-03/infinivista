@@ -101,10 +101,26 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
     const startCall = useCallback(
         async (targetId: string, targetType: MESSAGE_TARGET_TYPE) => {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: true,
-                    audio: true,
-                });
+                let stream;
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({
+                        video: true,
+                        audio: true,
+                    });
+                } catch (err: unknown) {
+                    if (err instanceof DOMException && (err.name === 'NotFoundError' || err.name === 'NotAllowedError')) {
+                        try {
+                            stream = await navigator.mediaDevices.getUserMedia({
+                                video: false,
+                                audio: true,
+                            });
+                        } catch (audioErr) {
+                            throw new Error('Không thể tìm thấy thiết bị âm thanh. Vui lòng kiểm tra micro của bạn.');
+                        }
+                    } else {
+                        throw err;
+                    }
+                }
 
                 setLocalStream(stream);
 
