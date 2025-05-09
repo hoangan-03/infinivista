@@ -5,7 +5,7 @@ import React from 'react';
 
 import {FriendListItem} from '@/app/(main)/_components';
 import {Spinner} from '@/components/commons';
-import {Badge, Input, ScrollArea} from '@/components/ui';
+import {Input, ScrollArea} from '@/components/ui';
 import {useInfiniteScrolling} from '@/hooks';
 import {cn} from '@/lib/utils';
 import {useGetInfiniteFriends} from '@/modules/friend/friend.swr';
@@ -33,9 +33,6 @@ export const FriendsSection: React.FC<FriendsSectionProps> = ({profile, classNam
             <div className='w-52 border-b border-blue-600 pb-4'>
                 <div className='flex items-center justify-between gap-6'>
                     <h2 className='ml-6 text-[28px] font-bold text-blue-600'>Friends</h2>
-                    <Badge size='none' className='h-[20px] px-2'>
-                        20/101
-                    </Badge>
                 </div>
             </div>
             <div className='p-3'>

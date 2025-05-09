@@ -2,7 +2,13 @@ import {axiosInstance} from '@/lib/axios';
 
 import {PaginationRequest, PaginationResponse} from '../api.interface';
 import {APIBaseService} from '../main.service';
-import {IGroupChat, IGroupChatMessage, IGroupChatMessageCreate, IGroupChatUser} from './groupchat.interface';
+import {
+    IGroupChat,
+    IGroupChatMessage,
+    IGroupChatMessageAttachmentCreate,
+    IGroupChatMessageCreate,
+    IGroupChatUser,
+} from './groupchat.interface';
 
 export class GroupChatService extends APIBaseService {
     public static readonly ROUTES = {
@@ -10,6 +16,7 @@ export class GroupChatService extends APIBaseService {
         groupChatMessages: (groupChatId: string) => APIBaseService.BASE_API_URL + `/groupchat/messages/${groupChatId}`,
         groupChatUsers: (groupChatId: string) => APIBaseService.BASE_API_URL + `/groupchat/users/${groupChatId}`,
         groupChatMessage: APIBaseService.BASE_API_URL + '/groupchat/message',
+        createGroupChatMessageAttachment: APIBaseService.BASE_API_URL + '/groupchat/attachment',
     };
 
     public static async getGroupChats({pagination}: {pagination?: PaginationRequest}) {
@@ -42,6 +49,22 @@ export class GroupChatService extends APIBaseService {
 
     public static async createGroupChatMessage({payload}: {payload: IGroupChatMessageCreate}) {
         return await axiosInstance.post<IGroupChatMessage>(GroupChatService.ROUTES.groupChatMessage, payload);
+    }
+
+    public static async createGroupChatMessageAttachment({payload}: {payload: IGroupChatMessageAttachmentCreate}) {
+        const formData = new FormData();
+        formData.append('file', payload.file);
+        formData.append('groupChatId', payload.groupChatId);
+        formData.append('attachmentType', payload.attachmentType);
+        return await axiosInstance.post<IGroupChatMessage>(
+            GroupChatService.ROUTES.createGroupChatMessageAttachment,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
+        );
     }
 
     public static async getGroupChatUsers({

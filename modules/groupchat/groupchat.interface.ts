@@ -1,4 +1,4 @@
-import {REACTION_TYPE} from '../common.enum';
+import {ATTACHMENT_TYPE, REACTION_TYPE} from '../common.enum';
 import {BaseEntity} from '../common.interface';
 
 export interface IGroupChatUser {
@@ -32,6 +32,12 @@ export interface IGroupChatMessage extends BaseEntity {
 export interface IGroupChatMessageCreate {
     messageText: string;
     groupChatId: string;
+}
+
+export interface IGroupChatMessageAttachmentCreate {
+    file: File;
+    groupChatId: string;
+    attachmentType: ATTACHMENT_TYPE;
 }
 
 // interface TextMessage extends BaseMessage {

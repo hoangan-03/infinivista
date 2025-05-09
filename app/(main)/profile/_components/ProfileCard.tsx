@@ -79,11 +79,11 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({profile, className}) =>
                 <div className='ml-6 flex h-full flex-col items-end justify-between'>
                     {isOwner ? (
                         <div className='flex flex-row items-center justify-end gap-3'>
-                            <Button variant='default'>Add to story</Button>
+                            <Button variant='secondary'>Add to story</Button>
                             <Button variant='secondary'>Edit profile</Button>
-                            <Button variant='icon' size='icon'>
+                            {/* <Button variant='icon' size='icon'>
                                 <Icon name='more' />
-                            </Button>
+                            </Button> */}
                         </div>
                     ) : (
                         <div className='flex flex-row items-center justify-end gap-3'>

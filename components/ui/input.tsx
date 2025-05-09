@@ -29,6 +29,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>,
     suffixIcon?: React.ReactNode;
     errorMessage?: string;
     errorClassName?: string;
+    wrapperClassName?: string;
     onClickSuffixIcon?: () => void;
 }
 
@@ -36,6 +37,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     (
         {
             className,
+            wrapperClassName,
             type = 'text',
             variant,
             prefixIcon,
@@ -48,40 +50,36 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ref
     ) => {
         return (
-            <>
-                <div className='relative w-full'>
-                    {prefixIcon && (
-                        <span className='absolute left-3 top-1/2 -translate-y-1/2 transform'>{prefixIcon}</span>
+            <div className={cn('relative w-full', wrapperClassName)}>
+                {prefixIcon && <span className='absolute left-3 top-1/2 -translate-y-1/2 transform'>{prefixIcon}</span>}
+                <input
+                    type={type}
+                    className={cn(
+                        'rounded',
+                        inputVariants({variant, className}),
+                        prefixIcon && 'pl-10',
+                        errorMessage && 'focus-visible:ring-error'
                     )}
-                    <input
-                        type={type}
-                        className={cn(
-                            'rounded',
-                            inputVariants({variant, className}),
-                            prefixIcon && 'pl-10',
-                            errorMessage && 'focus-visible:ring-error'
-                        )}
-                        ref={ref}
-                        {...props}
-                    />
-                    {suffixIcon &&
-                        (onClickSuffixIcon ? (
-                            <Button
-                                size='icon'
-                                variant='icon'
-                                className='absolute right-3 top-1/2 -translate-y-1/2 transform hover:-translate-y-1/2 active:-translate-y-1/2'
-                                onClick={onClickSuffixIcon}
-                            >
-                                {suffixIcon}
-                            </Button>
-                        ) : (
-                            <span className='absolute right-3 top-1/2 -translate-y-1/2 transform'>{suffixIcon}</span>
-                        ))}
-                    {errorMessage && (
-                        <p className={cn('mt-2 text-caption text-blue-500', errorClassName)}>{errorMessage}</p>
-                    )}
-                </div>
-            </>
+                    ref={ref}
+                    {...props}
+                />
+                {suffixIcon &&
+                    (onClickSuffixIcon ? (
+                        <Button
+                            size='icon'
+                            variant='icon'
+                            className='absolute right-3 top-1/2 -translate-y-1/2 transform hover:-translate-y-1/2 active:-translate-y-1/2'
+                            onClick={onClickSuffixIcon}
+                        >
+                            {suffixIcon}
+                        </Button>
+                    ) : (
+                        <span className='absolute right-3 top-1/2 -translate-y-1/2 transform'>{suffixIcon}</span>
+                    ))}
+                {errorMessage && (
+                    <p className={cn('mt-2 text-caption text-blue-500', errorClassName)}>{errorMessage}</p>
+                )}
+            </div>
         );
     }
 );

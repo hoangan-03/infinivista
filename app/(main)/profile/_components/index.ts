@@ -1,5 +1,5 @@
 export {AboutSection} from './AboutSection';
 export {FriendsSection} from './FriendsSection';
 export {IntroductionSection} from './IntroductionSection';
-export {PostsSection} from './PostsSection';
+export {MainSection} from './MainSection';
 export {ProfileCard} from './ProfileCard';

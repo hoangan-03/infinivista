@@ -11,6 +11,7 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
+    Input,
     ScrollArea,
     Select,
     SelectContent,
@@ -21,10 +22,12 @@ import {
     Textarea,
 } from '@/components/ui';
 import {useFeedContext} from '@/context';
-import {capitalize} from '@/lib/utils';
+import {capitalize, getFileType} from '@/lib/utils';
 import {ATTACHMENT_TYPE} from '@/modules/common.enum';
+import {FileWithMetadata} from '@/modules/common.interface';
 import {POST_VISIBILITY} from '@/modules/post/post.enum';
 import {IPostCreate} from '@/modules/post/post.interface';
+import {PostService} from '@/modules/post/post.service';
 import {IProfile} from '@/modules/profile/profile.interface';
 
 interface Props {
@@ -34,12 +37,6 @@ interface Props {
 }
 
 const postPrivacyTypes = Object.values(POST_VISIBILITY);
-
-interface FileWithMetadata extends File {
-    objectUrl: string;
-    type: string;
-    fileType: ATTACHMENT_TYPE;
-}
 
 type FormValues = {
     content: string;
@@ -66,14 +63,14 @@ export const ModalNewPost: React.FC<Props> = ({open, data, onClose}) => {
 
     const files = watch('files');
 
-    const getFileType = (file: File): ATTACHMENT_TYPE => {
-        if (file.type.startsWith('image/')) {
-            return ATTACHMENT_TYPE.IMAGE;
-        } else if (file.type.startsWith('video/')) {
-            return ATTACHMENT_TYPE.VIDEO;
-        }
-        return ATTACHMENT_TYPE.IMAGE;
-    };
+    // const getFileType = (file: File): ATTACHMENT_TYPE => {
+    //     if (file.type.startsWith('image/')) {
+    //         return ATTACHMENT_TYPE.IMAGE;
+    //     } else if (file.type.startsWith('video/')) {
+    //         return ATTACHMENT_TYPE.VIDEO;
+    //     }
+    //     return ATTACHMENT_TYPE.IMAGE;
+    // };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputFiles = e.target.files;
@@ -82,7 +79,8 @@ export const ModalNewPost: React.FC<Props> = ({open, data, onClose}) => {
         const fileArray = Array.from(inputFiles).map((file) => {
             const fileType = getFileType(file);
             return {
-                ...file,
+                // ...file,
+                data: file,
                 objectUrl: URL.createObjectURL(file),
                 fileType,
             } as FileWithMetadata;
@@ -121,12 +119,11 @@ export const ModalNewPost: React.FC<Props> = ({open, data, onClose}) => {
         try {
             const payload: IPostCreate = {
                 content: data.content,
-                files: data.files.map((file) => file),
+                files: data.files.map((file) => file.data),
                 attachmentTypes: data.files.map((file) => file.fileType),
                 newsFeedId: newsFeed.id,
             };
-            // await PostService.createPost({payload});
-            console.log('Post created:', payload);
+            await PostService.createPost({payload});
             toast.success('Post created successfully!');
         } catch (error) {
             console.error('Error creating post:', error);
@@ -217,13 +214,13 @@ export const ModalNewPost: React.FC<Props> = ({open, data, onClose}) => {
                         )}
                     </ScrollArea>
                     <div className='flex items-center justify-between'>
-                        <input
+                        <Input
                             type='file'
                             ref={fileInputRef}
                             onChange={handleFileChange}
                             accept='image/*,video/*'
                             multiple
-                            className='hidden'
+                            wrapperClassName='hidden'
                         />
                         <Button className='h-8 px-3' variant='secondary' onClick={handleAddMedia}>
                             Add Media

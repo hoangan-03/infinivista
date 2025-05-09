@@ -4,7 +4,7 @@ import React from 'react';
 
 import {useGetProfileById} from '@/modules/profile/profile.swr';
 
-import {AboutSection, FriendsSection, IntroductionSection, PostsSection, ProfileCard} from '../_components';
+import {AboutSection, FriendsSection, IntroductionSection, MainSection, ProfileCard} from '../_components';
 
 const ProfilePage: React.FC<{params: {uuid: string}}> = ({params}) => {
     const {data: profile} = useGetProfileById(params.uuid);
@@ -21,7 +21,7 @@ const ProfilePage: React.FC<{params: {uuid: string}}> = ({params}) => {
 
                 <div className='flex gap-4 py-6'>
                     <FriendsSection profile={profile} className='flex-1 self-start' />
-                    <PostsSection profile={profile} className='flex-3' />
+                    <MainSection profile={profile} className='flex-3' />
                 </div>
             </div>
         </div>

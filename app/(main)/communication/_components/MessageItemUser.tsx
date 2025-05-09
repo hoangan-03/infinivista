@@ -82,21 +82,28 @@ export const MessageItemUser: React.FC<Props> = ({message, isCurrentUser = false
                         </>
                     )}
                     {message.type === MESSAGE_TYPE.ATTACHMENT && message.attachmentType === ATTACHMENT_TYPE.IMAGE && (
-                        <Image
-                            src={message.attachment_url}
-                            alt={message.attachment_name}
-                            width={200}
-                            height={100}
-                            unoptimized={true}
-                            className='h-auto w-full rounded-md object-cover'
-                        />
+                        <div className='relative aspect-video max-h-[300px] w-full'>
+                            <Image
+                                src={message.attachment_url}
+                                alt={message.attachment_name}
+                                fill={true}
+                                sizes='(max-width: 768px) 100vw, 500px'
+                                className='rounded-md bg-gray-100 object-contain'
+                                unoptimized={true}
+                            />
+                        </div>
                     )}
                     {message.type === MESSAGE_TYPE.ATTACHMENT && message.attachmentType === ATTACHMENT_TYPE.VIDEO && (
-                        <ClientVideo
-                            playsInline
-                            src={message.attachment_url}
-                            className='h-auto w-full rounded-md object-cover'
-                        />
+                        <div className='overflow-hidden rounded-md'>
+                            <div className='relative aspect-video max-h-[300px] w-full bg-gray-100'>
+                                <ClientVideo
+                                    playsInline
+                                    controls
+                                    src={message.attachment_url}
+                                    className='h-full w-full rounded-md object-contain'
+                                />
+                            </div>
+                        </div>
                     )}
                 </div>
                 {!isCurrentUser && (
