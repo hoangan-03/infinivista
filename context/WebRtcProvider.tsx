@@ -108,7 +108,10 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
                         audio: true,
                     });
                 } catch (err: unknown) {
-                    if (err instanceof DOMException && (err.name === 'NotFoundError' || err.name === 'NotAllowedError')) {
+                    if (
+                        err instanceof DOMException &&
+                        (err.name === 'NotFoundError' || err.name === 'NotAllowedError')
+                    ) {
                         try {
                             stream = await navigator.mediaDevices.getUserMedia({
                                 video: false,
