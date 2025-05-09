@@ -5,23 +5,22 @@ import {useEffect, useState} from 'react';
 
 import {Icon} from '@/components/commons';
 import {Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from '@/components/ui';
+import {useWebRTCContext} from '@/context';
+import {useGetProfileInfo} from '@/hooks';
+import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';
 import {useGetInfiniteFriends} from '@/modules/friend/friend.swr';
 import {useGetInfiniteGroupChats} from '@/modules/groupchat/groupchat.swr';
 import placeholderImage from '@/public/assets/images/placeholder.png';
 
 import {CallSection, GroupsSection, MessageSectionGroup, MessageSectionUser, UsersSection} from './_components';
 
-export enum MESSAGE_TARGET_TYPE {
-    USER = 'user',
-    GROUP = 'group',
-}
-
 export default function CommunicationPage() {
-    const [isCalling] = useState<boolean>(false);
+    // const [isCalling] = useState<boolean>(true);
+    const {userId: currentUserId} = useGetProfileInfo();
+
+    const {isCalling, startCall} = useWebRTCContext();
     const [currentTargetId, setCurrentTargetId] = useState<string | undefined>(undefined);
     const [currentTargetType, setCurrentTargetType] = useState<MESSAGE_TARGET_TYPE>(MESSAGE_TARGET_TYPE.USER);
-
-    console.log('currentTargetType', currentTargetType);
 
     // ************ DATA FETCHING ************
     const {
@@ -31,7 +30,7 @@ export default function CommunicationPage() {
         setSize: setSizeFriends,
         isValidating: isValidatingFriends,
         isLoading: isLoadingFriends,
-    } = useGetInfiniteFriends();
+    } = useGetInfiniteFriends(currentUserId);
 
     const {
         data: groupChats,
@@ -80,22 +79,40 @@ export default function CommunicationPage() {
                         <p className='text-paragraph2'>Capstone Project Team</p>
                         <p className='text-caption text-gray-500'>last seen 12 minutes ago</p>
                     </div>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild className='outline-none ring-0 focus-visible:ring-0'>
+                    <div className='flex items-center gap-2'>
+                        {!isCalling && currentTargetType !== MESSAGE_TARGET_TYPE.GROUP && (
                             <Button variant='icon' size='icon'>
-                                <Icon name='more' width={15} height={15} />
+                                <Icon
+                                    name='phone'
+                                    className='rotate-[-45deg] group-hover:text-primary'
+                                    width={20}
+                                    height={20}
+                                    onClick={() => {
+                                        if (currentTargetId) {
+                                            startCall(currentTargetId, currentTargetType);
+                                        }
+                                    }}
+                                />
                             </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent alignOffset={16}>
-                            <DropdownMenuItem>Settings</DropdownMenuItem>
-                            <DropdownMenuItem>Invite Member</DropdownMenuItem>
-                            <DropdownMenuItem>Leave Group</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                        )}
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild className='outline-none ring-0 focus-visible:ring-0'>
+                                <Button variant='icon' size='icon'>
+                                    <Icon name='more' width={15} height={15} />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent alignOffset={16}>
+                                <DropdownMenuItem>Settings</DropdownMenuItem>
+                                <DropdownMenuItem>Invite Member</DropdownMenuItem>
+                                <DropdownMenuItem>Leave Group</DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
                 </div>
-                {!isCalling && currentTargetType === MESSAGE_TARGET_TYPE.USER ? (
+                {!isCalling && currentTargetType === MESSAGE_TARGET_TYPE.USER && (
                     <MessageSectionUser targetId={currentTargetId} />
-                ) : (
+                )}
+                {!isCalling && currentTargetType === MESSAGE_TARGET_TYPE.GROUP && (
                     <MessageSectionGroup targetId={currentTargetId} />
                 )}
                 {isCalling && <CallSection />}

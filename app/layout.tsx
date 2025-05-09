@@ -6,7 +6,7 @@ import localFont from 'next/font/local';
 import {ToastContainer} from 'react-toastify';
 
 import {ProgressBar} from '@/components/commons';
-import {AuthProvider, AxiosInterceptor} from '@/context';
+import {AuthProvider, AxiosInterceptor, WebRTCProvider} from '@/context';
 
 const geistSans = localFont({
     src: './_fonts/GeistVF.woff',
@@ -40,7 +40,9 @@ export default function RootLayout({
                 <div className='relative min-h-screen bg-white'>
                     <ProgressBar />
                     <AxiosInterceptor>
-                        <AuthProvider>{children}</AuthProvider>
+                        <AuthProvider>
+                            <WebRTCProvider>{children}</WebRTCProvider>
+                        </AuthProvider>
                     </AxiosInterceptor>
                     <ToastContainer position='bottom-right' autoClose={2000} />
                 </div>

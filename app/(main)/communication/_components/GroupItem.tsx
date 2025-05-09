@@ -2,10 +2,9 @@ import Image from 'next/image';
 
 import {Badge} from '@/components/ui';
 import {cn} from '@/lib/utils';
+import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';
 import {IGroupChat} from '@/modules/groupchat/groupchat.interface';
 import placeholderImage from '@/public/assets/images/placeholder.png';
-
-import {MESSAGE_TARGET_TYPE} from '../page';
 
 // interface BadgeColor {
 //     text: string;

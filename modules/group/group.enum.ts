@@ -1,0 +1,4 @@
+export enum GROUP_VISIBILITY {
+    PUBLIC = 'PUBLIC',
+    PRIVATE = 'PRIVATE',
+}
