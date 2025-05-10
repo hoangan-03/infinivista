@@ -7,7 +7,7 @@ import {Button} from '@/components/ui';
 import {useWebRTCContext} from '@/context';
 
 export const CallSection: React.FC = () => {
-    const {localStream, remoteStream, endCall, firebaseStatus } = useWebRTCContext();
+    const {localStream, remoteStream, endCall, firebaseStatus} = useWebRTCContext();
     const localVideoRef = useRef<HTMLVideoElement>(null);
     const remoteVideoRef = useRef<HTMLVideoElement>(null);
     const [isRemoteVideoReady, setIsRemoteVideoReady] = useState(false);
@@ -20,7 +20,7 @@ export const CallSection: React.FC = () => {
 
     // Hiển thị trạng thái kết nối Firebase
     useEffect(() => {
-        switch(firebaseStatus) {
+        switch (firebaseStatus) {
             case 'checking':
                 setConnectionStatus('Đang kiểm tra kết nối Firebase...');
                 break;
@@ -48,14 +48,18 @@ export const CallSection: React.FC = () => {
         if (remoteStream) {
             // Kiểm tra các track trong remoteStream
             if (remoteStream.getTracks().length === 0) {
-                setWebrtcError('Đã kết nối nhưng không nhận được stream từ đối phương. Kiểm tra camera và micro của họ.');
+                setWebrtcError(
+                    'Đã kết nối nhưng không nhận được stream từ đối phương. Kiểm tra camera và micro của họ.'
+                );
             } else {
                 const audioTracks = remoteStream.getAudioTracks();
                 const videoTracks = remoteStream.getVideoTracks();
-                
-                setConnectionStatus(`Đã kết nối với đối phương! (Audio: ${audioTracks.length}, Video: ${videoTracks.length})`);
+
+                setConnectionStatus(
+                    `Đã kết nối với đối phương! (Audio: ${audioTracks.length}, Video: ${videoTracks.length})`
+                );
                 setWebrtcError(null);
-                
+
                 if (audioTracks.length === 0) {
                     setAudioStatus('⚠️ Không có audio track từ đối phương');
                 } else {
@@ -68,8 +72,13 @@ export const CallSection: React.FC = () => {
     // Set up local video stream
     useEffect(() => {
         if (localVideoRef.current && localStream) {
-            console.log('Đang thiết lập local video stream với các tracks:', 
-                localStream.getTracks().map(t => `${t.kind} (ID: ${t.id})`).join(', '));
+            console.log(
+                'Đang thiết lập local video stream với các tracks:',
+                localStream
+                    .getTracks()
+                    .map((t) => `${t.kind} (ID: ${t.id})`)
+                    .join(', ')
+            );
             localVideoRef.current.srcObject = localStream;
             localVideoRef.current.muted = true; // Luôn tắt tiếng local video để tránh echo
 
@@ -150,15 +159,13 @@ export const CallSection: React.FC = () => {
         if (videoElement && remoteStream) {
             console.log('CallSection: Cập nhật remoteStream trên thẻ video.', {
                 streamId: remoteStream.id,
-                tracks: remoteStream
-                    .getTracks()
-                    .map((t) => ({
-                        kind: t.kind,
-                        id: t.id,
-                        readyState: t.readyState,
-                        enabled: t.enabled,
-                        muted: t.muted,
-                    })),
+                tracks: remoteStream.getTracks().map((t) => ({
+                    kind: t.kind,
+                    id: t.id,
+                    readyState: t.readyState,
+                    enabled: t.enabled,
+                    muted: t.muted,
+                })),
             });
 
             // Đảm bảo thuộc tính audio không bị mute trên phần tử video
@@ -171,7 +178,7 @@ export const CallSection: React.FC = () => {
             const handleLoadedMetadata = () => {
                 console.log('CallSection: Remote video metadata loaded. Bắt đầu phát:', remoteStream.id);
                 const playPromise = videoElement.play();
-                
+
                 if (playPromise !== undefined) {
                     playPromise
                         .then(() => {
@@ -180,24 +187,26 @@ export const CallSection: React.FC = () => {
                         })
                         .catch((e) => {
                             console.error('CallSection: Lỗi khi phát remote video:', e);
-                            
+
                             // Xử lý trường hợp không tự động phát được
                             if (e.name === 'NotAllowedError') {
                                 console.warn('CallSection: Autoplay bị chặn. Cần tương tác người dùng để phát.');
-                                
+
                                 // Hiển thị nút để người dùng click để phát video
                                 const playButton = document.createElement('button');
                                 playButton.innerText = 'Nhấn để bật âm thanh';
-                                playButton.className = 'absolute inset-0 z-10 m-auto w-fit h-fit bg-blue-500 text-white rounded-lg px-4 py-2';
+                                playButton.className =
+                                    'absolute inset-0 z-10 m-auto w-fit h-fit bg-blue-500 text-white rounded-lg px-4 py-2';
                                 playButton.onclick = () => {
-                                    videoElement.play()
+                                    videoElement
+                                        .play()
                                         .then(() => {
                                             setIsRemoteVideoReady(true);
                                             playButton.remove();
                                         })
                                         .catch(console.error);
                                 };
-                                
+
                                 if (videoElement.parentElement) {
                                     videoElement.parentElement.appendChild(playButton);
                                 }
@@ -218,7 +227,9 @@ export const CallSection: React.FC = () => {
             if (audioTracks.length > 0) {
                 console.log('CallSection: Remote stream có audio tracks:', audioTracks.length);
                 audioTracks.forEach((track) => {
-                    console.log(`CallSection: Thông tin audio track - ID: ${track.id}, Enabled: ${track.enabled}, Muted: ${track.muted}`);
+                    console.log(
+                        `CallSection: Thông tin audio track - ID: ${track.id}, Enabled: ${track.enabled}, Muted: ${track.muted}`
+                    );
                     if (!track.enabled) {
                         console.log('CallSection: Kích hoạt audio track bị tắt');
                         track.enabled = true;
@@ -238,82 +249,84 @@ export const CallSection: React.FC = () => {
             setIsRemoteVideoReady(false);
         }
     }, [remoteStream]);
-    
+
     // Update: Thêm kiểm tra định kỳ các track để đảm bảo chúng luôn được kích hoạt
     useEffect(() => {
         if (!remoteStream) return;
-        
+
         const interval = setInterval(() => {
             // Kiểm tra các audio track
             const audioTracks = remoteStream.getAudioTracks();
-            audioTracks.forEach(track => {
+            audioTracks.forEach((track) => {
                 if (!track.enabled) {
                     console.log(`CallSection: Phát hiện audio track ${track.id} bị tắt, đang kích hoạt lại`);
                     track.enabled = true;
                 }
-                
+
                 // Thêm kiểm tra trạng thái audio và in ra thông tin để gỡ lỗi
-                console.log(`CallSection: Kiểm tra audio - Track ${track.id}: enabled=${track.enabled}, readyState=${track.readyState}, muted=${track.muted}`);
+                console.log(
+                    `CallSection: Kiểm tra audio - Track ${track.id}: enabled=${track.enabled}, readyState=${track.readyState}, muted=${track.muted}`
+                );
             });
-            
+
             // Kiểm tra các video track
             const videoTracks = remoteStream.getVideoTracks();
-            videoTracks.forEach(track => {
+            videoTracks.forEach((track) => {
                 if (!track.enabled) {
                     console.log(`CallSection: Phát hiện video track ${track.id} bị tắt, đang kích hoạt lại`);
                     track.enabled = true;
                 }
             });
-            
+
             // Kiểm tra xem remoteStream có được phát không
             if (remoteVideoRef.current && remoteVideoRef.current.paused && isRemoteVideoReady) {
                 console.log('CallSection: Phát hiện video bị tạm dừng, đang khởi động lại...');
-                remoteVideoRef.current.play().catch(e => {
+                remoteVideoRef.current.play().catch((e) => {
                     console.error('CallSection: Không thể phát lại video:', e);
                 });
             }
         }, 2000);
-        
+
         return () => clearInterval(interval);
     }, [remoteStream, isRemoteVideoReady]);
 
     // Kiểm tra âm thanh đầu ra định kỳ
     useEffect(() => {
         if (!remoteStream || !remoteStream.getAudioTracks().length) return;
-        
+
         // Tạo AudioContext và AnalyserNode để theo dõi âm lượng
         let audioContext: AudioContext | null = null;
         let analyser: AnalyserNode | null = null;
         let dataArray: Uint8Array | null = null;
         let source: MediaStreamAudioSourceNode | null = null;
-        
+
         try {
             audioContext = new AudioContext();
             analyser = audioContext.createAnalyser();
             analyser.fftSize = 256;
             const bufferLength = analyser.frequencyBinCount;
             dataArray = new Uint8Array(bufferLength);
-            
+
             // Kết nối remoteStream với analyser
             source = audioContext.createMediaStreamSource(remoteStream);
             source.connect(analyser);
-            
+
             // KHÔNG kết nối đến destination để tránh phát lại âm thanh
             // analyser.connect(audioContext.destination);
-            
+
             // Kiểm tra âm lượng định kỳ
             const volumeCheckInterval = setInterval(() => {
                 if (!analyser || !dataArray) return;
-                
+
                 analyser.getByteFrequencyData(dataArray);
                 let sum = 0;
                 for (let i = 0; i < dataArray.length; i++) {
                     sum += dataArray[i];
                 }
                 const average = sum / dataArray.length;
-                
+
                 console.log(`CallSection: Kiểm tra âm lượng - Trung bình: ${average.toFixed(2)}`);
-                
+
                 // Cập nhật trạng thái âm thanh dựa trên kết quả
                 if (average < 1) {
                     setAudioStatus(`⚠️ Không phát hiện âm thanh (${average.toFixed(2)})`);
@@ -323,7 +336,7 @@ export const CallSection: React.FC = () => {
                     setAudioStatus(`✓ Âm thanh OK (${average.toFixed(2)})`);
                 }
             }, 1000);
-            
+
             return () => {
                 clearInterval(volumeCheckInterval);
                 if (source) source.disconnect();
@@ -339,12 +352,12 @@ export const CallSection: React.FC = () => {
     }, [remoteStream]);
 
     return (
-        <div className='bg-slate-100 relative h-full overflow-hidden rounded-xl'>
+        <div className='relative h-full overflow-hidden rounded-xl bg-slate-100'>
             {/* Trạng thái kết nối */}
             <div className='absolute left-0 right-0 top-0 z-10 bg-black bg-opacity-50 p-2 text-center text-sm text-white'>
                 <p>{connectionStatus}</p>
                 {webrtcError && <p className='text-red-400'>{webrtcError}</p>}
-                {audioStatus && <p className='text-xs mt-1'>{audioStatus}</p>}
+                {audioStatus && <p className='mt-1 text-xs'>{audioStatus}</p>}
             </div>
 
             {/* Nút điều khiển */}
@@ -355,10 +368,7 @@ export const CallSection: React.FC = () => {
                 >
                     <Icon name={isAudioEnabled ? 'mic' : 'mic-off'} className='size-6' />
                 </button>
-                <button
-                    onClick={endCall}
-                    className='rounded-full bg-red-600 p-3 text-white'
-                >
+                <button onClick={endCall} className='rounded-full bg-red-600 p-3 text-white'>
                     <Icon name='phone-off' className='size-6' />
                 </button>
                 <button
