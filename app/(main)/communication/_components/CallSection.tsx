@@ -20,14 +20,14 @@ export const CallSection: React.FC = () => {
         if (localVideoRef.current && localStream) {
             console.log('Setting local video stream');
             localVideoRef.current.srcObject = localStream;
-            
+
             // Cập nhật trạng thái ban đầu của video và audio dựa trên stream
             if (localStream.getVideoTracks().length > 0) {
                 setIsVideoEnabled(localStream.getVideoTracks()[0].enabled);
             } else {
                 setIsVideoEnabled(false);
             }
-            
+
             if (localStream.getAudioTracks().length > 0) {
                 setIsAudioEnabled(localStream.getAudioTracks()[0].enabled);
             } else {
@@ -72,22 +72,22 @@ export const CallSection: React.FC = () => {
         const audioContext = new AudioContext();
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
-        
+
         oscillator.frequency.value = 440; // A4 note
         oscillator.type = 'sine';
         gainNode.gain.value = 0.1; // Low volume
-        
+
         oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);
-        
+
         oscillator.start();
-        
+
         setTimeout(() => {
             oscillator.stop();
             audioContext.close();
             setIsTestingAudio(false);
         }, 1000);
-        
+
         console.log('Audio test played');
     };
 
@@ -98,15 +98,25 @@ export const CallSection: React.FC = () => {
         if (videoElement && remoteStream) {
             console.log('CallSection: useEffect - remoteStream update. Assigning to video element.', {
                 streamId: remoteStream.id,
-                tracks: remoteStream.getTracks().map(t => ({ kind: t.kind, id: t.id, readyState: t.readyState, enabled: t.enabled, muted: t.muted }))
+                tracks: remoteStream
+                    .getTracks()
+                    .map((t) => ({
+                        kind: t.kind,
+                        id: t.id,
+                        readyState: t.readyState,
+                        enabled: t.enabled,
+                        muted: t.muted,
+                    })),
             });
 
             // Kiểm tra các audio track và đảm bảo chúng được kích hoạt
             const audioTracks = remoteStream.getAudioTracks();
             if (audioTracks.length > 0) {
                 console.log('CallSection: Remote stream has audio tracks:', audioTracks.length);
-                audioTracks.forEach(track => {
-                    console.log(`CallSection: Audio track - ID: ${track.id}, Enabled: ${track.enabled}, Muted: ${track.muted}, ReadyState: ${track.readyState}`);
+                audioTracks.forEach((track) => {
+                    console.log(
+                        `CallSection: Audio track - ID: ${track.id}, Enabled: ${track.enabled}, Muted: ${track.muted}, ReadyState: ${track.readyState}`
+                    );
                     if (!track.enabled) {
                         console.log('CallSection: Enabling disabled audio track');
                         track.enabled = true;
@@ -118,21 +128,24 @@ export const CallSection: React.FC = () => {
 
             // Đặt lại srcObject ngay cả khi không có video track
             videoElement.srcObject = remoteStream;
-            
+
             // Đảm bảo phát âm thanh ngay cả khi không có video track
             videoElement.muted = false;
 
             const handleLoadedMetadata = () => {
                 console.log('CallSection: Remote video metadata loaded. Attempting to play stream:', remoteStream.id);
-                videoElement.play()
+                videoElement
+                    .play()
                     .then(() => {
                         console.log('CallSection: Remote video playing for stream:', remoteStream.id);
                         setIsRemoteVideoReady(true);
                     })
-                    .catch(e => {
+                    .catch((e) => {
                         console.error('CallSection: Error playing remote video for stream:', remoteStream.id, e);
                         if (e.name === 'NotAllowedError') {
-                            console.warn('CallSection: Autoplay was prevented. User interaction might be required to play video.');
+                            console.warn(
+                                'CallSection: Autoplay was prevented. User interaction might be required to play video.'
+                            );
                         }
                     });
             };
@@ -148,7 +161,6 @@ export const CallSection: React.FC = () => {
             // videoElement.addEventListener('stalled', () => console.log('CallSection: video event - stalled', remoteStream?.id));
             // videoElement.addEventListener('suspend', () => console.log('CallSection: video event - suspend', remoteStream?.id));
 
-
             return () => {
                 console.log('CallSection: Cleanup remoteStream effect for stream:', remoteStream?.id);
                 videoElement.removeEventListener('loadedmetadata', handleLoadedMetadata);
@@ -161,7 +173,6 @@ export const CallSection: React.FC = () => {
                 //     videoElement.srcObject = null;
                 // }
             };
-
         } else if (videoElement && !remoteStream) {
             console.log('CallSection: remoteStream is null or has no video tracks. Clearing video srcObject.');
             videoElement.srcObject = null;
@@ -190,7 +201,12 @@ export const CallSection: React.FC = () => {
                         className={`size-12 rounded-full ${isVideoEnabled ? 'bg-white hover:bg-slate-200' : 'bg-red-200 hover:bg-red-300'} active:scale-95`}
                         onClick={toggleVideo}
                     >
-                        <Icon name={isVideoEnabled ? 'video-camera' : 'video-camera-slash'} width={16} height={16} className={isVideoEnabled ? '' : 'text-red-500'} />
+                        <Icon
+                            name={isVideoEnabled ? 'video-camera' : 'video-camera-slash'}
+                            width={16}
+                            height={16}
+                            className={isVideoEnabled ? '' : 'text-red-500'}
+                        />
                     </Button>
                     <Button
                         variant='icon'
@@ -206,10 +222,13 @@ export const CallSection: React.FC = () => {
                         className={`size-12 rounded-full ${isAudioEnabled ? 'bg-white hover:bg-slate-200' : 'bg-red-200 hover:bg-red-300'} active:scale-95`}
                         onClick={toggleAudio}
                     >
-                        <Icon name={isAudioEnabled ? 'microphone' : 'microphone-slash'} className={isAudioEnabled ? '' : 'text-red-500'} />
+                        <Icon
+                            name={isAudioEnabled ? 'microphone' : 'microphone-slash'}
+                            className={isAudioEnabled ? '' : 'text-red-500'}
+                        />
                     </Button>
                 </div>
-                
+
                 {/* Audio Test Button */}
                 <div className='absolute bottom-4 right-4'>
                     <Button
@@ -222,7 +241,7 @@ export const CallSection: React.FC = () => {
                         {isTestingAudio ? 'Đang phát...' : 'Kiểm tra loa'}
                     </Button>
                 </div>
-                
+
                 {/* Remote Video */}
                 <div className='absolute inset-0'>
                     {remoteStream && remoteStream.getVideoTracks().length > 0 ? (
@@ -242,7 +261,7 @@ export const CallSection: React.FC = () => {
                         </div>
                     )}
                 </div>
-                
+
                 {/* Local Video */}
                 <div className='absolute bottom-2 right-2 h-40 w-72 overflow-hidden rounded-xl border border-slate-200'>
                     {localStream && localStream.getVideoTracks().length > 0 ? (
