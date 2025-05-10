@@ -1,22 +1,11 @@
 'use client';
 
-import {addDoc, collection, doc, onSnapshot, query, setDoc, where} from 'firebase/firestore';
+import {addDoc, collection, doc, getDoc,onSnapshot, query, setDoc, where} from 'firebase/firestore';
 import {createContext, ReactNode, useCallback, useContext, useEffect, useRef, useState} from 'react';
 
 import {useGetProfileInfo} from '@/hooks';
 import {db} from '@/lib/firebase';
 import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';
-
-// Tạo AudioContext toàn cục để tránh vấn đề với nhiều context
-let globalAudioContext: AudioContext | null = null;
-try {
-    // Khởi tạo AudioContext toàn cục
-    globalAudioContext = new (window.AudioContext ||
-        (window as {webkitAudioContext?: typeof AudioContext}).webkitAudioContext)();
-    console.log('Global AudioContext created successfully');
-} catch (e) {
-    console.error('Failed to create AudioContext:', e);
-}
 
 interface WebRTCContextType {
     localStream: MediaStream | null;
@@ -26,6 +15,7 @@ interface WebRTCContextType {
     currentCallId: string | null;
     currentCallTargetId: string | null;
     currentCallTargetType: MESSAGE_TARGET_TYPE | null;
+    firebaseStatus: 'checking' | 'connected' | 'error';
     startCall: (targetId: string, targetType: MESSAGE_TARGET_TYPE) => Promise<void>;
     answerCall: () => Promise<void>;
     endCall: () => void;
@@ -40,41 +30,99 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
     const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
     const [isCalling, setIsCalling] = useState(false);
     const [isReceivingCall, setIsReceivingCall] = useState(false);
-    const [currentCallId, setCurrentCallId] = useState<string | null>(null); // The document ID in firestore
-    const [currentCallTargetId, setCurrentCallTargetId] = useState<string | null>(null); // The user ID of the caller or receiver
+    const [currentCallId, setCurrentCallId] = useState<string | null>(null);
+    const [currentCallTargetId, setCurrentCallTargetId] = useState<string | null>(null);
     const [currentCallTargetType, setCurrentCallTargetType] = useState<MESSAGE_TARGET_TYPE | null>(null);
+    const [firebaseStatus, setFirebaseStatus] = useState<'checking' | 'connected' | 'error'>('checking');
 
     const peerConnectionRef = useRef<RTCPeerConnection | null>(null);
     const callDocRef = useRef<string | null>(null);
+    const remoteStreamRef = useRef<MediaStream | null>(null);
 
-    // End the call
+    // Cấu hình ICE servers
+    const servers = {
+        iceServers: [
+            {urls: 'stun:stun1.l.google.com:19302'},
+            {urls: 'stun:stun2.l.google.com:19302'},
+            {urls: 'stun:stun.l.google.com:19302'},
+            {urls: 'stun:stun3.l.google.com:19302'},
+            {urls: 'stun:stun4.l.google.com:19302'},
+        ],
+        iceCandidatePoolSize: 10,
+    };
+
+    // Kiểm tra kết nối Firebase
+    useEffect(() => {
+        console.log('[Firebase] Kiểm tra kết nối Firebase...');
+        setFirebaseStatus('checking');
+        // Tạo một document test để kiểm tra kết nối
+        const testCollection = collection(db, 'connection_tests');
+        addDoc(testCollection, {
+            timestamp: new Date().toISOString(),
+            userId: userId || 'anonymous',
+            message: 'WebRTC connection test'
+        })
+        .then(docRef => {
+            console.log('[Firebase] Kết nối thành công! Document ID:', docRef.id);
+            // Xóa document test sau khi kiểm tra
+            setDoc(docRef, { deleted: true }, { merge: true })
+                .then(() => {
+                    console.log('[Firebase] Đã cập nhật document test thành công');
+                    setFirebaseStatus('connected');
+                })
+                .catch(error => {
+                    console.error('[Firebase] Lỗi khi cập nhật document test:', error);
+                    setFirebaseStatus('error');
+                });
+        })
+        .catch(error => {
+            console.error('[Firebase] Lỗi kết nối Firebase:', error);
+            setFirebaseStatus('error');
+        });
+    }, [userId]);
+
+    // Dọn dẹp và kết thúc cuộc gọi
     const endCall = useCallback(() => {
+        // Dừng tất cả tracks trong localStream
         if (localStream) {
             localStream.getTracks().forEach((track) => {
-                console.log(`Stopping local track: ${track.kind}`);
+                console.log(`Dừng local track: ${track.kind}`);
                 track.stop();
             });
         }
 
+        // Dừng tất cả tracks trong remoteStream
+        if (remoteStreamRef.current) {
+            remoteStreamRef.current.getTracks().forEach((track) => {
+                console.log(`Dừng remote track: ${track.kind}`);
+                track.stop();
+            });
+        }
+
+        // Đóng kết nối peer
         if (peerConnectionRef.current) {
             peerConnectionRef.current.close();
-            console.log('Peer connection closed');
+            console.log('Đã đóng kết nối peer');
             peerConnectionRef.current = null;
         }
 
+        // Cập nhật trạng thái cuộc gọi trong Firestore
         if (callDocRef.current) {
             setDoc(doc(db, 'calls', callDocRef.current), {status: 'ended'}, {merge: true}).catch(console.error);
             callDocRef.current = null;
         }
 
+        // Reset state
         setLocalStream(null);
         setRemoteStream(null);
+        remoteStreamRef.current = null;
         setIsCalling(false);
         setCurrentCallId(null);
         setCurrentCallTargetId(null);
         setCurrentCallTargetType(null);
     }, [localStream]);
 
+    // Từ chối cuộc gọi
     const rejectCall = useCallback(() => {
         if (currentCallId) {
             setDoc(doc(db, 'calls', currentCallId), {status: 'rejected'}, {merge: true}).catch(console.error);
@@ -86,750 +134,463 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
         setCurrentCallTargetType(null);
     }, [currentCallId]);
 
-    const createPeerConnection = useCallback(() => {
-        const configuration: RTCConfiguration = {
-            iceServers: [
-                {urls: 'stun:stun.l.google.com:19302'},
-                {urls: 'stun:stun1.l.google.com:19302'},
-                {urls: 'stun:stun2.l.google.com:19302'},
-            ],
-        };
-
-        console.log('Creating peer connection with config:', configuration);
-        const pc = new RTCPeerConnection(configuration);
-
-        // Tạo kênh dữ liệu để kiểm tra kết nối
+    // Lấy stream từ thiết bị
+    const getMediaStream = async () => {
         try {
-            const dataChannel = pc.createDataChannel('audioTestChannel');
-
-            dataChannel.onopen = () => {
-                console.log('Kênh dữ liệu kiểm tra âm thanh đã mở');
-
-                // Gửi tín hiệu kiểm tra âm thanh mỗi 2 giây
-                const audioCheckInterval = setInterval(() => {
-                    if (dataChannel.readyState === 'open') {
-                        dataChannel.send(
-                            JSON.stringify({
-                                type: 'audioCheck',
-                                timestamp: Date.now(),
-                            })
-                        );
-                    } else {
-                        clearInterval(audioCheckInterval);
-                    }
-                }, 2000);
-            };
-
-            dataChannel.onmessage = (event) => {
-                try {
-                    const data = JSON.parse(event.data);
-                    if (data.type === 'audioCheck') {
-                        console.log('Nhận được tín hiệu kiểm tra âm thanh từ đối phương');
-                    }
-                } catch (e) {
-                    console.error('Lỗi khi xử lý tin nhắn từ kênh dữ liệu:', e);
-                }
-            };
-
-            dataChannel.onclose = () => {
-                console.log('Kênh dữ liệu kiểm tra âm thanh đã đóng');
-            };
-        } catch (e) {
-            console.warn('Không thể tạo kênh dữ liệu:', e);
-        }
-
-        pc.onicecandidate = (event) => {
-            if (event.candidate && callDocRef.current) {
-                console.log('New ICE candidate:', event.candidate.candidate.substring(0, 50) + '...');
-                const candidatesCollection = collection(db, 'calls', callDocRef.current, 'candidates');
-                addDoc(candidatesCollection, {
-                    ...event.candidate.toJSON(),
-                    userId: userId,
-                });
-            }
-        };
-
-        pc.ontrack = (event) => {
-            console.log(
-                'Received remote track:',
-                event.track.kind,
-                'ID:',
-                event.track.id,
-                'ReadyState:',
-                event.track.readyState
-            );
-
-            // Đảm bảo các track luôn được kích hoạt khi được nhận
-            if (!event.track.enabled) {
-                console.log(`Forcing enable on received ${event.track.kind} track`);
-                event.track.enabled = true;
-            }
-
-            // Xử lý audio track đặc biệt
-            if (event.track.kind === 'audio') {
-                // Helper function để hiển thị mức âm thanh trực quan
-                const getVolumeIndicator = (level: number): string => {
-                    if (level < 20) return '▪';
-                    if (level < 40) return '▪▪';
-                    if (level < 60) return '▪▪▪';
-                    if (level < 80) return '▪▪▪▪';
-                    return '▪▪▪▪▪';
-                };
-
-                console.log(
-                    `Đã nhận audio track từ đối phương: ID=${event.track.id}, ReadyState=${event.track.readyState}`
-                );
-
-                // CÁCH 1: Kết nối trực tiếp vào hệ thống âm thanh
-                try {
-                    if (globalAudioContext) {
-                        console.log('Đang thiết lập kết nối âm thanh trực tiếp qua AudioContext toàn cục');
-
-                        // Tạo một MediaStream chỉ chứa track âm thanh này
-                        const audioStream = new MediaStream([event.track]);
-
-                        // Tạo nguồn âm thanh từ stream
-                        const source = globalAudioContext.createMediaStreamSource(audioStream);
-
-                        // Kết nối trực tiếp với đầu ra
-                        source.connect(globalAudioContext.destination);
-
-                        console.log('Kết nối âm thanh trực tiếp đã được thiết lập thành công');
-
-                        // Phân tích âm thanh
-                        const analyser = globalAudioContext.createAnalyser();
-                        analyser.fftSize = 256;
-                        source.connect(analyser);
-
-                        const bufferLength = analyser.frequencyBinCount;
-                        const dataArray = new Uint8Array(bufferLength);
-
-                        // Phát hiện âm thanh
-                        let silenceCounter = 0;
-                        const soundDetector = setInterval(() => {
-                            if (globalAudioContext?.state === 'suspended') {
-                                globalAudioContext.resume().then(() => {
-                                    console.log('AudioContext đã được tiếp tục sau khi tạm dừng');
-                                });
-                            }
-
-                            analyser.getByteFrequencyData(dataArray);
-
-                            // Tính mức âm thanh trung bình
-                            let sum = 0;
-                            for (let i = 0; i < bufferLength; i++) {
-                                sum += dataArray[i];
-                            }
-                            const average = sum / bufferLength;
-
-                            // Hiển thị khi có âm thanh thực sự - ngưỡng thấp hơn để phát hiện dễ dàng hơn
-                            if (average > 5) {
-                                // Giảm ngưỡng xuống 5 để dễ phát hiện hơn
-                                const level = Math.floor(average);
-                                console.log(
-                                    `ĐÃ PHÁT HIỆN ÂM THANH TỪ ĐỐI PHƯƠNG! Mức: ${level} (${getVolumeIndicator(level)})`
-                                );
-                                silenceCounter = 0;
-                            } else {
-                                silenceCounter++;
-                                if (silenceCounter === 30) {
-                                    // Tăng số lần kiểm tra trước khi thông báo
-                                    console.log(
-                                        'Không phát hiện âm thanh từ đối phương... Thử nói to hơn hoặc kiểm tra micro của bạn'
-                                    );
-                                    silenceCounter = 0;
-                                }
-                            }
-                        }, 200);
-
-                        // Cleanup
-                        event.track.onended = () => {
-                            console.log(`Audio track ${event.track.id} kết thúc, dọn dẹp tài nguyên`);
-                            clearInterval(soundDetector);
-
-                            // Không đóng AudioContext toàn cục
-                        };
-                    }
-                } catch (err) {
-                    console.error('Lỗi khi xử lý audio track trực tiếp:', err);
-                }
-
-                // CÁCH 2: Sử dụng phần tử audio truyền thống
-                try {
-                    // Tạo phần tử audio chuyên dụng
-                    const audioElement = new Audio();
-                    const audioStream = new MediaStream([event.track]);
-
-                    // Đảm bảo phần tử audio được cấu hình đúng
-                    audioElement.srcObject = audioStream;
-                    audioElement.id = `remote-audio-${event.track.id}`;
-                    audioElement.autoplay = true;
-                    audioElement.controls = true; // Thêm điều khiển để người dùng có thể điều chỉnh
-                    audioElement.volume = 1.0;
-                    audioElement.muted = false;
-
-                    // Thêm vào DOM để đảm bảo nó được phát
-                    audioElement.style.display = 'none';
-                    document.body.appendChild(audioElement);
-
-                    console.log(`Phần tử audio phụ đã được tạo: id=${audioElement.id}`);
-
-                    // Xử lý các sự kiện audio
-                    audioElement.addEventListener('canplaythrough', () => {
-                        console.log(`Audio element sẵn sàng phát, bắt đầu phát: id=${audioElement.id}`);
-
-                        // Thử kích hoạt âm thanh bằng tương tác người dùng
-                        const playPromise = audioElement.play();
-                        if (playPromise !== undefined) {
-                            playPromise
-                                .then(() => {
-                                    console.log('Phát âm thanh thành công qua phần tử audio');
-                                })
-                                .catch((err) => {
-                                    console.error('Lỗi khi phát âm thanh qua phần tử audio:', err);
-
-                                    // Nếu tự động phát bị chặn, hiển thị nút để người dùng tương tác
-                                    if (err.name === 'NotAllowedError') {
-                                        const button = document.createElement('button');
-                                        button.textContent = 'Nhấn để bật âm thanh cuộc gọi';
-                                        button.style.position = 'fixed';
-                                        button.style.top = '10px';
-                                        button.style.right = '10px';
-                                        button.style.zIndex = '9999';
-                                        button.style.padding = '10px';
-                                        button.style.backgroundColor = '#f44336';
-                                        button.style.color = 'white';
-                                        button.style.border = 'none';
-                                        button.style.borderRadius = '5px';
-                                        button.style.cursor = 'pointer';
-
-                                        button.onclick = () => {
-                                            // Tiếp tục AudioContext
-                                            if (globalAudioContext?.state === 'suspended') {
-                                                globalAudioContext.resume();
-                                            }
-
-                                            // Phát audio element
-                                            audioElement
-                                                .play()
-                                                .then(() => {
-                                                    console.log('Âm thanh đã được bật sau khi người dùng tương tác');
-                                                    document.body.removeChild(button);
-                                                })
-                                                .catch((e) =>
-                                                    console.error('Vẫn không thể phát âm thanh sau khi tương tác:', e)
-                                                );
-                                        };
-
-                                        document.body.appendChild(button);
-                                    }
-                                });
-                        }
-                    });
-
-                    audioElement.addEventListener('play', () => {
-                        console.log('Sự kiện PLAY đã được kích hoạt trên phần tử audio');
-                    });
-
-                    audioElement.addEventListener('error', (e) => {
-                        console.error(`Lỗi phần tử audio: id=${audioElement.id}`, e);
-                    });
-                } catch (e) {
-                    console.error('Lỗi khi tạo phần tử audio dự phòng:', e);
-                }
-            }
-
-            if (event.track) {
-                setRemoteStream((prevRemoteStream) => {
-                    // Use the previous stream or create a new one if it doesn't exist.
-                    // Create a new MediaStream instance from the tracks of the previous stream, or an empty one.
-                    const newStream = new MediaStream(prevRemoteStream ? prevRemoteStream.getTracks() : []);
-
-                    // Add the new track if it's not already in the stream.
-                    if (!newStream.getTrackById(event.track.id)) {
-                        newStream.addTrack(event.track);
-                        console.log('Added new track to remote stream:', event.track.kind, 'ID:', event.track.id);
-                    } else {
-                        console.log('Track already present in remote stream:', event.track.kind, 'ID:', event.track.id);
-                    }
-
-                    console.log(
-                        'Remote stream now has tracks:',
-                        newStream
-                            .getTracks()
-                            .map((t) => `${t.kind} (ID: ${t.id}, ReadyState: ${t.readyState}, Enabled: ${t.enabled})`)
-                            .join('; ')
-                    );
-
-                    // Attach listeners to the specific track that just arrived/was processed.
-
-                    if (event.track.kind === 'video' && !event.track.enabled && event.track.readyState === 'live') {
-                        console.log(
-                            `Force enabling ${event.track.kind} track (ID: ${event.track.id}) as it was received disabled.`
-                        );
-                        event.track.enabled = true;
-                    }
-
-                    event.track.onmute = () => {
-                        console.log(
-                            `Remote ${event.track.kind} track (ID: ${event.track.id}) muted. ReadyState: ${event.track.readyState}`
-                        );
-                        // Attempt to unmute if it's still live
-                        if (event.track.readyState === 'live' && !event.track.enabled) {
-                            console.log(
-                                `Attempting to re-enable muted ${event.track.kind} track (ID: ${event.track.id})`
-                            );
-                            event.track.enabled = true;
-                        }
-                    };
-
-                    event.track.onunmute = () => {
-                        console.log(
-                            `Remote ${event.track.kind} track (ID: ${event.track.id}) unmuted. ReadyState: ${event.track.readyState}`
-                        );
-                        if (event.track.readyState === 'live' && !event.track.enabled) {
-                            event.track.enabled = true;
-                        }
-                    };
-
-                    event.track.onended = () => {
-                        console.log(
-                            `Remote ${event.track.kind} track (ID: ${event.track.id}) ended. ReadyState: ${event.track.readyState}`
-                        );
-                        // When a track ends, remove it from the remote stream by creating a new stream without it.
-                        setRemoteStream((prev) => {
-                            if (!prev) return null;
-                            const tracks = prev.getTracks().filter((t) => t.id !== event.track.id);
-                            if (tracks.length === 0) {
-                                console.log('All remote tracks ended, setting remoteStream to null.');
-                                return null;
-                            }
-                            const updatedStream = new MediaStream(tracks);
-                            console.log(
-                                'Track ended. Remote stream updated. Remaining tracks:',
-                                updatedStream
-                                    .getTracks()
-                                    .map((t) => `${t.kind} (ID: ${t.id})`)
-                                    .join(', ')
-                            );
-                            return updatedStream;
-                        });
-                    };
-
-                    // Cập nhật các hàm callback cho các track
-                    if (event.track.kind === 'audio') {
-                        console.log('Remote audio track received with settings:', {
-                            echoCancellation: event.track.getSettings().echoCancellation,
-                            autoGainControl: event.track.getSettings().autoGainControl,
-                            noiseSuppression: event.track.getSettings().noiseSuppression,
-                            channelCount: event.track.getSettings().channelCount,
-                            sampleRate: event.track.getSettings().sampleRate,
-                        });
-                    }
-
-                    // Always return a new MediaStream instance containing all current tracks.
-                    // This ensures React detects the change and re-renders components that depend on remoteStream.
-                    return new MediaStream(newStream.getTracks());
-                });
-            }
-        };
-
-        pc.oniceconnectionstatechange = () => {
-            console.log('ICE Connection State:', pc.iceConnectionState);
-            if (pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed') {
-                console.log('ICE connection established!');
-            } else if (pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'disconnected') {
-                console.error('ICE connection failed or disconnected');
-            }
-        };
-
-        pc.onicegatheringstatechange = () => {
-            console.log('ICE Gathering State:', pc.iceGatheringState);
-        };
-
-        pc.onsignalingstatechange = () => {
-            console.log('Signaling State:', pc.signalingState);
-        };
-
-        pc.onconnectionstatechange = () => {
-            console.log('Connection State:', pc.connectionState);
-            if (pc.connectionState === 'connected') {
-                console.log('Peers connected!');
-            } else if (pc.connectionState === 'failed') {
-                console.error('Connection failed');
-                endCall();
-            }
-        };
-
-        pc.onnegotiationneeded = () => {
-            console.log('Negotiation needed');
-        };
-
-        pc.ondatachannel = (event) => {
-            console.log('Nhận được kênh dữ liệu từ đối phương:', event.channel.label);
-
-            const channel = event.channel;
-
-            channel.onopen = () => {
-                console.log('Kênh dữ liệu đã mở:', channel.label);
-            };
-
-            channel.onmessage = (msg) => {
-                try {
-                    const data = JSON.parse(msg.data);
-                    if (data.type === 'audioCheck') {
-                        // Phản hồi lại kiểm tra âm thanh
-                        channel.send(
-                            JSON.stringify({
-                                type: 'audioCheckResponse',
-                                timestamp: Date.now(),
-                                receivedTimestamp: data.timestamp,
-                            })
-                        );
-                    } else if (data.type === 'audioCheckResponse') {
-                        const latency = Date.now() - data.timestamp;
-                        console.log(`Kết nối với đối phương ổn định. Độ trễ: ${latency}ms`);
-                    }
-                } catch (e) {
-                    console.error('Lỗi khi xử lý tin nhắn từ kênh dữ liệu:', e);
-                }
-            };
-
-            channel.onclose = () => {
-                console.log('Kênh dữ liệu đã đóng:', channel.label);
-            };
-        };
-
-        peerConnectionRef.current = pc;
-        return pc;
-    }, [userId, endCall]);
-
-    const startCall = useCallback(
-        async (targetId: string, targetType: MESSAGE_TARGET_TYPE) => {
+            console.log('[WebRTC] Lấy media stream từ thiết bị');
+            
+            // Thử phương án 1: Lấy cả video và audio
             try {
-                let stream;
-                try {
-                    // Cải thiện các ràng buộc trong getUserMedia
-                    const audioConstraints: MediaTrackConstraints = {
-                        echoCancellation: true,
-                        noiseSuppression: true,
-                        autoGainControl: true,
-                    };
-
-                    // Kiểm tra hỗ trợ của trình duyệt
-                    const supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
-                    console.log('Supported constraints:', supportedConstraints);
-
-                    // Thêm các ràng buộc được hỗ trợ
-                    if (supportedConstraints.channelCount) {
-                        (audioConstraints as MediaTrackConstraints & {channelCount: number}).channelCount = 2;
-                    }
-                    if (supportedConstraints.sampleRate) {
-                        (audioConstraints as MediaTrackConstraints & {sampleRate: number}).sampleRate = 48000;
-                    }
-                    if (supportedConstraints.sampleSize) {
-                        (audioConstraints as MediaTrackConstraints & {sampleSize: number}).sampleSize = 16;
-                    }
-
-                    console.log('Using audio constraints:', audioConstraints);
-
-                    stream = await navigator.mediaDevices.getUserMedia({
-                        video: true,
-                        audio: audioConstraints,
-                    });
-
-                    // Kiểm tra khả năng của thiết bị âm thanh
-                    console.log('Available constraints:', navigator.mediaDevices.getSupportedConstraints());
-                } catch (err: unknown) {
-                    if (
-                        err instanceof DOMException &&
-                        (err.name === 'NotFoundError' || err.name === 'NotAllowedError')
-                    ) {
-                        try {
-                            stream = await navigator.mediaDevices.getUserMedia({
-                                video: false,
-                                audio: {
-                                    echoCancellation: true,
-                                    noiseSuppression: true,
-                                    autoGainControl: true,
-                                },
-                            });
-                        } catch (audioErr) {
-                            throw new Error('Không thể tìm thấy thiết bị âm thanh. Vui lòng kiểm tra micro của bạn.');
-                        }
-                    } else {
-                        throw err;
-                    }
-                }
-
-                console.log(
-                    'Local stream obtained with tracks:',
-                    stream
-                        .getTracks()
-                        .map((t) => t.kind)
-                        .join(', ')
-                );
-
-                // Kiểm tra audio track và log thông tin
-                const audioTracks = stream.getAudioTracks();
-                if (audioTracks.length > 0) {
-                    const audioTrack = audioTracks[0];
-                    console.log('Local audio track obtained with settings:', {
-                        trackId: audioTrack.id,
-                        label: audioTrack.label,
-                        enabled: audioTrack.enabled,
-                        muted: audioTrack.muted,
-                        readyState: audioTrack.readyState,
-                        constraints: audioTrack.getConstraints(),
-                        settings: audioTrack.getSettings(),
-                    });
-                } else {
-                    console.warn('No audio track found in local stream!');
-                }
-
-                setLocalStream(stream);
-
-                // Clear existing remote stream
-                setRemoteStream(null);
-
-                const pc = createPeerConnection();
-
-                stream.getTracks().forEach((track) => {
-                    console.log('Adding local track to peer connection:', track.kind);
-                    pc.addTrack(track, stream);
-                });
-
-                // Cải thiện cấu hình tạo offer
-                const offerOptions = {
-                    offerToReceiveAudio: true,
-                    offerToReceiveVideo: true,
-                    voiceActivityDetection: true,
-                    iceRestart: false,
-                };
-
-                console.log('Creating offer with options:', offerOptions);
-                const offerDescription = await pc.createOffer(offerOptions);
-
-                await pc.setLocalDescription(offerDescription);
-                console.log('Created offer and set local description');
-
-                const callsCollection = collection(db, 'calls');
-                const callDoc = await addDoc(callsCollection, {
-                    caller: userId,
-                    target: targetId,
-                    targetType: targetType,
-                    status: 'pending',
-                    created: new Date().toISOString(),
-                    offer: {
-                        type: offerDescription.type,
-                        sdp: offerDescription.sdp,
+                const constraints = {
+                    video: {
+                        width: { ideal: 640 },
+                        height: { ideal: 480 }
                     },
-                });
-                console.log('Created call document in Firestore');
-
-                callDocRef.current = callDoc.id;
-                setCurrentCallId(callDoc.id);
-                setCurrentCallTargetId(targetId);
-                setCurrentCallTargetType(targetType);
-                setIsCalling(true);
-
-                onSnapshot(doc(db, 'calls', callDoc.id), (snapshot) => {
-                    const data = snapshot.data();
-                    if (data?.answer && pc.currentRemoteDescription === null) {
-                        const answerDescription = new RTCSessionDescription({
-                            type: 'answer',
-                            sdp: data.answer.sdp,
-                        });
-                        pc.setRemoteDescription(answerDescription).catch((error) => {
-                            console.error('Error setting remote description:', error);
-                        });
-                    }
-
-                    if (data?.status === 'rejected') {
-                        endCall();
-                    }
-                });
-
-                onSnapshot(
-                    query(collection(db, 'calls', callDoc.id, 'candidates'), where('userId', '!=', userId)),
-                    (snapshot) => {
-                        snapshot.docChanges().forEach((change) => {
-                            if (change.type === 'added') {
-                                const data = change.doc.data();
-                                pc.addIceCandidate(
-                                    new RTCIceCandidate({
-                                        sdpMid: data.sdpMid,
-                                        sdpMLineIndex: data.sdpMLineIndex,
-                                        candidate: data.candidate,
-                                    })
-                                ).catch((error) => {
-                                    console.error('Error adding ICE candidate:', error);
-                                });
-                            }
-                        });
-                    }
-                );
-            } catch (error) {
-                console.error('Error starting call:', error);
-                endCall();
-            }
-        },
-        [userId, createPeerConnection, endCall]
-    );
-
-    const answerCall = useCallback(async () => {
-        if (!currentCallId) return;
-
-        try {
-            let stream;
-            try {
-                // Thử lấy cả video và audio
-                stream = await navigator.mediaDevices.getUserMedia({
-                    video: true,
                     audio: {
                         echoCancellation: true,
                         noiseSuppression: true,
-                        autoGainControl: true,
-                    },
+                        autoGainControl: true
+                    }
+                };
+                console.log('[WebRTC] Thử lấy cả video và audio với constraints:', JSON.stringify(constraints));
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                
+                console.log('[WebRTC] Đã lấy cả video và audio stream');
+                console.log(`[WebRTC] Audio tracks: ${stream.getAudioTracks().length}, Video tracks: ${stream.getVideoTracks().length}`);
+                stream.getTracks().forEach(track => {
+                    console.log(`[WebRTC] Track: ${track.kind}, ID: ${track.id}, Enabled: ${track.enabled}, Muted: ${track.muted}`);
                 });
-
-                // Kiểm tra khả năng của thiết bị âm thanh
-                console.log('Available constraints (answer):', navigator.mediaDevices.getSupportedConstraints());
+                
+                return stream;
             } catch (err) {
-                console.warn('Không thể lấy cả video và audio:', err);
-
+                console.warn('[WebRTC] Không thể lấy cả video và audio:', err);
+                
+                // Thử phương án 2: Chỉ lấy audio
                 try {
-                    // Nếu không thể lấy cả hai, thử chỉ lấy audio
-                    stream = await navigator.mediaDevices.getUserMedia({
+                    console.log('[WebRTC] Thử lấy chỉ audio...');
+                    const audioOnlyStream = await navigator.mediaDevices.getUserMedia({
                         video: false,
                         audio: {
                             echoCancellation: true,
                             noiseSuppression: true,
-                            autoGainControl: true,
-                        },
+                            autoGainControl: true
+                        }
                     });
-                    console.log('Đã lấy được luồng chỉ chứa audio');
+                    
+                    console.log('[WebRTC] Đã lấy được audio-only stream');
+                    console.log(`[WebRTC] Audio tracks: ${audioOnlyStream.getAudioTracks().length}`);
+                    return audioOnlyStream;
                 } catch (audioErr) {
-                    console.error('Không thể lấy audio:', audioErr);
-
-                    // Nếu không thể lấy audio, thử chỉ lấy video
+                    console.error('[WebRTC] Không thể lấy audio:', audioErr);
+                    
+                    // Thử phương án 3: Chỉ lấy video
                     try {
-                        stream = await navigator.mediaDevices.getUserMedia({
+                        console.log('[WebRTC] Thử lấy chỉ video...');
+                        const videoOnlyStream = await navigator.mediaDevices.getUserMedia({
                             video: true,
-                            audio: false,
+                            audio: false
                         });
-                        console.log('Đã lấy được luồng chỉ chứa video');
+                        
+                        console.log('[WebRTC] Đã lấy được video-only stream');
+                        console.log(`[WebRTC] Video tracks: ${videoOnlyStream.getVideoTracks().length}`);
+                        return videoOnlyStream;
                     } catch (videoErr) {
-                        console.error('Không thể lấy video:', videoErr);
-                        throw new Error(
-                            'Không thể truy cập camera hoặc micro. Thiết bị có thể đang bị sử dụng bởi ứng dụng khác.'
-                        );
+                        console.error('[WebRTC] Không thể lấy video:', videoErr);
+                        
+                        // Phương án 4: Thử sử dụng getDisplayMedia nếu getUserMedia thất bại
+                        try {
+                            console.log('[WebRTC] Thử getDisplayMedia thay thế...');
+                            const displayStream = await navigator.mediaDevices.getDisplayMedia({
+                                video: true,
+                                audio: true
+                            });
+                            console.log('[WebRTC] Đã lấy được displayMedia stream');
+                            return displayStream;
+                        } catch (displayErr) {
+                            console.error('[WebRTC] Cũng không thể lấy displayMedia:', displayErr);
+                            alert('Không thể truy cập camera hoặc microphone. Hãy kiểm tra quyền truy cập thiết bị của bạn.');
+                            throw new Error('Không thể truy cập camera hoặc microphone');
+                        }
                     }
                 }
             }
+        } catch (err) {
+            console.error('[WebRTC] Lỗi nghiêm trọng khi lấy stream:', err);
+            throw err;
+        }
+    };
 
-            console.log(
-                'Local stream obtained for answer with tracks:',
-                stream
-                    .getTracks()
-                    .map((t) => t.kind)
-                    .join(', ')
-            );
-
-            // Kiểm tra audio track và log thông tin
-            const audioTracks = stream.getAudioTracks();
-            if (audioTracks.length > 0) {
-                const audioTrack = audioTracks[0];
-                console.log('Local audio track obtained for answer with settings:', {
-                    trackId: audioTrack.id,
-                    label: audioTrack.label,
-                    enabled: audioTrack.enabled,
-                    muted: audioTrack.muted,
-                    readyState: audioTrack.readyState,
-                    constraints: audioTrack.getConstraints(),
-                    settings: audioTrack.getSettings(),
-                });
+    // Cấu hình sự kiện ontrack để xử lý media streams từ xa
+    const configureOnTrackEvent = (pc: RTCPeerConnection) => {
+        // Tạo remoteStream một lần và lưu trong ref
+        if (!remoteStreamRef.current) {
+            remoteStreamRef.current = new MediaStream();
+            setRemoteStream(remoteStreamRef.current);
+        }
+        
+        pc.ontrack = (event) => {
+            console.log(`[WebRTC] Nhận track từ xa: ${event.track.kind}, ID: ${event.track.id}`);
+            console.log(`[WebRTC] Track có ${event.streams.length} streams`);
+            
+            // Đảm bảo track được kích hoạt
+            event.track.enabled = true;
+            
+            // Sử dụng một hàm riêng để xử lý thêm track vào remote stream
+            const addTrackToRemoteStream = (track: MediaStreamTrack) => {
+                if (!remoteStreamRef.current) return;
+                
+                // Kiểm tra nếu track đã tồn tại (tránh trùng lặp)
+                const existingTrack = remoteStreamRef.current.getTracks().find(t => 
+                    t.id === track.id || (t.kind === track.kind && t.label === track.label)
+                );
+                
+                if (!existingTrack) {
+                    console.log(`[WebRTC] Thêm mới track ${track.kind} (${track.id}) vào remoteStream`);
+                    remoteStreamRef.current.addTrack(track);
+                    
+                    // Thêm sự kiện theo dõi trạng thái của track
+                    track.onended = () => {
+                        console.log(`[WebRTC] Track ${track.kind} (${track.id}) đã kết thúc`);
+                    };
+                    
+                    track.onmute = () => {
+                        console.log(`[WebRTC] Track ${track.kind} (${track.id}) đã bị mute`);
+                        // Thử kích hoạt lại track
+                        setTimeout(() => {
+                            if (track.readyState === 'live') {
+                                track.enabled = true;
+                                console.log(`[WebRTC] Đã kích hoạt lại track ${track.kind} (${track.id})`);
+                            }
+                        }, 1000);
+                    };
+                    
+                    track.onunmute = () => {
+                        console.log(`[WebRTC] Track ${track.kind} (${track.id}) đã được unmute`);
+                    };
+                    
+                    // Cập nhật UI với stream mới
+                    setRemoteStream(new MediaStream(remoteStreamRef.current.getTracks()));
+                } else {
+                    console.log(`[WebRTC] Track ${track.kind} đã tồn tại trong remoteStream, bỏ qua`);
+                }
+            };
+            
+            // Xử lý các track từ stream nhận được
+            if (event.streams && event.streams.length > 0) {
+                console.log(`[WebRTC] Sử dụng stream từ sự kiện ontrack. Stream ID: ${event.streams[0].id}`);
+                event.streams[0].getTracks().forEach(addTrackToRemoteStream);
+                
+                // Thêm sự kiện lắng nghe khi stream thêm track mới
+                event.streams[0].onaddtrack = (trackEvent) => {
+                    console.log(`[WebRTC] Track mới được thêm vào stream: ${trackEvent.track.kind}`);
+                    addTrackToRemoteStream(trackEvent.track);
+                };
             } else {
-                console.warn('No audio track found in local stream for answer!');
+                // Thêm track trực tiếp nếu không có stream
+                console.log(`[WebRTC] Không có stream, thêm track trực tiếp: ${event.track.kind}`);
+                addTrackToRemoteStream(event.track);
             }
+        };
+    };
 
+    // Bắt đầu cuộc gọi
+    const startCall = useCallback(
+        async (targetId: string, targetType: MESSAGE_TARGET_TYPE) => {
+            try {
+                // 1. Tạo kết nối peer
+                const pc = new RTCPeerConnection(servers);
+                peerConnectionRef.current = pc;
+
+                // 2. Lấy media stream từ thiết bị
+                const stream = await getMediaStream();
+                setLocalStream(stream);
+
+                // 3. Cấu hình sự kiện ontrack
+                configureOnTrackEvent(pc);
+
+                // 4. Thêm tracks từ local stream vào peer connection
+                stream.getTracks().forEach((track) => {
+                    console.log(`[WebRTC] Thêm track vào sender: ${track.kind} (ID: ${track.id}), enabled=${track.enabled}`);
+                    // Đảm bảo track được kích hoạt
+                    track.enabled = true;
+                    pc.addTrack(track, stream);
+                });
+
+                // 5. Thiết lập sự kiện kết nối
+                pc.onconnectionstatechange = (event) => {
+                    console.log(`[WebRTC] Trạng thái kết nối thay đổi: ${pc.connectionState}`);
+                    if (pc.connectionState === 'failed' || pc.connectionState === 'disconnected' || pc.connectionState === 'closed') {
+                        console.warn(`[WebRTC] Kết nối bị ngắt: ${pc.connectionState}`);
+                    }
+                };
+
+                // 6. Set up onicecandidate để thu thập và lưu ICE candidates
+                pc.onicecandidate = (event) => {
+                    if (event.candidate && callDocRef.current) {
+                        console.log(`[WebRTC] ICE candidate mới: ${event.candidate.type}`);
+                        const candidatesCollection = collection(db, 'calls', callDocRef.current, 'candidates');
+                        addDoc(candidatesCollection, {
+                            ...event.candidate.toJSON(),
+                            userId: userId,
+                        });
+                    }
+                };
+
+                // 7. Tạo offer
+                const offerDescription = await pc.createOffer({
+                    offerToReceiveAudio: true,
+                    offerToReceiveVideo: true
+                });
+                await pc.setLocalDescription(offerDescription);
+
+                // 8. Lưu offer vào Firestore
+                try {
+                    const callDoc = await addDoc(collection(db, 'calls'), {
+                        caller: userId,
+                        target: targetId,
+                        targetType: targetType,
+                        status: 'pending',
+                        created: new Date().toISOString(),
+                        offer: {
+                            type: offerDescription.type,
+                            sdp: offerDescription.sdp,
+                        },
+                    });
+                    console.log('[Firebase] Đã lưu offer vào Firestore thành công, docId:', callDoc.id);
+
+                    callDocRef.current = callDoc.id;
+                    setCurrentCallId(callDoc.id);
+                    setCurrentCallTargetId(targetId);
+                    setCurrentCallTargetType(targetType);
+                    setIsCalling(true);
+
+                    // 9. Lắng nghe answer từ phía bên kia
+                    onSnapshot(doc(db, 'calls', callDoc.id), (snapshot) => {
+                        try {
+                            console.log('[Firebase] Nhận được cập nhật từ document cuộc gọi:', callDoc.id);
+                            const data = snapshot.data();
+                            console.log('[Firebase] Dữ liệu nhận được:', data ? Object.keys(data) : 'null');
+                            
+                            if (data?.answer && pc.currentRemoteDescription === null) {
+                                console.log('[Firebase] Nhận được answer, thiết lập remote description');
+                                try {
+                                    const answerDescription = new RTCSessionDescription({
+                                        type: 'answer',
+                                        sdp: data.answer.sdp,
+                                    });
+                                    pc.setRemoteDescription(answerDescription)
+                                        .then(() => {
+                                            console.log('[WebRTC] Đã thiết lập remote description thành công');
+                                        })
+                                        .catch(error => {
+                                            console.error('[WebRTC] Lỗi khi thiết lập remote description:', error);
+                                        });
+                                } catch (error) {
+                                    console.error('[WebRTC] Lỗi khi tạo RTCSessionDescription:', error);
+                                }
+                            }
+
+                            if (data?.status === 'rejected') {
+                                console.log('[Firebase] Cuộc gọi bị từ chối');
+                                endCall();
+                            }
+                        } catch (error) {
+                            console.error('[Firebase] Lỗi xử lý snapshot:', error);
+                        }
+                    });
+
+                    // 10. Lắng nghe ICE candidates từ phía bên kia
+                    onSnapshot(
+                        query(collection(db, 'calls', callDoc.id, 'candidates'), where('userId', '!=', userId)),
+                        (snapshot) => {
+                            snapshot.docChanges().forEach((change) => {
+                                if (change.type === 'added') {
+                                    try {
+                                        const data = change.doc.data();
+                                        console.log('[Firebase] Nhận ICE candidate mới từ bên kia');
+                                        pc.addIceCandidate(new RTCIceCandidate(data))
+                                            .catch(error => {
+                                                console.error('[WebRTC] Lỗi khi thêm ICE candidate:', error);
+                                            });
+                                    } catch (error) {
+                                        console.error('[WebRTC] Lỗi khi xử lý ICE candidate:', error);
+                                    }
+                                }
+                            });
+                        }
+                    );
+                } catch (error) {
+                    console.error('[Firebase] Lỗi khi lưu offer vào Firestore:', error);
+                    throw new Error(`Firebase lỗi khi lưu offer: ${error instanceof Error ? error.message : String(error)}`);
+                }
+            } catch (error) {
+                console.error('Lỗi khi bắt đầu cuộc gọi:', error);
+                endCall();
+            }
+        },
+        [userId, endCall]
+    );
+
+    // Trả lời cuộc gọi
+    const answerCall = useCallback(async () => {
+        if (!currentCallId) return;
+
+        try {
+            // 1. Tạo kết nối peer
+            console.log('[WebRTC] Tạo kết nối peer cho answer');
+            const pc = new RTCPeerConnection(servers);
+            peerConnectionRef.current = pc;
+
+            // 2. Lấy media stream từ thiết bị
+            const stream = await getMediaStream();
             setLocalStream(stream);
 
-            // Clear existing remote stream
-            setRemoteStream(null);
+            // 3. Cấu hình sự kiện ontrack
+            configureOnTrackEvent(pc);
 
-            const pc = createPeerConnection();
-
+            // 4. Thêm tracks từ local stream vào peer connection
             stream.getTracks().forEach((track) => {
-                console.log('Adding local track to peer connection:', track.kind);
+                console.log(`[WebRTC] Thêm track vào sender: ${track.kind} (ID: ${track.id}), enabled=${track.enabled}`);
+                // Đảm bảo track được kích hoạt
+                track.enabled = true;
                 pc.addTrack(track, stream);
             });
 
-            const callRef = doc(db, 'calls', currentCallId);
-            const unsubscribeCallSnapshot = onSnapshot(callRef, async (snapshot) => {
-                const data = snapshot.data();
-                if (!pc.currentRemoteDescription && data?.offer) {
-                    const offerDescription = new RTCSessionDescription({
-                        type: 'offer',
-                        sdp: data.offer.sdp,
-                    });
-                    await pc.setRemoteDescription(offerDescription).catch((error) => {
-                        console.error('Error setting remote description:', error);
-                    });
-                    console.log('Set remote description from offer');
-
-                    const answerDescription = await pc.createAnswer();
-
-                    // Không sửa đổi SDP nữa để tránh lỗi
-                    await pc.setLocalDescription(answerDescription);
-                    console.log('Created answer and set local description');
-
-                    await setDoc(
-                        callRef,
-                        {
-                            answer: {
-                                type: answerDescription.type,
-                                sdp: answerDescription.sdp,
-                            },
-                            status: 'active',
-                        },
-                        {merge: true}
-                    ).catch((error) => {
-                        console.error('Error updating call doc with answer:', error);
-                    });
-                    console.log('Sent answer to caller via Firestore');
-
-                    setTimeout(() => unsubscribeCallSnapshot(), 0);
+            // 5. Thiết lập sự kiện kết nối
+            pc.onconnectionstatechange = (event) => {
+                console.log(`[WebRTC] Trạng thái kết nối thay đổi: ${pc.connectionState}`);
+                if (pc.connectionState === 'failed' || pc.connectionState === 'disconnected' || pc.connectionState === 'closed') {
+                    console.warn(`[WebRTC] Kết nối bị ngắt: ${pc.connectionState}`);
                 }
-            });
+            };
 
+            // 6. Set up onicecandidate để thu thập và lưu ICE candidates
+            pc.onicecandidate = (event) => {
+                if (event.candidate) {
+                    console.log('[WebRTC] Có ICE candidate mới cho answer');
+                    try {
+                        const candidatesCollection = collection(db, 'calls', currentCallId, 'candidates');
+                        addDoc(candidatesCollection, {
+                            ...event.candidate.toJSON(),
+                            userId: userId
+                        })
+                            .catch(error => {
+                                console.error('[Firebase] Lỗi khi lưu ICE candidate answer:', error);
+                            });
+                    } catch (error) {
+                        console.error('[Firebase] Lỗi truy cập collection candidates:', error);
+                    }
+                }
+            };
+
+            // 7. Lấy offer từ Firestore
+            console.log('[Firebase] Lấy offer từ document:', currentCallId);
+            const callRef = doc(db, 'calls', currentCallId);
+            const callSnapshot = await getDoc(callRef);
+            console.log('[Firebase] Đã lấy document:', callSnapshot.exists() ? 'tồn tại' : 'không tồn tại');
+            
+            const data = callSnapshot.data();
+            console.log('[Firebase] Dữ liệu cuộc gọi:', data ? Object.keys(data) : 'null');
+
+            if (!data) {
+                throw new Error('Không tìm thấy dữ liệu cuộc gọi');
+            }
+
+            // 8. Set remote description từ offer
+            console.log('[WebRTC] Thiết lập remote description từ offer');
+            const offerDescription = new RTCSessionDescription({
+                type: 'offer',
+                sdp: data.offer.sdp,
+            });
+            await pc.setRemoteDescription(offerDescription);
+            console.log('[WebRTC] Đã thiết lập remote description thành công');
+
+            // 9. Tạo answer
+            console.log('[WebRTC] Tạo answer');
+            const answerDescription = await pc.createAnswer();
+            await pc.setLocalDescription(answerDescription);
+            console.log('[WebRTC] Đã thiết lập local description thành công');
+
+            // 10. Lưu answer vào Firestore
+            console.log('[Firebase] Lưu answer vào Firestore');
+            await setDoc(
+                callRef,
+                {
+                    answer: {
+                        type: answerDescription.type,
+                        sdp: answerDescription.sdp,
+                    },
+                    status: 'active',
+                },
+                {merge: true}
+            );
+            console.log('[Firebase] Đã lưu answer thành công');
+
+            // 11. Lắng nghe ICE candidates từ phía bên kia
+            console.log('[Firebase] Thiết lập lắng nghe ICE candidates cho answer');
             onSnapshot(
                 query(collection(db, 'calls', currentCallId, 'candidates'), where('userId', '!=', userId)),
                 (snapshot) => {
+                    console.log('[Firebase] Nhận cập nhật ICE candidates cho answer:', snapshot.docChanges().length);
                     snapshot.docChanges().forEach((change) => {
                         if (change.type === 'added') {
-                            const data = change.doc.data();
-                            pc.addIceCandidate(
-                                new RTCIceCandidate({
-                                    sdpMid: data.sdpMid,
-                                    sdpMLineIndex: data.sdpMLineIndex,
-                                    candidate: data.candidate,
-                                })
-                            ).catch((error) => {
-                                console.error('Error adding ICE candidate:', error);
-                            });
+                            try {
+                                const data = change.doc.data();
+                                console.log('[Firebase] ICE candidate mới cho answer');
+                                pc.addIceCandidate(new RTCIceCandidate(data))
+                                    .catch(error => console.error('[WebRTC] Lỗi khi thêm ICE candidate cho answer:', error));
+                            } catch (error) {
+                                console.error('[WebRTC] Lỗi xử lý ICE candidate cho answer:', error);
+                            }
                         }
                     });
                 }
             );
 
+            callDocRef.current = currentCallId;
             setIsReceivingCall(false);
             setIsCalling(true);
+
         } catch (error) {
-            console.error('Error answering call:', error);
+            console.error('Lỗi khi trả lời cuộc gọi:', error);
             rejectCall();
         }
-    }, [currentCallId, userId, createPeerConnection, rejectCall]);
+    }, [currentCallId, userId, rejectCall]);
+
+    // Kiểm tra định kỳ trạng thái audio track
+    useEffect(() => {
+        if (!remoteStreamRef.current || !isCalling) return;
+        
+        const interval = setInterval(() => {
+            if (remoteStreamRef.current) {
+                const audioTracks = remoteStreamRef.current.getAudioTracks();
+                
+                if (audioTracks.length === 0) {
+                    console.warn('[WebRTC] Không phát hiện audio track trong remote stream');
+                    return;
+                }
+                
+                audioTracks.forEach(track => {
+                    // Kiểm tra trạng thái của track
+                    console.log(`[WebRTC] Kiểm tra audio track: ${track.id}, Enabled: ${track.enabled}, ReadyState: ${track.readyState}`);
+                    
+                    if (!track.enabled && track.readyState === 'live') {
+                        console.log(`[WebRTC] Kích hoạt lại audio track ${track.id}`);
+                        track.enabled = true;
+                    }
+                });
+                
+                // Đảm bảo cập nhật remoteStream trong state
+                if (remoteStreamRef.current.getTracks().length > 0 && 
+                    (!remoteStream || remoteStream.getTracks().length !== remoteStreamRef.current.getTracks().length)) {
+                    console.log('[WebRTC] Cập nhật remoteStream trong state với các track mới');
+                    setRemoteStream(new MediaStream(remoteStreamRef.current.getTracks()));
+                }
+            }
+        }, 1000);
+        
+        return () => clearInterval(interval);
+    }, [remoteStream, isCalling]);
 
     // Listen for incoming calls
     useEffect(() => {
@@ -874,6 +635,7 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
         currentCallId,
         currentCallTargetId,
         currentCallTargetType,
+        firebaseStatus,
         startCall,
         answerCall,
         endCall,
