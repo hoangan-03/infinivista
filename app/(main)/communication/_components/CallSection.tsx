@@ -7,7 +7,7 @@ import {Button} from '@/components/ui';
 import {useWebRTCContext} from '@/context';
 
 export const CallSection: React.FC = () => {
-    const {localStream, remoteStream} = useWebRTCContext();
+    const {localStream, remoteStream, endCall} = useWebRTCContext();
     const localVideoRef = useRef<HTMLVideoElement>(null);
     const remoteVideoRef = useRef<HTMLVideoElement>(null);
 
@@ -57,6 +57,7 @@ export const CallSection: React.FC = () => {
                         variant='icon'
                         size='icon'
                         className='h-[72px] w-[72px] rounded-lg bg-red-500 hover:bg-red-600 active:scale-95'
+                        onClick={endCall}
                     >
                         <Icon name='phone' className='text-white' width={36} height={36} />
                     </Button>
