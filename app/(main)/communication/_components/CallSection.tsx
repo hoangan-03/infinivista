@@ -5,9 +5,9 @@ import {useEffect, useRef, useState} from 'react';
 
 import {Icon} from '@/components/commons';
 import {useWebRTCContext} from '@/context';
-import { MESSAGE_TARGET_TYPE } from '@/modules/common.enum';
-import { useGetGroupChatById } from '@/modules/groupchat/groupchat.swr';
-import { useGetProfileById } from '@/modules/profile/profile.swr';
+import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';
+import {useGetGroupChatById} from '@/modules/groupchat/groupchat.swr';
+import {useGetProfileById} from '@/modules/profile/profile.swr';
 
 interface Props {
     targetType: MESSAGE_TARGET_TYPE;
@@ -18,12 +18,12 @@ export const CallSection: React.FC<Props> = ({targetType}) => {
     let groupName = '';
     if (targetType === MESSAGE_TARGET_TYPE.USER) {
         const {data: userProfile} = useGetProfileById(currentCallTargetId || undefined);
-         caller_name = userProfile?.username || '';
+        caller_name = userProfile?.username || '';
     } else {
         const {data: groupProfile} = useGetGroupChatById(currentCallTargetId || undefined);
-         groupName = groupProfile?.group_name || '';
+        groupName = groupProfile?.group_name || '';
     }
-    
+
     const localVideoRef = useRef<HTMLVideoElement>(null);
     const remoteVideoRef = useRef<HTMLVideoElement>(null);
     const [isVideoEnabled, setIsVideoEnabled] = useState(true);
@@ -33,25 +33,28 @@ export const CallSection: React.FC<Props> = ({targetType}) => {
 
     useEffect(() => {
         if (!remoteStream) return;
-        
+
         let seconds = 0;
         const interval = setInterval(() => {
             seconds++;
-            const hrs = Math.floor(seconds / 3600).toString().padStart(2, '0');
-            const mins = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+            const hrs = Math.floor(seconds / 3600)
+                .toString()
+                .padStart(2, '0');
+            const mins = Math.floor((seconds % 3600) / 60)
+                .toString()
+                .padStart(2, '0');
             const secs = (seconds % 60).toString().padStart(2, '0');
             setCallDuration(`${hrs}:${mins}:${secs}`);
         }, 1000);
-        
+
         return () => clearInterval(interval);
     }, [remoteStream]);
-    
 
     // Set up local video stream
     useEffect(() => {
         if (localVideoRef.current && localStream) {
             localVideoRef.current.srcObject = localStream;
-            localVideoRef.current.muted = true; 
+            localVideoRef.current.muted = true;
 
             if (localStream.getVideoTracks().length > 0) {
                 setIsVideoEnabled(localStream.getVideoTracks()[0].enabled);
@@ -123,7 +126,6 @@ export const CallSection: React.FC<Props> = ({targetType}) => {
                     playPromise
                         .then(() => {
                             console.log('CallSection: Remote video đang phát từ stream:', remoteStream.id);
-                            
                         })
                         .catch((e) => {
                             console.error('CallSection: Lỗi khi phát remote video:', e);
@@ -138,7 +140,6 @@ export const CallSection: React.FC<Props> = ({targetType}) => {
                                     videoElement
                                         .play()
                                         .then(() => {
-                                            
                                             playButton.remove();
                                         })
                                         .catch(console.error);
@@ -184,22 +185,23 @@ export const CallSection: React.FC<Props> = ({targetType}) => {
         }
     }, [remoteStream]);
 
-   
     return (
         <div className='relative h-full overflow-hidden rounded-xl bg-[#2d3a5e] text-white'>
             {/* Header */}
-            <div className='absolute top-0 left-0 right-0 z-10 p-4 flex justify-between items-center'>
+            <div className='absolute left-0 right-0 top-0 z-10 flex items-center justify-between p-4'>
                 <div>
-                    <h2 className='text-xl font-bold'>{targetType === MESSAGE_TARGET_TYPE.USER ? caller_name : groupName}</h2>
-                    <div className='flex items-center gap-2 text-sm mt-1'>
-                        <span className='size-4 rounded-full bg-red-500 flex items-center justify-center'>
-                            <span className='size-2 rounded-full bg-white'></span>
+                    <h2 className='text-xl font-bold'>
+                        {targetType === MESSAGE_TARGET_TYPE.USER ? caller_name : groupName}
+                    </h2>
+                    <div className='mt-1 flex items-center gap-2 text-sm'>
+                        <span className='flex size-4 items-center justify-center rounded-full bg-red-500'>
+                            <span className='size-2 rounded-full bg-white' />
                         </span>
                         <span>REC</span>
                         <span>{callDuration}</span>
                     </div>
                 </div>
-                
+
                 {/* <button className='flex items-center gap-1 bg-blue-500/50 hover:bg-blue-500/70 text-sm rounded-full px-3 py-1.5'>
                     <Icon name="plus" className="size-4" />
                     <span>Add user to the call</span>
@@ -266,26 +268,24 @@ export const CallSection: React.FC<Props> = ({targetType}) => {
 
                 {/* Control Buttons */}
                 <div className='absolute bottom-4 left-0 right-0 flex justify-center gap-4'>
-
-                    <button 
+                    <button
                         className='flex size-12 items-center justify-center rounded-full bg-white'
                         onClick={toggleVideo}
                     >
                         <Icon name={isVideoEnabled ? 'video-on' : 'video-off'} className='size-6 text-gray-800' />
                     </button>
-                    <button 
-                        onClick={endCall} 
+                    <button
+                        onClick={endCall}
                         className='flex size-12 items-center justify-center rounded-full bg-red-500'
                     >
                         <Icon name='phone-x-mark' className='size-6 text-white' />
                     </button>
-                    <button 
+                    <button
                         className='flex size-12 items-center justify-center rounded-full bg-white'
                         onClick={toggleAudio}
                     >
                         <Icon name={isAudioEnabled ? 'mic-on' : 'mic-off'} className='size-6 text-gray-800' />
                     </button>
-
                 </div>
             </div>
         </div>

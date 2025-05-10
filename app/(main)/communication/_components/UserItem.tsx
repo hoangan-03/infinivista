@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import useSWR from 'swr';
 
-import { cn, getTimeStamp } from '@/lib/utils';
-import { MESSAGE_TARGET_TYPE } from '@/modules/common.enum';
-import { IFriend } from '@/modules/friend/friend.interface';
-import { MESSAGE_TYPE } from '@/modules/message/message.enum';
-import { MessageService } from '@/modules/message/message.service';
-import { useGetProfileById } from '@/modules/profile/profile.swr';
+import {cn, getTimeStamp} from '@/lib/utils';
+import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';
+import {IFriend} from '@/modules/friend/friend.interface';
+import {MESSAGE_TYPE} from '@/modules/message/message.enum';
+import {MessageService} from '@/modules/message/message.service';
+import {useGetProfileById} from '@/modules/profile/profile.swr';
 import placeholderImage from '@/public/assets/images/placeholder.png';
 
 interface Props {
@@ -17,12 +17,12 @@ interface Props {
 }
 
 function useGetLatestMessage(friendId?: string) {
-    const { data, error, isLoading } = useSWR(
-        friendId ? { key: MessageService.ROUTES.messages(friendId), pagination: { page: 1, limit: 1 } } : null,
-        async ({ key, pagination }) => {
-            const response = await MessageService.getMessages({ 
-                targetId: friendId as string, 
-                pagination: pagination 
+    const {data, error, isLoading} = useSWR(
+        friendId ? {key: MessageService.ROUTES.messages(friendId), pagination: {page: 1, limit: 1}} : null,
+        async ({key, pagination}) => {
+            const response = await MessageService.getMessages({
+                targetId: friendId as string,
+                pagination: pagination,
             });
             return response.data[0] || null;
         },
@@ -39,20 +39,20 @@ function useGetLatestMessage(friendId?: string) {
     };
 }
 
-export const UserItem: React.FC<Props> = ({ friend, className, setCurrentTargetType, setCurrentTargetId }) => {
-    const { data: profile, isLoading: profileLoading } = useGetProfileById(friend.id);
-    const { latestMessage, isLoading: messageLoading } = useGetLatestMessage(friend.id);
-    
+export const UserItem: React.FC<Props> = ({friend, className, setCurrentTargetType, setCurrentTargetId}) => {
+    const {data: profile, isLoading: profileLoading} = useGetProfileById(friend.id);
+    const {latestMessage, isLoading: messageLoading} = useGetLatestMessage(friend.id);
+
     // Lấy tin nhắn mới nhất
-    const messageText = latestMessage 
-        ? (latestMessage.type === MESSAGE_TYPE.MESSAGE 
-            ? latestMessage.messageText 
-            : 'Sent an attachment') 
+    const messageText = latestMessage
+        ? latestMessage.type === MESSAGE_TYPE.MESSAGE
+            ? latestMessage.messageText
+            : 'Sent an attachment'
         : 'Start a conversation';
-    
+
     // Lấy thời gian tin nhắn gần nhất
     const messageTime = latestMessage ? getTimeStamp(latestMessage.sent_at) : '';
-    
+
     return (
         <div
             className={cn('flex cursor-pointer gap-4 rounded-md p-2 hover:bg-sky-200', className)}
@@ -73,9 +73,7 @@ export const UserItem: React.FC<Props> = ({ friend, className, setCurrentTargetT
             <div className='flex-grow'>
                 <div className='flex justify-between'>
                     <p>{friend.username}</p>
-                    {messageTime && (
-                        <p className='text-[14px] text-gray-500'>{messageTime}</p>
-                    )}
+                    {messageTime && <p className='text-[14px] text-gray-500'>{messageTime}</p>}
                 </div>
                 <p className='max-w-[150px] truncate text-[14px] text-gray-600'>{messageText}</p>
             </div>

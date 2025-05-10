@@ -8,7 +8,6 @@ import {GroupChatService} from '@/modules/groupchat/groupchat.service';
 import {useGetGroupChatById} from '@/modules/groupchat/groupchat.swr';
 import placeholderImage from '@/public/assets/images/placeholder.png';
 
-
 interface Props {
     group: IGroupChat;
     className?: string;
@@ -17,12 +16,14 @@ interface Props {
 }
 
 function useGetLatestGroupMessage(groupChatId?: string) {
-    const { data, error, isLoading } = useSWR(
-        groupChatId ? { key: GroupChatService.ROUTES.groupChatMessages(groupChatId), pagination: { page: 1, limit: 1 } } : null,
-        async ({ key, pagination }) => {
-            const response = await GroupChatService.getGroupChatMessages({ 
-                groupChatId: groupChatId as string, 
-                pagination: pagination 
+    const {data, error, isLoading} = useSWR(
+        groupChatId
+            ? {key: GroupChatService.ROUTES.groupChatMessages(groupChatId), pagination: {page: 1, limit: 1}}
+            : null,
+        async ({key, pagination}) => {
+            const response = await GroupChatService.getGroupChatMessages({
+                groupChatId: groupChatId as string,
+                pagination: pagination,
             });
             return response.data[0] || null;
         },
@@ -40,17 +41,17 @@ function useGetLatestGroupMessage(groupChatId?: string) {
 }
 
 export const GroupItem: React.FC<Props> = ({group, className, setCurrentTargetType, setCurrentTargetId}) => {
-    const { data: groupData } = useGetGroupChatById(group.group_chat_id);
-    const { latestMessage, isLoading: messageLoading } = useGetLatestGroupMessage(group.group_chat_id);
-    
+    const {data: groupData} = useGetGroupChatById(group.group_chat_id);
+    const {latestMessage, isLoading: messageLoading} = useGetLatestGroupMessage(group.group_chat_id);
+
     // Lấy tin nhắn mới nhất
-    const messageText = latestMessage 
-        ? `${latestMessage.sender.username}: ${latestMessage.textMessage}` 
+    const messageText = latestMessage
+        ? `${latestMessage.sender.username}: ${latestMessage.textMessage}`
         : 'Chưa có tin nhắn nào';
-    
+
     // Lấy thời gian tin nhắn gần nhất
     const messageTime = latestMessage ? getTimeStamp(latestMessage.sent_at) : '';
-    
+
     return (
         <div
             className={cn('flex cursor-pointer gap-4 rounded-xl p-2 hover:bg-sky-200', className)}
@@ -71,9 +72,7 @@ export const GroupItem: React.FC<Props> = ({group, className, setCurrentTargetTy
             <div className='w-4/5'>
                 <div className='flex items-center justify-between gap-2'>
                     <p className='max-w-[200px] truncate font-medium'>{group.group_name}</p>
-                    {messageTime && (
-                        <p className='text-[14px] text-gray-500'>{messageTime}</p>
-                    )}
+                    {messageTime && <p className='text-[14px] text-gray-500'>{messageTime}</p>}
                 </div>
                 <div className='flex flex-wrap gap-2'>
                     <p className='max-w-[250px] truncate text-[14px] text-gray-600'>{messageText}</p>

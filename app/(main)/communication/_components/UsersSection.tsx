@@ -39,7 +39,7 @@ export const UsersSection: React.FC<Props> = ({
     });
     return (
         <div className='space-y-5'>
-            <div className='flex items-center justify-start gap-3 h-[6vh]'>
+            <div className='flex h-[6vh] items-center justify-start gap-3'>
                 <h5 className='text-heading5 font-bold'>Messages</h5>
                 {/* <Icon name='caret-down' width={16} height={16} />
                 <p className='rounded-full bg-gray-200 px-2 py-1'>2</p> */}

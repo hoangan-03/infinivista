@@ -76,5 +76,3 @@ export interface IMessageReactionAdd {
 }
 
 export type IMessageReactionDelete = IMessageReactionAdd;
-
-

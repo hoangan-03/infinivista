@@ -1,9 +1,16 @@
 import {axiosInstance} from '@/lib/axios';
 
 import {PaginationRequest, PaginationResponse} from '../api.interface';
-import { REACTION_TYPE } from '../common.enum';
+import {REACTION_TYPE} from '../common.enum';
 import {APIBaseService} from '../main.service';
-import {IMessage, IMessageAttachmentCreate, IMessageCreate, IMessageReaction, IMessageReactionAdd, IMessageReactionDelete} from './message.interface';
+import {
+    IMessage,
+    IMessageAttachmentCreate,
+    IMessageCreate,
+    IMessageReaction,
+    IMessageReactionAdd,
+    IMessageReactionDelete,
+} from './message.interface';
 
 export class MessageService extends APIBaseService {
     public static readonly ROUTES = {
@@ -12,7 +19,6 @@ export class MessageService extends APIBaseService {
         createMessageAttachment: APIBaseService.BASE_API_URL + '/message/attachment',
         messageReactions: (messageId: string) => APIBaseService.BASE_API_URL + `/message/${messageId}/reaction`,
         messageReaction: (messageId: string) => APIBaseService.BASE_API_URL + `/message/${messageId}/reaction`,
-
     };
 
     public static async getMessages({targetId, pagination}: {targetId: string; pagination?: PaginationRequest}) {
@@ -46,8 +52,6 @@ export class MessageService extends APIBaseService {
             .get<REACTION_TYPE>(MessageService.ROUTES.messageReactions(messageId))
             .then((res) => res.data);
     }
-
-
 
     public static async addMessageReaction(messageId: string, payload: IMessageReactionAdd) {
         return await axiosInstance.post<null>(MessageService.ROUTES.messageReaction(messageId), payload);

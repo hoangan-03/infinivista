@@ -72,7 +72,7 @@ export default function CommunicationPage() {
         <div className='flex gap-3'>
             <div className='w-[70%]'>
                 <div className={'mx-5 mb-2 flex h-[6vh] items-center justify-between'}>
-                    <div className='justify-start flex flex-row items-center'>
+                    <div className='flex flex-row items-center justify-start'>
                         <Image
                             src={
                                 currentTargetType === MESSAGE_TARGET_TYPE.GROUP

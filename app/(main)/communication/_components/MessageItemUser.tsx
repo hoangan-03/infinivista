@@ -1,17 +1,17 @@
 'use client';
 
 import Image from 'next/image';
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 
 import {ClientVideo} from '@/components/commons';
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui';
-import { useGetProfileInfo } from '@/hooks';
+import {useGetProfileInfo} from '@/hooks';
 import {cn} from '@/lib/utils';
 import {ATTACHMENT_TYPE, REACTION_TYPE} from '@/modules/common.enum';
 import {MESSAGE_TYPE} from '@/modules/message/message.enum';
 import {IMessage, IMessageReactionAdd, IMessageReactionDelete} from '@/modules/message/message.interface';
-import { MessageService } from '@/modules/message/message.service';
-import { useGetMessageReaction } from '@/modules/message/message.swr';
+import {MessageService} from '@/modules/message/message.service';
+import {useGetMessageReaction} from '@/modules/message/message.swr';
 
 import {ReactionButton} from '../../_components';
 
@@ -134,7 +134,12 @@ export const MessageItemUser: React.FC<Props> = ({message, isCurrentUser = false
                 </div>
                 {!isCurrentUser && (
                     <div className='absolute -bottom-2 -right-1 z-10 flex items-center rounded-full bg-slate-100'>
-                        <ReactionButton reacted={currentUserReaction} onReact={handleClickReact} width={18} height={18} />
+                        <ReactionButton
+                            reacted={currentUserReaction}
+                            onReact={handleClickReact}
+                            width={18}
+                            height={18}
+                        />
                     </div>
                 )}
             </div>

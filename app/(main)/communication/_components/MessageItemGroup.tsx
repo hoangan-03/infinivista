@@ -1,14 +1,14 @@
 import Image from 'next/image';
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui';
-import { useGetProfileInfo } from '@/hooks';
+import {useGetProfileInfo} from '@/hooks';
 import {cn} from '@/lib/utils';
 import {REACTION_TYPE} from '@/modules/common.enum';
 import {IGroupChatMessage} from '@/modules/groupchat/groupchat.interface';
-import { IMessageReactionAdd, IMessageReactionDelete } from '@/modules/message/message.interface';
-import { MessageService } from '@/modules/message/message.service';
-import { useGetMessageReaction } from '@/modules/message/message.swr';
+import {IMessageReactionAdd, IMessageReactionDelete} from '@/modules/message/message.interface';
+import {MessageService} from '@/modules/message/message.service';
+import {useGetMessageReaction} from '@/modules/message/message.swr';
 
 import {ReactionButton} from '../../_components';
 
@@ -20,15 +20,13 @@ interface Props {
 }
 
 export const MessageItemGroup: React.FC<Props> = ({message, isCurrentUser = false, showAvatar = false, className}) => {
-    const { userId: currentUserId } = useGetProfileInfo();
-    
+    const {userId: currentUserId} = useGetProfileInfo();
+
     const formattedTime = new Date(message.sent_at).toLocaleTimeString([], {
         hour: '2-digit',
         minute: '2-digit',
         hour12: true,
     });
-
-    
 
     // const {data: reactions, mutate: reactionMutate} = useGetMessageReaction(message?.id);
 
