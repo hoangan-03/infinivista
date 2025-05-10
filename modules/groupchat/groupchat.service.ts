@@ -13,6 +13,7 @@ import {
 export class GroupChatService extends APIBaseService {
     public static readonly ROUTES = {
         groupChat: APIBaseService.BASE_API_URL + '/groupchat',
+        groupChatById: (groupChatId: string) => APIBaseService.BASE_API_URL + `/groupchat/${groupChatId}`,
         groupChatMessages: (groupChatId: string) => APIBaseService.BASE_API_URL + `/groupchat/messages/${groupChatId}`,
         groupChatUsers: (groupChatId: string) => APIBaseService.BASE_API_URL + `/groupchat/users/${groupChatId}`,
         groupChatMessage: APIBaseService.BASE_API_URL + '/groupchat/message',
@@ -27,6 +28,11 @@ export class GroupChatService extends APIBaseService {
                     limit: pagination?.limit,
                 },
             })
+            .then((res) => res.data);
+    }
+    public static async getGroupChatById(groupChatId: string) {
+        return await axiosInstance
+            .get<IGroupChat>(GroupChatService.ROUTES.groupChatById(groupChatId))
             .then((res) => res.data);
     }
 

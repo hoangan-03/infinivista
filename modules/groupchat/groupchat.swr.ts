@@ -1,3 +1,4 @@
+import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 
 import {PaginationRequest} from '../api.interface';
@@ -38,6 +39,25 @@ function useGetInfiniteGroupChats() {
         setSize,
         isValidating,
         isLoading,
+    };
+}
+
+function useGetGroupChatById(groupChatId?: string) {
+    const {data, mutate, error, isLoading, isValidating} = useSWR(
+        groupChatId ? groupChatId : null,
+        groupChatId ? (id: string) => GroupChatService.getGroupChatById(id) : null,
+        {
+            keepPreviousData: false,
+            revalidateOnFocus: false,
+        }
+    );
+
+    return {
+        data,
+        mutate,
+        error,
+        isLoading,
+        isValidating,
     };
 }
 
@@ -118,4 +138,4 @@ function useGetInfiniteGroupChatUsers(groupChatId?: string) {
     };
 }
 
-export {useGetInfiniteGroupChatMessages, useGetInfiniteGroupChats, useGetInfiniteGroupChatUsers};
+export {useGetGroupChatById,useGetInfiniteGroupChatMessages, useGetInfiniteGroupChats, useGetInfiniteGroupChatUsers};

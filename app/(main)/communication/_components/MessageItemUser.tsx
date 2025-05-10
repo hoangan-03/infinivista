@@ -1,13 +1,17 @@
 'use client';
 
 import Image from 'next/image';
+import { toast } from 'react-toastify';
 
 import {ClientVideo} from '@/components/commons';
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui';
+import { useGetProfileInfo } from '@/hooks';
 import {cn} from '@/lib/utils';
 import {ATTACHMENT_TYPE, REACTION_TYPE} from '@/modules/common.enum';
 import {MESSAGE_TYPE} from '@/modules/message/message.enum';
-import {IMessage} from '@/modules/message/message.interface';
+import {IMessage, IMessageReactionAdd, IMessageReactionDelete} from '@/modules/message/message.interface';
+import { MessageService } from '@/modules/message/message.service';
+import { useGetMessageReaction } from '@/modules/message/message.swr';
 
 import {ReactionButton} from '../../_components';
 
@@ -24,9 +28,31 @@ export const MessageItemUser: React.FC<Props> = ({message, isCurrentUser = false
         minute: '2-digit',
         hour12: true,
     });
+    const {data: reactions, mutate: reactionMutate} = useGetMessageReaction(message?.id);
 
-    const handleClickReact = (reaction: REACTION_TYPE) => {
-        console.log('reaction', reaction);
+    const currentUserReaction = reactions;
+
+    const handleClickReact = async (reaction: REACTION_TYPE) => {
+        if (!message?.id) return;
+        try {
+            if (reaction === currentUserReaction) {
+                const payload: IMessageReactionDelete = {
+                    reactionType: reaction,
+                };
+                await MessageService.deleteMessageReaction(message.id, payload);
+                toast.success('Reaction đã được xóa thành công!');
+            } else {
+                const payload: IMessageReactionAdd = {
+                    reactionType: reaction,
+                };
+                await MessageService.addMessageReaction(message.id, payload);
+                toast.success('Reaction đã được thêm thành công!');
+            }
+            reactionMutate();
+        } catch (error) {
+            console.error('Lỗi khi thực hiện reaction:', error);
+            toast.error('Không thể thêm/xóa reaction.');
+        }
     };
     return (
         <div className={cn('flex gap-2', className)}>
@@ -108,7 +134,7 @@ export const MessageItemUser: React.FC<Props> = ({message, isCurrentUser = false
                 </div>
                 {!isCurrentUser && (
                     <div className='absolute -bottom-2 -right-1 z-10 flex items-center rounded-full bg-slate-100'>
-                        <ReactionButton onReact={handleClickReact} width={18} height={18} />
+                        <ReactionButton reacted={currentUserReaction} onReact={handleClickReact} width={18} height={18} />
                     </div>
                 )}
             </div>

@@ -146,7 +146,7 @@ export const MessageSectionGroup: React.FC<Props> = ({targetId}) => {
     };
 
     return (
-        <div className='shadow-custom-1 relative flex h-[89vh] flex-col gap-2 rounded-b-xl bg-white p-4'>
+        <div className='shadow-custom-1 relative flex h-[91vh] flex-col gap-2 rounded-b-xl bg-white p-4'>
             <div className='relative h-[90%]'>
                 <div
                     ref={scrollContainerRef}

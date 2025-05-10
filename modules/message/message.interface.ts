@@ -53,3 +53,28 @@ export interface IMessageAttachmentCreate {
     recipientId: string;
     attachmentType: ATTACHMENT_TYPE;
 }
+
+export interface ICommentUser {
+    id: string;
+    email: string;
+    username: string;
+    phoneNumber: string | null;
+    firstName: string;
+    lastName: string;
+    profileImageUrl: string | null;
+}
+export interface IMessageReaction extends BaseEntity {
+    id: string;
+    reactionType: REACTION_TYPE;
+    user_id: string;
+    message_id: string;
+    user: ICommentUser;
+}
+
+export interface IMessageReactionAdd {
+    reactionType: REACTION_TYPE;
+}
+
+export type IMessageReactionDelete = IMessageReactionAdd;
+
+

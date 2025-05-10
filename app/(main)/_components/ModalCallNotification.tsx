@@ -15,7 +15,6 @@ import {useGetProfileById} from '@/modules/profile/profile.swr';
 
 export const ModalCallNotification: React.FC = () => {
     const {isReceivingCall, currentCallTargetId, answerCall, rejectCall} = useWebRTCContext();
-    // TODO: currently only call from user is supported, need to add support for group call
     const {data: callerProfile} = useGetProfileById(currentCallTargetId || undefined);
 
     if (!isReceivingCall) return null;

@@ -1,14 +1,18 @@
 import {axiosInstance} from '@/lib/axios';
 
 import {PaginationRequest, PaginationResponse} from '../api.interface';
+import { REACTION_TYPE } from '../common.enum';
 import {APIBaseService} from '../main.service';
-import {IMessage, IMessageAttachmentCreate, IMessageCreate} from './message.interface';
+import {IMessage, IMessageAttachmentCreate, IMessageCreate, IMessageReaction, IMessageReactionAdd, IMessageReactionDelete} from './message.interface';
 
 export class MessageService extends APIBaseService {
     public static readonly ROUTES = {
         messages: (targetId: string) => APIBaseService.BASE_API_URL + `/message/messages/${targetId}/mixed`,
         message: APIBaseService.BASE_API_URL + '/message',
         createMessageAttachment: APIBaseService.BASE_API_URL + '/message/attachment',
+        messageReactions: (messageId: string) => APIBaseService.BASE_API_URL + `/message/${messageId}/reaction`,
+        messageReaction: (messageId: string) => APIBaseService.BASE_API_URL + `/message/${messageId}/reaction`,
+
     };
 
     public static async getMessages({targetId, pagination}: {targetId: string; pagination?: PaginationRequest}) {
@@ -36,5 +40,20 @@ export class MessageService extends APIBaseService {
                 'Content-Type': 'multipart/form-data',
             },
         });
+    }
+    public static async getMessageReactions({messageId}: {messageId: string}) {
+        return await axiosInstance
+            .get<REACTION_TYPE>(MessageService.ROUTES.messageReactions(messageId))
+            .then((res) => res.data);
+    }
+
+
+
+    public static async addMessageReaction(messageId: string, payload: IMessageReactionAdd) {
+        return await axiosInstance.post<null>(MessageService.ROUTES.messageReaction(messageId), payload);
+    }
+
+    public static async deleteMessageReaction(messageId: string, payload: IMessageReactionDelete) {
+        return await axiosInstance.delete<null>(MessageService.ROUTES.messageReaction(messageId), {data: payload});
     }
 }

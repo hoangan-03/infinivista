@@ -1,3 +1,4 @@
+import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 
 import {PaginationRequest} from '../api.interface';
@@ -44,4 +45,23 @@ function useGetInfiniteMessages(targetId?: string) {
     };
 }
 
-export {useGetInfiniteMessages};
+function useGetMessageReaction(messageId?: string) {
+    const url = messageId ? MessageService.ROUTES.messageReactions(messageId) : null;
+
+    const {data, mutate, error, isValidating, isLoading} = useSWR(
+        messageId ? {key: url, messageId} : null,
+        MessageService.getMessageReactions,
+        {
+            keepPreviousData: false,
+        }
+    );
+
+    return {
+        data,
+        mutate,
+        error,
+        isValidating,
+        isLoading,
+    };
+}
+export {useGetInfiniteMessages, useGetMessageReaction};

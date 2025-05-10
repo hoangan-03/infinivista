@@ -1,18 +1,22 @@
+/* eslint-disable react/jsx-no-undef */
 'use client';
 
 import Image from 'next/image';
 import {useEffect, useState} from 'react';
 
 import {Icon} from '@/components/commons';
-import {Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from '@/components/ui';
+import {Button} from '@/components/ui';
 import {useWebRTCContext} from '@/context';
 import {useGetProfileInfo} from '@/hooks';
 import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';
 import {useGetInfiniteFriends} from '@/modules/friend/friend.swr';
-import {useGetInfiniteGroupChats} from '@/modules/groupchat/groupchat.swr';
-import placeholderImage from '@/public/assets/images/placeholder.png';
+import {useGetGroupChatById, useGetInfiniteGroupChats} from '@/modules/groupchat/groupchat.swr';
+import {useGetProfileById} from '@/modules/profile/profile.swr';
 
 import {CallSection, GroupsSection, MessageSectionGroup, MessageSectionUser, UsersSection} from './_components';
+
+// Ảnh mặc định khi không có ảnh
+const placeholderImage = '/assets/images/placeholder-avatar.png';
 
 export default function CommunicationPage() {
     // const [isCalling] = useState<boolean>(true);
@@ -21,6 +25,15 @@ export default function CommunicationPage() {
     const {isCalling, startCall} = useWebRTCContext();
     const [currentTargetId, setCurrentTargetId] = useState<string | undefined>(undefined);
     const [currentTargetType, setCurrentTargetType] = useState<MESSAGE_TARGET_TYPE>(MESSAGE_TARGET_TYPE.USER);
+
+    // Chỉ gọi API khi đúng loại đối tượng
+    const {data: opponentProfile} = useGetProfileById(
+        currentTargetType === MESSAGE_TARGET_TYPE.USER ? currentTargetId : undefined
+    );
+
+    const {data: opponentGroupProfile} = useGetGroupChatById(
+        currentTargetType === MESSAGE_TARGET_TYPE.GROUP ? currentTargetId : undefined
+    );
 
     // ************ DATA FETCHING ************
     const {
@@ -48,54 +61,56 @@ export default function CommunicationPage() {
         }
     }, [friends, currentTargetId]);
 
+    useEffect(() => {
+        if (groupChats && groupChats.length > 0 && currentTargetId === undefined) {
+            setCurrentTargetId(groupChats[0].group_chat_id);
+            setCurrentTargetType(MESSAGE_TARGET_TYPE.GROUP);
+        }
+    }, [groupChats, currentTargetId]);
+
     return (
-        <div className='flex gap-10'>
-            <div className='w-3/4'>
-                <div className='mb-2 flex items-center justify-between'>
-                    <div className='flex'>
+        <div className='flex gap-3'>
+            <div className='w-[70%]'>
+                <div className={'mx-5 mb-2 flex h-[6vh] items-center justify-between'}>
+                    <div className='justify-start flex flex-row items-center'>
                         <Image
-                            src={placeholderImage}
-                            alt='User Avatar'
-                            width={40}
-                            height={40}
-                            className='rounded-full bg-transparent'
-                        />
-                        <Image
-                            src={placeholderImage}
+                            src={
+                                currentTargetType === MESSAGE_TARGET_TYPE.GROUP
+                                    ? opponentGroupProfile?.group_image_url || placeholderImage
+                                    : opponentProfile?.profileImageUrl || placeholderImage
+                            }
                             alt='User Avatar'
                             width={40}
                             height={40}
                             className='-translate-x-4 transform rounded-full bg-none'
                         />
-                        <Image
-                            src={placeholderImage}
-                            alt='User Avatar'
-                            width={40}
-                            height={40}
-                            className='-translate-x-8 transform rounded-full bg-none'
-                        />
-                    </div>
-                    <div>
-                        <p className='text-paragraph2'>Capstone Project Team</p>
-                        <p className='text-caption text-gray-500'>last seen 12 minutes ago</p>
+
+                        <p className='text-2xl font-bold'>
+                            {currentTargetType === MESSAGE_TARGET_TYPE.USER
+                                ? opponentProfile?.username
+                                : opponentGroupProfile?.group_name}
+                        </p>
+                        {/* <p className='text-caption text-gray-500'>last seen 12 minutes ago</p> */}
                     </div>
                     <div className='flex items-center gap-2'>
                         {!isCalling && currentTargetType !== MESSAGE_TARGET_TYPE.GROUP && (
-                            <Button variant='icon' size='icon'>
-                                <Icon
-                                    name='phone'
-                                    className='rotate-[-45deg] group-hover:text-primary'
-                                    width={20}
-                                    height={20}
-                                    onClick={() => {
-                                        if (currentTargetId) {
-                                            startCall(currentTargetId, currentTargetType);
-                                        }
-                                    }}
-                                />
+                            <Button variant='icon' size='icon' className='rounded-md bg-sky-100'>
+                                <div className='flex flex-row items-center gap-2 px-4 py-2'>
+                                    <Icon
+                                        name='phone'
+                                        width={24}
+                                        height={24}
+                                        onClick={() => {
+                                            if (currentTargetId) {
+                                                startCall(currentTargetId, currentTargetType);
+                                            }
+                                        }}
+                                    />
+                                    <span className='font-bold'>Call</span>
+                                </div>
                             </Button>
                         )}
-                        <DropdownMenu>
+                        {/* <DropdownMenu>
                             <DropdownMenuTrigger asChild className='outline-none ring-0 focus-visible:ring-0'>
                                 <Button variant='icon' size='icon'>
                                     <Icon name='more' width={15} height={15} />
@@ -106,7 +121,7 @@ export default function CommunicationPage() {
                                 <DropdownMenuItem>Invite Member</DropdownMenuItem>
                                 <DropdownMenuItem>Leave Group</DropdownMenuItem>
                             </DropdownMenuContent>
-                        </DropdownMenu>
+                        </DropdownMenu> */}
                     </div>
                 </div>
                 {!isCalling && currentTargetType === MESSAGE_TARGET_TYPE.USER && (
@@ -115,9 +130,9 @@ export default function CommunicationPage() {
                 {!isCalling && currentTargetType === MESSAGE_TARGET_TYPE.GROUP && (
                     <MessageSectionGroup targetId={currentTargetId} />
                 )}
-                {isCalling && <CallSection />}
+                {isCalling && <CallSection targetType={currentTargetType} />}
             </div>
-            <div className='w-1/4 space-y-4 pr-2'>
+            <div className='w-[30%] space-y-4 pr-2'>
                 <UsersSection
                     friends={friends}
                     pagination={paginationFriends}
