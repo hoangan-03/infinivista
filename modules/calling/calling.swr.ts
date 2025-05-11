@@ -12,7 +12,7 @@ const callingService = new CallingService();
  * @returns Dữ liệu lịch sử cuộc gọi và trạng thái loading
  */
 export const useCallHistory = (params?: PaginationRequest) => {
-    const { data, error, isLoading, isValidating, mutate } = useSWR(
+    const {data, error, isLoading, isValidating, mutate} = useSWR(
         [CallingService.ROUTES.GET_CALL_HISTORY, params],
         () => callingService.getCallHistory(params),
         {

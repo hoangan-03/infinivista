@@ -8,12 +8,12 @@ import {Icon} from '@/components/commons';
 import {Button} from '@/components/ui';
 import {useWebRTCContext} from '@/context';
 import {useGetProfileInfo} from '@/hooks';
+import {CallingService} from '@/modules/calling/calling.service';
+import {useCallHistory} from '@/modules/calling/calling.swr';
 import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';
 import {useGetInfiniteFriends} from '@/modules/friend/friend.swr';
 import {useGetGroupChatById, useGetInfiniteGroupChats} from '@/modules/groupchat/groupchat.swr';
 import {useGetProfileById} from '@/modules/profile/profile.swr';
-import {CallingService} from '@/modules/calling/calling.service';
-import {useCallHistory} from '@/modules/calling/calling.swr';
 
 import {CallSection, GroupsSection, MessageSectionGroup, MessageSectionUser, UsersSection} from './_components';
 

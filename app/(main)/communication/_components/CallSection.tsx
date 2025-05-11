@@ -15,13 +15,7 @@ interface Props {
 }
 export const CallSection: React.FC<Props> = ({targetType}) => {
     const callingService = new CallingService();
-    const {
-        localStream, 
-        remoteStream, 
-        endCall, 
-        currentCallTargetId,
-        backendCallId
-    } = useWebRTCContext();
+    const {localStream, remoteStream, endCall, currentCallTargetId, backendCallId} = useWebRTCContext();
     let caller_name = '';
     let groupName = '';
     if (targetType === MESSAGE_TARGET_TYPE.USER) {
@@ -213,7 +207,7 @@ export const CallSection: React.FC<Props> = ({targetType}) => {
                         </span>
                         <span>REC</span>
                         <span>{callDuration}</span>
-                        {backendCallId && <span className="text-xs text-gray-300">ID: {backendCallId}</span>}
+                        {backendCallId && <span className='text-xs text-gray-300'>ID: {backendCallId}</span>}
                     </div>
                 </div>
 

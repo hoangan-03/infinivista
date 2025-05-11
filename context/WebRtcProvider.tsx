@@ -108,11 +108,12 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
 
         // Kết thúc cuộc gọi ở backend
         if (backendCallId) {
-            callingService.endCall(backendCallId)
+            callingService
+                .endCall(backendCallId)
                 .then(() => {
                     console.log('[Backend] Đã kết thúc cuộc gọi trên backend');
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.error('[Backend] Lỗi khi kết thúc cuộc gọi trên backend:', error);
                 });
             setBackendCallId(null);
@@ -135,11 +136,12 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
 
         // Từ chối cuộc gọi ở backend
         if (backendCallId) {
-            callingService.rejectCall(backendCallId)
+            callingService
+                .rejectCall(backendCallId)
                 .then(() => {
                     console.log('[Backend] Đã từ chối cuộc gọi trên backend');
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.error('[Backend] Lỗi khi từ chối cuộc gọi trên backend:', error);
                 });
             setBackendCallId(null);
@@ -341,9 +343,9 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
                     // Lưu thông tin cuộc gọi vào backend
                     try {
                         const createCallRequest: ICreateCallRequest = {
-                            receiverId: targetId
+                            receiverId: targetId,
                         };
-                        
+
                         const callData = await callingService.initiateCall(createCallRequest);
                         setBackendCallId(callData.call_id);
                         console.log('[Backend] Đã tạo cuộc gọi trên backend với ID:', callData.call_id);
@@ -483,7 +485,10 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
                 try {
                     // Lấy chi tiết cuộc gọi từ backend dựa trên ID người gọi
                     // Logic này có thể cần điều chỉnh tùy theo API backend của bạn
-                    console.log('[Backend] Không có backend call ID. Tạo cuộc gọi mới với người gọi:', currentCallTargetId);
+                    console.log(
+                        '[Backend] Không có backend call ID. Tạo cuộc gọi mới với người gọi:',
+                        currentCallTargetId
+                    );
                 } catch (backendError) {
                     console.error('[Backend] Lỗi khi truy vấn thông tin cuộc gọi:', backendError);
                 }
@@ -582,10 +587,10 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
                     setCurrentCallId(change.doc.id);
                     setCurrentCallTargetId(callData.caller);
                     setCurrentCallTargetType(callData.targetType);
-                    
+
                     // Có thể thêm logic để lấy thông tin cuộc gọi từ backend ở đây
                     // Nhưng vì không biết cách backend xử lý cuộc gọi đến, nên tạm thời bỏ qua
-                    
+
                     setIsReceivingCall(true);
                 }
             });
