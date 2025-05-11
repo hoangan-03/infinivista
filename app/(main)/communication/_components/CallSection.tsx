@@ -194,7 +194,7 @@ export const CallSection: React.FC<Props> = ({targetType}) => {
     };
 
     return (
-        <div className='relative h-full overflow-hidden rounded-xl bg-[#2d3a5e] text-white'>
+        <div className='relative h-[90vh] overflow-hidden rounded-xl bg-[#2d3a5e] text-white'>
             {/* Header */}
             <div className='absolute left-0 right-0 top-0 z-10 flex items-center justify-between p-4'>
                 <div>

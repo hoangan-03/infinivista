@@ -112,14 +112,14 @@ export default function RegisterPage() {
                     </Button>
                     <Separator className='bg-gray-200' />
                     <div className='flex flex-col gap-4'>
-                        <Button
+                        {/* <Button
                             type='button'
                             onClick={() => signIn('google')}
                             className='flex w-full gap-2 rounded-sm bg-gray-900 text-caption font-bold text-white'
                         >
                             <Icon name='google' />
                             Sign in with Google
-                        </Button>
+                        </Button> */}
                         <div className='flex items-center justify-center gap-2'>
                             <p className='text-paragraph1 text-black md:text-caption'>Already had an account?</p>
                             <Link
