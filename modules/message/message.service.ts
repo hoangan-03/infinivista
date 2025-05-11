@@ -19,6 +19,12 @@ export class MessageService extends APIBaseService {
         createMessageAttachment: APIBaseService.BASE_API_URL + '/message/attachment',
         messageReactions: (messageId: string) => APIBaseService.BASE_API_URL + `/message/${messageId}/reaction`,
         messageReaction: (messageId: string) => APIBaseService.BASE_API_URL + `/message/${messageId}/reaction`,
+        messageAttachmentReactions: (messageAttachmentId: string) =>
+            APIBaseService.BASE_API_URL + `/message/attachment/${messageAttachmentId}/reaction`,
+        messageAttachmentReaction: (messageAttachmentId: string) =>
+            APIBaseService.BASE_API_URL + `/message/attachment/${messageAttachmentId}/reaction`,
+        messageAttachmentsConversation: (targetId: string) =>
+            APIBaseService.BASE_API_URL + `/message/messages/${targetId}/attachments`,
     };
 
     public static async getMessages({targetId, pagination}: {targetId: string; pagination?: PaginationRequest}) {

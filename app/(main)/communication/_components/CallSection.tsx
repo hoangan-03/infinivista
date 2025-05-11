@@ -5,6 +5,7 @@ import {useEffect, useRef, useState} from 'react';
 
 import {Icon} from '@/components/commons';
 import {useWebRTCContext} from '@/context';
+import {CallingService} from '@/modules/calling/calling.service';
 import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';
 import {useGetGroupChatById} from '@/modules/groupchat/groupchat.swr';
 import {useGetProfileById} from '@/modules/profile/profile.swr';
@@ -13,7 +14,14 @@ interface Props {
     targetType: MESSAGE_TARGET_TYPE;
 }
 export const CallSection: React.FC<Props> = ({targetType}) => {
-    const {localStream, remoteStream, endCall, currentCallTargetId} = useWebRTCContext();
+    const callingService = new CallingService();
+    const {
+        localStream, 
+        remoteStream, 
+        endCall, 
+        currentCallTargetId,
+        backendCallId
+    } = useWebRTCContext();
     let caller_name = '';
     let groupName = '';
     if (targetType === MESSAGE_TARGET_TYPE.USER) {
@@ -185,6 +193,12 @@ export const CallSection: React.FC<Props> = ({targetType}) => {
         }
     }, [remoteStream]);
 
+    // Thêm xử lý khi cuộc gọi kết thúc
+    const handleEndCall = () => {
+        // Gọi endCall từ WebRTC context
+        endCall();
+    };
+
     return (
         <div className='relative h-full overflow-hidden rounded-xl bg-[#2d3a5e] text-white'>
             {/* Header */}
@@ -199,6 +213,7 @@ export const CallSection: React.FC<Props> = ({targetType}) => {
                         </span>
                         <span>REC</span>
                         <span>{callDuration}</span>
+                        {backendCallId && <span className="text-xs text-gray-300">ID: {backendCallId}</span>}
                     </div>
                 </div>
 
@@ -250,22 +265,6 @@ export const CallSection: React.FC<Props> = ({targetType}) => {
                     </div>
                 </div>
 
-                {/* Chat Input */}
-                {/* <div className='absolute bottom-20 left-0 right-0 px-4'>
-                    <div className='mx-auto max-w-md'>
-                        <div className='flex items-center gap-2'>
-                            <div className='flex-1'>
-                                <div className='flex items-center gap-2'>
-                                    <div className='flex-shrink-0 text-gray-400'>
-                                        <span className='font-semibold text-sm'>Nguyễn Thanh Đạt</span>
-                                    </div>
-                                </div>
-                                <p className='text-sm'>Thank you everyone for joining this meeting. We shall start now!</p>
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
-
                 {/* Control Buttons */}
                 <div className='absolute bottom-4 left-0 right-0 flex justify-center gap-4'>
                     <button
@@ -275,7 +274,7 @@ export const CallSection: React.FC<Props> = ({targetType}) => {
                         <Icon name={isVideoEnabled ? 'video-on' : 'video-off'} className='size-6 text-gray-800' />
                     </button>
                     <button
-                        onClick={endCall}
+                        onClick={handleEndCall}
                         className='flex size-12 items-center justify-center rounded-full bg-red-500'
                     >
                         <Icon name='phone-x-mark' className='size-6 text-white' />

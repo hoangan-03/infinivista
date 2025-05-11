@@ -12,6 +12,8 @@ import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';
 import {useGetInfiniteFriends} from '@/modules/friend/friend.swr';
 import {useGetGroupChatById, useGetInfiniteGroupChats} from '@/modules/groupchat/groupchat.swr';
 import {useGetProfileById} from '@/modules/profile/profile.swr';
+import {CallingService} from '@/modules/calling/calling.service';
+import {useCallHistory} from '@/modules/calling/calling.swr';
 
 import {CallSection, GroupsSection, MessageSectionGroup, MessageSectionUser, UsersSection} from './_components';
 
@@ -19,12 +21,15 @@ import {CallSection, GroupsSection, MessageSectionGroup, MessageSectionUser, Use
 const placeholderImage = '/assets/images/placeholder-avatar.png';
 
 export default function CommunicationPage() {
-    // const [isCalling] = useState<boolean>(true);
+    const callingService = new CallingService();
     const {userId: currentUserId} = useGetProfileInfo();
 
     const {isCalling, startCall} = useWebRTCContext();
     const [currentTargetId, setCurrentTargetId] = useState<string | undefined>(undefined);
     const [currentTargetType, setCurrentTargetType] = useState<MESSAGE_TARGET_TYPE>(MESSAGE_TARGET_TYPE.USER);
+
+    // Lấy lịch sử cuộc gọi
+    const {callHistory, isLoading: isLoadingCallHistory} = useCallHistory({page: 1, limit: 10});
 
     // Chỉ gọi API khi đúng loại đối tượng
     const {data: opponentProfile} = useGetProfileById(
@@ -34,6 +39,17 @@ export default function CommunicationPage() {
     const {data: opponentGroupProfile} = useGetGroupChatById(
         currentTargetType === MESSAGE_TARGET_TYPE.GROUP ? currentTargetId : undefined
     );
+
+    // Xử lý bắt đầu cuộc gọi
+    const handleStartCall = async (targetId: string) => {
+        if (targetId) {
+            try {
+                startCall(targetId, currentTargetType);
+            } catch (error) {
+                console.error('Lỗi khi bắt đầu cuộc gọi:', error);
+            }
+        }
+    };
 
     // ************ DATA FETCHING ************
     const {
@@ -102,7 +118,7 @@ export default function CommunicationPage() {
                                         height={24}
                                         onClick={() => {
                                             if (currentTargetId) {
-                                                startCall(currentTargetId, currentTargetType);
+                                                handleStartCall(currentTargetId);
                                             }
                                         }}
                                     />

@@ -5,6 +5,8 @@ import {createContext, ReactNode, useCallback, useContext, useEffect, useRef, us
 
 import {useGetProfileInfo} from '@/hooks';
 import {db} from '@/lib/firebase';
+import {ICallHistory, ICreateCallRequest} from '@/modules/calling/calling.interface';
+import {CallingService} from '@/modules/calling/calling.service';
 import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';
 
 interface WebRTCContextType {
@@ -13,6 +15,7 @@ interface WebRTCContextType {
     isCalling: boolean;
     isReceivingCall: boolean;
     currentCallId: string | null;
+    backendCallId: string | null;
     currentCallTargetId: string | null;
     currentCallTargetType: MESSAGE_TARGET_TYPE | null;
     firebaseStatus: 'checking' | 'connected' | 'error';
@@ -25,6 +28,7 @@ interface WebRTCContextType {
 const WebRTCContext = createContext<WebRTCContextType | null>(null);
 
 export const WebRTCProvider = ({children}: {children: ReactNode}) => {
+    const callingService = new CallingService();
     const {userId} = useGetProfileInfo();
     const [localStream, setLocalStream] = useState<MediaStream | null>(null);
     const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
@@ -34,6 +38,7 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
     const [currentCallTargetId, setCurrentCallTargetId] = useState<string | null>(null);
     const [currentCallTargetType, setCurrentCallTargetType] = useState<MESSAGE_TARGET_TYPE | null>(null);
     const [firebaseStatus, setFirebaseStatus] = useState<'checking' | 'connected' | 'error'>('checking');
+    const [backendCallId, setBackendCallId] = useState<string | null>(null);
 
     const peerConnectionRef = useRef<RTCPeerConnection | null>(null);
     const callDocRef = useRef<string | null>(null);
@@ -92,13 +97,25 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
         // Đóng kết nối peer
         if (peerConnectionRef.current) {
             peerConnectionRef.current.close();
-
             peerConnectionRef.current = null;
         }
 
+        // Kết thúc cuộc gọi ở Firebase
         if (callDocRef.current) {
             setDoc(doc(db, 'calls', callDocRef.current), {status: 'ended'}, {merge: true}).catch(console.error);
             callDocRef.current = null;
+        }
+
+        // Kết thúc cuộc gọi ở backend
+        if (backendCallId) {
+            callingService.endCall(backendCallId)
+                .then(() => {
+                    console.log('[Backend] Đã kết thúc cuộc gọi trên backend');
+                })
+                .catch(error => {
+                    console.error('[Backend] Lỗi khi kết thúc cuộc gọi trên backend:', error);
+                });
+            setBackendCallId(null);
         }
 
         setLocalStream(null);
@@ -108,18 +125,31 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
         setCurrentCallId(null);
         setCurrentCallTargetId(null);
         setCurrentCallTargetType(null);
-    }, [localStream]);
+    }, [localStream, backendCallId, callingService]);
 
     const rejectCall = useCallback(() => {
+        // Từ chối cuộc gọi ở Firebase
         if (currentCallId) {
             setDoc(doc(db, 'calls', currentCallId), {status: 'rejected'}, {merge: true}).catch(console.error);
+        }
+
+        // Từ chối cuộc gọi ở backend
+        if (backendCallId) {
+            callingService.rejectCall(backendCallId)
+                .then(() => {
+                    console.log('[Backend] Đã từ chối cuộc gọi trên backend');
+                })
+                .catch(error => {
+                    console.error('[Backend] Lỗi khi từ chối cuộc gọi trên backend:', error);
+                });
+            setBackendCallId(null);
         }
 
         setIsReceivingCall(false);
         setCurrentCallId(null);
         setCurrentCallTargetId(null);
         setCurrentCallTargetType(null);
-    }, [currentCallId]);
+    }, [currentCallId, backendCallId, callingService]);
 
     const getMediaStream = async () => {
         try {
@@ -289,6 +319,7 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
                 await pc.setLocalDescription(offerDescription);
 
                 try {
+                    // Lưu thông tin cuộc gọi vào Firebase
                     const callDoc = await addDoc(collection(db, 'calls'), {
                         caller: userId,
                         target: targetId,
@@ -306,6 +337,19 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
                     setCurrentCallTargetId(targetId);
                     setCurrentCallTargetType(targetType);
                     setIsCalling(true);
+
+                    // Lưu thông tin cuộc gọi vào backend
+                    try {
+                        const createCallRequest: ICreateCallRequest = {
+                            receiverId: targetId
+                        };
+                        
+                        const callData = await callingService.initiateCall(createCallRequest);
+                        setBackendCallId(callData.call_id);
+                        console.log('[Backend] Đã tạo cuộc gọi trên backend với ID:', callData.call_id);
+                    } catch (backendError) {
+                        console.error('[Backend] Lỗi khi tạo cuộc gọi trên backend:', backendError);
+                    }
 
                     onSnapshot(doc(db, 'calls', callDoc.id), (snapshot) => {
                         try {
@@ -367,7 +411,7 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
                 endCall();
             }
         },
-        [servers, userId, endCall]
+        [servers, userId, endCall, callingService]
     );
 
     const answerCall = useCallback(async () => {
@@ -426,6 +470,25 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
                 throw new Error('Không tìm thấy dữ liệu cuộc gọi');
             }
 
+            // Gọi API chấp nhận cuộc gọi ở backend nếu có backendCallId
+            if (backendCallId) {
+                try {
+                    await callingService.acceptCall(backendCallId);
+                    console.log('[Backend] Đã chấp nhận cuộc gọi trên backend');
+                } catch (backendError) {
+                    console.error('[Backend] Lỗi khi chấp nhận cuộc gọi trên backend:', backendError);
+                }
+            } else if (currentCallTargetId) {
+                // Nếu không có backendCallId nhưng có thông tin người gọi, có thể truy vấn để lấy call_id
+                try {
+                    // Lấy chi tiết cuộc gọi từ backend dựa trên ID người gọi
+                    // Logic này có thể cần điều chỉnh tùy theo API backend của bạn
+                    console.log('[Backend] Không có backend call ID. Tạo cuộc gọi mới với người gọi:', currentCallTargetId);
+                } catch (backendError) {
+                    console.error('[Backend] Lỗi khi truy vấn thông tin cuộc gọi:', backendError);
+                }
+            }
+
             const offerDescription = new RTCSessionDescription({
                 type: 'offer',
                 sdp: data.offer.sdp,
@@ -474,7 +537,7 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
             console.error('Lỗi khi trả lời cuộc gọi:', error);
             rejectCall();
         }
-    }, [currentCallId, servers, userId, rejectCall]);
+    }, [currentCallId, servers, userId, rejectCall, backendCallId, callingService, currentCallTargetId]);
 
     useEffect(() => {
         if (!remoteStreamRef.current || !isCalling) return;
@@ -509,6 +572,7 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
     useEffect(() => {
         if (!userId) return;
 
+        // Lắng nghe cuộc gọi đến từ Firebase
         const q = query(collection(db, 'calls'), where('target', '==', userId), where('status', '==', 'pending'));
 
         const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -518,6 +582,10 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
                     setCurrentCallId(change.doc.id);
                     setCurrentCallTargetId(callData.caller);
                     setCurrentCallTargetType(callData.targetType);
+                    
+                    // Có thể thêm logic để lấy thông tin cuộc gọi từ backend ở đây
+                    // Nhưng vì không biết cách backend xử lý cuộc gọi đến, nên tạm thời bỏ qua
+                    
                     setIsReceivingCall(true);
                 }
             });
@@ -545,6 +613,7 @@ export const WebRTCProvider = ({children}: {children: ReactNode}) => {
         isCalling,
         isReceivingCall,
         currentCallId,
+        backendCallId,
         currentCallTargetId,
         currentCallTargetType,
         firebaseStatus,
