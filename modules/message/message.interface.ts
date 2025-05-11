@@ -65,14 +65,14 @@ export interface ICommentUser {
 }
 export interface IMessageReaction extends BaseEntity {
     id: string;
-    reactionType: REACTION_TYPE;
+    emotion: REACTION_TYPE;
     user_id: string;
     message_id: string;
     user: ICommentUser;
 }
 
 export interface IMessageReactionAdd {
-    reactionType: REACTION_TYPE;
+    emotion: REACTION_TYPE;
 }
 
 export type IMessageReactionDelete = IMessageReactionAdd;

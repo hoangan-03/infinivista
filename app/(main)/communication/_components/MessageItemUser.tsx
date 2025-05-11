@@ -37,13 +37,13 @@ export const MessageItemUser: React.FC<Props> = ({message, isCurrentUser = false
         try {
             if (reaction === currentUserReaction) {
                 const payload: IMessageReactionDelete = {
-                    reactionType: reaction,
+                    emotion: reaction,
                 };
                 await MessageService.deleteMessageReaction(message.id, payload);
                 toast.success('Reaction đã được xóa thành công!');
             } else {
                 const payload: IMessageReactionAdd = {
-                    reactionType: reaction,
+                    emotion: reaction,
                 };
                 await MessageService.addMessageReaction(message.id, payload);
                 toast.success('Reaction đã được thêm thành công!');
