@@ -47,7 +47,6 @@ export class FriendService extends APIBaseService {
             .then((res) => res.data);
     }
 
-
     public static async sendFriendRequest({userId}: {userId: string}) {
         return await axiosInstance.post(FriendService.ROUTES.sendFriendRequest(userId));
     }

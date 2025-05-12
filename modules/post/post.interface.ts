@@ -11,8 +11,8 @@ export interface IPost extends BaseEntity {
     visibility: POST_VISIBILITY;
 }
 
-export interface IPostTrendingTag  {
-    trending: string; 
+export interface IPostTrendingTag {
+    trending: string;
     popularity: number;
 }
 

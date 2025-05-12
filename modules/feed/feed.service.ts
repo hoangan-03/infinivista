@@ -7,8 +7,6 @@ export class FeedService extends APIBaseService {
     public static readonly ROUTES = {
         feed: APIBaseService.BASE_API_URL + '/newsfeed',
         feedByUserId: (userId: string) => APIBaseService.BASE_API_URL + `/newsfeed/${userId}`,
-
-
     };
 
     public static async getNewsFeed() {
