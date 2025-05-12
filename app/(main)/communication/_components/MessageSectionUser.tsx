@@ -39,15 +39,15 @@ export const MessageSectionUser: React.FC<Props> = ({targetId}) => {
     } = useGetInfiniteMessages(targetId);
 
     // TODO: ENABLE THIS CODE ONLY WHEN DEMO
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         mutate();
-    //     }, 1000);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            mutate();
+        }, 1000);
 
-    //     return () => {
-    //         clearInterval(interval);
-    //     };
-    // }, [mutate]);
+        return () => {
+            clearInterval(interval);
+        };
+    }, [mutate]);
 
     const {loadMoreRef} = useInfiniteScrolling({
         data: messages,

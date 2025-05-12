@@ -39,15 +39,15 @@ export const MessageSectionGroup: React.FC<Props> = ({targetId}) => {
     } = useGetInfiniteGroupChatMessages(targetId);
 
     // TODO: ENABLE THIS CODE ONLY WHEN DEMO
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         mutate();
-    //     }, 1000);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            mutate();
+        }, 1000);
 
-    //     return () => {
-    //         clearInterval(interval);
-    //     };
-    // }, [mutate]);
+        return () => {
+            clearInterval(interval);
+        };
+    }, [mutate]);
 
     const {loadMoreRef} = useInfiniteScrolling({
         data: messages,
