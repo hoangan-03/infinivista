@@ -14,6 +14,7 @@ export interface IStoryUser {
 export interface IStory extends BaseEntity {
     id: string;
     story_url: string;
+    thumbnail_url: string;
     duration: number;
     attachmentType: ATTACHMENT_TYPE;
     userOwner: IStoryUser;

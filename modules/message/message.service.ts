@@ -7,7 +7,6 @@ import {
     IMessage,
     IMessageAttachmentCreate,
     IMessageCreate,
-    IMessageReaction,
     IMessageReactionAdd,
     IMessageReactionDelete,
 } from './message.interface';

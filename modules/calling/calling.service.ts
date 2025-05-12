@@ -2,7 +2,7 @@ import {axiosInstance} from '@/lib/axios';
 
 import {PaginationRequest, PaginationResponse} from '../api.interface';
 import {APIBaseService} from '../main.service';
-import {ICallHistory, ICreateCallRequest, ICreateCallResponse, IUpdateCallStatusRequest} from './calling.interface';
+import {ICallHistory, ICreateCallRequest, ICreateCallResponse} from './calling.interface';
 
 export class CallingService extends APIBaseService {
     public static readonly ROUTES = {

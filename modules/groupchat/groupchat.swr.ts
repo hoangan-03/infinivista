@@ -5,6 +5,7 @@ import {PaginationRequest} from '../api.interface';
 import {GroupChatService} from './groupchat.service';
 
 function useGetInfiniteGroupChats() {
+    const url = GroupChatService.ROUTES.groupChat;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getKey = (pageIndex: number, previousPageData: any) => {
         if (previousPageData && !previousPageData.data?.length) {
@@ -16,7 +17,7 @@ function useGetInfiniteGroupChats() {
             limit: 10,
         };
 
-        return {pagination};
+        return {key: url, pagination};
     };
 
     const {data, error, size, setSize, isValidating, isLoading} = useSWRInfinite(
@@ -43,9 +44,11 @@ function useGetInfiniteGroupChats() {
 }
 
 function useGetGroupChatById(groupChatId?: string) {
+    const url = groupChatId ? GroupChatService.ROUTES.groupChatById(groupChatId) : null;
+
     const {data, mutate, error, isLoading, isValidating} = useSWR(
-        groupChatId ? groupChatId : null,
-        groupChatId ? (id: string) => GroupChatService.getGroupChatById(id) : null,
+        groupChatId ? {key: url, groupChatId} : null,
+        GroupChatService.getGroupChatById,
         {
             keepPreviousData: false,
             revalidateOnFocus: false,
@@ -62,6 +65,7 @@ function useGetGroupChatById(groupChatId?: string) {
 }
 
 function useGetInfiniteGroupChatMessages(groupChatId?: string) {
+    const url = groupChatId ? GroupChatService.ROUTES.groupChatMessages(groupChatId) : null;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getKey = (pageIndex: number, previousPageData: any) => {
         if (previousPageData && !previousPageData.data?.length) {
@@ -73,7 +77,7 @@ function useGetInfiniteGroupChatMessages(groupChatId?: string) {
             limit: 10,
         };
 
-        return groupChatId ? {groupChatId, pagination} : null;
+        return groupChatId ? {key: url, groupChatId, pagination} : null;
     };
 
     const {data, mutate, error, size, setSize, isValidating, isLoading} = useSWRInfinite(
@@ -101,6 +105,7 @@ function useGetInfiniteGroupChatMessages(groupChatId?: string) {
 }
 
 function useGetInfiniteGroupChatUsers(groupChatId?: string) {
+    const url = groupChatId ? GroupChatService.ROUTES.groupChatUsers(groupChatId) : null;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getKey = (pageIndex: number, previousPageData: any) => {
         if (previousPageData && !previousPageData.data?.length) {
@@ -112,7 +117,7 @@ function useGetInfiniteGroupChatUsers(groupChatId?: string) {
             limit: 10,
         };
 
-        return groupChatId ? {groupChatId, pagination} : null;
+        return groupChatId ? {key: url, groupChatId, pagination} : null;
     };
 
     const {data, error, size, setSize, isValidating, isLoading} = useSWRInfinite(

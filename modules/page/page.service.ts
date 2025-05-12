@@ -3,7 +3,7 @@ import {axiosInstance} from '@/lib/axios';
 import {PaginationRequest, PaginationResponse} from '../api.interface';
 import {APIBaseService} from '../main.service';
 import {IPost} from '../post/post.interface';
-import {IPage} from './page.interface';
+import {IPage, IPageUser} from './page.interface';
 
 export class PageService extends APIBaseService {
     public static readonly ROUTES = {
@@ -28,15 +28,25 @@ export class PageService extends APIBaseService {
         return await axiosInstance.get<IPage>(PageService.ROUTES.pageById(pageId)).then((res) => res.data);
     }
 
-    // TODO: wait for backend --> DO NOT USE
-    public static async getPageFollowers({pageId}: {pageId: string}) {
-        return await axiosInstance.get<null>(PageService.ROUTES.pageFollowers(pageId)).then((res) => res.data);
+    public static async getPageFollowers({pageId, pagination}: {pageId: string; pagination?: PaginationRequest}) {
+        return await axiosInstance
+            .get<PaginationResponse<IPageUser>>(PageService.ROUTES.pageFollowers(pageId), {
+                params: {
+                    page: pagination?.page,
+                    limit: pagination?.limit,
+                },
+            })
+            .then((res) => res.data);
     }
 
-    // TODO: wait for backend --> DO NOT USE
-    public static async getPagePosts({pageId}: {pageId: string}) {
+    public static async getPagePosts({pageId, pagination}: {pageId: string; pagination?: PaginationRequest}) {
         return await axiosInstance
-            .get<PaginationResponse<IPost>>(PageService.ROUTES.pagePosts(pageId))
+            .get<PaginationResponse<IPost>>(PageService.ROUTES.pagePosts(pageId), {
+                params: {
+                    page: pagination?.page,
+                    limit: pagination?.limit,
+                },
+            })
             .then((res) => res.data);
     }
 }

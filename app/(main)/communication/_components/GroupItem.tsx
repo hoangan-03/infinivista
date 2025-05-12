@@ -20,6 +20,7 @@ function useGetLatestGroupMessage(groupChatId?: string) {
         groupChatId
             ? {key: GroupChatService.ROUTES.groupChatMessages(groupChatId), pagination: {page: 1, limit: 1}}
             : null,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         async ({key, pagination}) => {
             const response = await GroupChatService.getGroupChatMessages({
                 groupChatId: groupChatId as string,
@@ -42,7 +43,7 @@ function useGetLatestGroupMessage(groupChatId?: string) {
 
 export const GroupItem: React.FC<Props> = ({group, className, setCurrentTargetType, setCurrentTargetId}) => {
     const {data: groupData} = useGetGroupChatById(group.group_chat_id);
-    const {latestMessage, isLoading: messageLoading} = useGetLatestGroupMessage(group.group_chat_id);
+    const {latestMessage} = useGetLatestGroupMessage(group.group_chat_id);
 
     // Lấy tin nhắn mới nhất
     const messageText = latestMessage

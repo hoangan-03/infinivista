@@ -5,7 +5,7 @@ import React, {createContext, useContext, useState} from 'react';
 import {IFeed} from '@/modules/feed/feed.interface';
 import {useGetNewsFeed} from '@/modules/feed/feed.swr';
 
-export type FeedType = 'for-you' | 'friends' | 'following';
+export type FeedType = 'for-you' | 'friends';
 
 interface FeedContextType {
     feedType: FeedType;

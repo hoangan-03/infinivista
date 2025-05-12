@@ -4,6 +4,7 @@ import {PaginationRequest} from '../api.interface';
 import {FriendService} from './friend.service';
 
 function useGetInfiniteFriends(userId?: string) {
+    const url = userId ? FriendService.ROUTES.friend(userId) : null;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getKey = (pageIndex: number, previousPageData: any) => {
         if (previousPageData && !previousPageData.data?.length) {
@@ -15,7 +16,7 @@ function useGetInfiniteFriends(userId?: string) {
             limit: 5,
         };
 
-        return userId ? {userId, pagination} : null;
+        return userId ? {key: url, userId, pagination} : null;
     };
 
     const {data, error, size, setSize, isValidating, isLoading} = useSWRInfinite(getKey, FriendService.getFriends, {
@@ -23,11 +24,11 @@ function useGetInfiniteFriends(userId?: string) {
         revalidateFirstPage: false,
     });
 
-    const posts = data ? data.flatMap((page) => page.data || []) : [];
+    const friends = data ? data.flatMap((page) => page.data || []) : [];
     const pagination = data ? data.map((page) => page.metadata).filter(Boolean) : [];
 
     return {
-        data: posts,
+        data: friends,
         pagination,
         error,
         size,
@@ -38,6 +39,8 @@ function useGetInfiniteFriends(userId?: string) {
 }
 
 function useGetInfiniteFriendRequests() {
+    const url = FriendService.ROUTES.friendRequests;
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getKey = (pageIndex: number, previousPageData: any) => {
         if (previousPageData && !previousPageData.data?.length) {
@@ -49,7 +52,7 @@ function useGetInfiniteFriendRequests() {
             limit: 10,
         };
 
-        return {pagination};
+        return {key: url, pagination};
     };
 
     const {data, mutate, error, size, setSize, isValidating, isLoading} = useSWRInfinite(
@@ -61,11 +64,11 @@ function useGetInfiniteFriendRequests() {
         }
     );
 
-    const posts = data ? data.flatMap((page) => page.data || []) : [];
+    const requests = data ? data.flatMap((page) => page.data || []) : [];
     const pagination = data ? data.map((page) => page.metadata).filter(Boolean) : [];
 
     return {
-        data: posts,
+        data: requests,
         pagination,
         mutate,
         error,
@@ -76,4 +79,45 @@ function useGetInfiniteFriendRequests() {
     };
 }
 
-export {useGetInfiniteFriendRequests, useGetInfiniteFriends};
+function useGetMyInfiniteSuggestedFriends() {
+    const url = FriendService.ROUTES.mySuggestedFriends;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const getKey = (pageIndex: number, previousPageData: any) => {
+        if (previousPageData && !previousPageData.data?.length) {
+            return null;
+        }
+
+        const pagination: PaginationRequest = {
+            page: pageIndex + 1,
+            limit: 10,
+        };
+
+        return {key: url, pagination};
+    };
+
+    const {data, mutate, error, size, setSize, isValidating, isLoading} = useSWRInfinite(
+        getKey,
+        FriendService.getMySuggestedFriends,
+        {
+            keepPreviousData: false,
+            revalidateFirstPage: false,
+        }
+    );
+
+    const friends = data ? data.flatMap((page) => page.data || []) : [];
+    const pagination = data ? data.map((page) => page.metadata).filter(Boolean) : [];
+
+    return {
+        data: friends,
+        pagination,
+        mutate,
+        error,
+        size,
+        setSize,
+        isValidating,
+        isLoading,
+    };
+}
+
+export {useGetInfiniteFriendRequests, useGetInfiniteFriends, useGetMyInfiniteSuggestedFriends};

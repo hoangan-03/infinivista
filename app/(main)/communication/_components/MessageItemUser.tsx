@@ -5,7 +5,6 @@ import {toast} from 'react-toastify';
 
 import {ClientVideo} from '@/components/commons';
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui';
-import {useGetProfileInfo} from '@/hooks';
 import {cn} from '@/lib/utils';
 import {ATTACHMENT_TYPE, REACTION_TYPE} from '@/modules/common.enum';
 import {MESSAGE_TYPE} from '@/modules/message/message.enum';

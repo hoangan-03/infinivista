@@ -97,7 +97,7 @@ export const MainSection: React.FC<MainSectionProps> = ({profile, className}) =>
                         </div>
                     )}
                 </div>
-                <ScrollArea className='h-[650px]'>
+                <ScrollArea className='relative h-[650px]'>
                     {currentSection === SECTION_TYPE.POSTS ? (
                         <Posts profile={profile} />
                     ) : currentSection === SECTION_TYPE.PAGES ? (

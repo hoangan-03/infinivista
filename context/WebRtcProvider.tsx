@@ -5,7 +5,7 @@ import {createContext, ReactNode, useCallback, useContext, useEffect, useRef, us
 
 import {useGetProfileInfo} from '@/hooks';
 import {db} from '@/lib/firebase';
-import {ICallHistory, ICreateCallRequest} from '@/modules/calling/calling.interface';
+import {ICreateCallRequest} from '@/modules/calling/calling.interface';
 import {CallingService} from '@/modules/calling/calling.service';
 import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';
 
@@ -28,6 +28,7 @@ interface WebRTCContextType {
 const WebRTCContext = createContext<WebRTCContextType | null>(null);
 
 export const WebRTCProvider = ({children}: {children: ReactNode}) => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const callingService = new CallingService();
     const {userId} = useGetProfileInfo();
     const [localStream, setLocalStream] = useState<MediaStream | null>(null);

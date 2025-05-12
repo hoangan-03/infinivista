@@ -15,10 +15,10 @@ export interface IGroup extends BaseEntity {
     city: string;
     country: string;
     visibility: GROUP_VISIBILITY;
-    owner: IGroupOwner;
+    owner: IGroupUser;
 }
 
-interface IGroupOwner {
+export interface IGroupUser {
     id: string;
     email: string;
     username: string;

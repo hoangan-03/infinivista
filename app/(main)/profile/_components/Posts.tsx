@@ -27,6 +27,11 @@ export const Posts: React.FC<Props> = ({profile}) => {
 
     return (
         <>
+            {isLoading && (
+                <div className='my-10 flex items-center justify-center'>
+                    <Spinner width={60} height={60} />
+                </div>
+            )}
             <div className='space-y-7 p-7'>
                 {posts.map((post) => (
                     <Post key={post.id} post={post} isShared={post?.userOwner.id !== profile?.id} />

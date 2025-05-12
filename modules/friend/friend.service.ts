@@ -7,6 +7,7 @@ import {IFriend, IFriendRequest, IFriendRequestStatus} from './friend.interface'
 export class FriendService extends APIBaseService {
     public static readonly ROUTES = {
         friend: (userId: string) => APIBaseService.BASE_API_URL + `/friend/${userId}`,
+        mySuggestedFriends: APIBaseService.BASE_API_URL + '/friend/suggested',
         friendRequests: APIBaseService.BASE_API_URL + '/friend/requests',
         acceptFriendRequest: (requestId: string) => APIBaseService.BASE_API_URL + `/friend/request/${requestId}`,
         sendFriendRequest: (userId: string) => APIBaseService.BASE_API_URL + `/friend/request/${userId}`,
@@ -40,5 +41,16 @@ export class FriendService extends APIBaseService {
 
     public static async acceptFriendRequest({requestId, payload}: {requestId: string; payload: IFriendRequestStatus}) {
         return await axiosInstance.put(FriendService.ROUTES.acceptFriendRequest(requestId), payload);
+    }
+
+    public static async getMySuggestedFriends({pagination}: {pagination?: PaginationRequest}) {
+        return await axiosInstance
+            .get<PaginationResponse<IFriend>>(FriendService.ROUTES.mySuggestedFriends, {
+                params: {
+                    page: pagination?.page,
+                    limit: pagination?.limit,
+                },
+            })
+            .then((res) => res.data);
     }
 }

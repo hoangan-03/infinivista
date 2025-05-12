@@ -10,9 +10,10 @@ export enum ROUTES {
     CONNECT_STORY = '/connect/story',
 
     PROFILE = '/profile',
+    PAGE = '/page',
+    GROUP = '/group',
 
     COMMUNICATION = '/communication',
-    // COMMUNICATION_CHANNEL = '/communication/[channelId]',
 
     DISCOVER = '/discover',
 

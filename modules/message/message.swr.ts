@@ -5,6 +5,7 @@ import {PaginationRequest} from '../api.interface';
 import {MessageService} from './message.service';
 
 function useGetInfiniteMessages(targetId?: string) {
+    const url = targetId ? MessageService.ROUTES.messages(targetId) : null;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getKey = (pageIndex: number, previousPageData: any) => {
         if (previousPageData && !previousPageData.data?.length) {
@@ -16,7 +17,7 @@ function useGetInfiniteMessages(targetId?: string) {
             limit: 10,
         };
 
-        return targetId ? {targetId, pagination} : null;
+        return targetId ? {key: url, targetId, pagination} : null;
     };
 
     const {data, mutate, error, size, setSize, isValidating, isLoading} = useSWRInfinite(
