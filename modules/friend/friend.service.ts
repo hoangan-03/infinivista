@@ -11,6 +11,7 @@ export class FriendService extends APIBaseService {
         friendRequests: APIBaseService.BASE_API_URL + '/friend/requests',
         acceptFriendRequest: (requestId: string) => APIBaseService.BASE_API_URL + `/friend/request/${requestId}`,
         sendFriendRequest: (userId: string) => APIBaseService.BASE_API_URL + `/friend/request/${userId}`,
+        getFriendSuggestions: APIBaseService.BASE_API_URL + '/friend/suggested',
     };
 
     public static async getFriends({userId, pagination}: {userId: string; pagination?: PaginationRequest}) {
@@ -34,6 +35,18 @@ export class FriendService extends APIBaseService {
             })
             .then((res) => res.data);
     }
+
+    public static async getFriendSuggestions({pagination}: {pagination?: PaginationRequest}) {
+        return await axiosInstance
+            .get<PaginationResponse<IFriend>>(FriendService.ROUTES.getFriendSuggestions, {
+                params: {
+                    page: pagination?.page,
+                    limit: pagination?.limit,
+                },
+            })
+            .then((res) => res.data);
+    }
+
 
     public static async sendFriendRequest({userId}: {userId: string}) {
         return await axiosInstance.post(FriendService.ROUTES.sendFriendRequest(userId));
