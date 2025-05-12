@@ -125,16 +125,16 @@ export const Post: React.FC<PostProps> = ({post, isShared, className}) => {
         >
             <section className='flex items-center gap-3'>
                 <Avatar
-                    src={post?.userOwner.profileImageUrl || undefined}
+                    src={post?.userOwner?.profileImageUrl || undefined}
                     className='cursor-pointer'
-                    onClick={() => router.push(ROUTES.PROFILE + `/${post?.userOwner.id}`)}
+                    onClick={() => router.push(ROUTES.PROFILE + `/${post?.userOwner?.id}`)}
                 />
                 <div>
                     <h6
                         className='cursor-pointer font-bold'
-                        onClick={() => router.push(ROUTES.PROFILE + `/${post?.userOwner.id}`)}
+                        onClick={() => router.push(ROUTES.PROFILE + `/${post?.userOwner?.id}`)}
                     >
-                        {post?.userOwner.username}
+                        {post?.userOwner?.username}
                     </h6>
                     <p className='text-caption font-medium text-gray-500'>
                         {getTimeStamp(post?.createdAt || new Date())}
@@ -154,7 +154,7 @@ export const Post: React.FC<PostProps> = ({post, isShared, className}) => {
                     )}
                 >
                     <section className='flex items-center gap-3'>
-                        <Avatar src={post?.userOwner.profileImageUrl || undefined} />
+                        <Avatar src={post?.userOwner?.profileImageUrl || undefined} />
                         <div>
                             <h6 className='font-bold'>{'sharedPost.author'}</h6>
                             <p className='text-caption font-medium text-gray-500'>

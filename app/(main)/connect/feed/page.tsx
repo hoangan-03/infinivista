@@ -41,7 +41,7 @@ function FeedPage() {
             )}
 
             {posts.map((post) => (
-                <Post key={post.id} post={post} isShared={post?.userOwner.id !== userId} />
+                <Post key={post.id} post={post} isShared={false} />
             ))}
 
             <div ref={loadMoreRef} className='flex justify-center'>
