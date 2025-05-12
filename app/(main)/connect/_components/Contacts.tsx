@@ -25,7 +25,7 @@ export const Contacts: React.FC = () => {
         <ScrollArea className='h-[30vh] rounded-xl p-4 shadow-md'>
             <div className='space-y-4'>
                 {friends.map((friend, index) => (
-                    <FriendListItem key={index} data={friend} />
+                    <FriendListItem key={index} friend={friend} />
                 ))}
             </div>
 

@@ -5,6 +5,7 @@ import {PaginationRequest} from '../api.interface';
 import {StoryService} from './story.service';
 
 function useGetInfiniteStories(newsFeedId?: string) {
+    const url = newsFeedId ? StoryService.ROUTES.storiesByNewsFeed(newsFeedId) : null;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getKey = (pageIndex: number, previousPageData: any) => {
         if (previousPageData && !previousPageData.data?.length) {
@@ -16,7 +17,7 @@ function useGetInfiniteStories(newsFeedId?: string) {
             limit: 5,
         };
 
-        return newsFeedId ? {newsFeedId, pagination} : null;
+        return newsFeedId ? {key: url, newsFeedId, pagination} : null;
     };
 
     const {data, error, size, setSize, isValidating, isLoading} = useSWRInfinite(getKey, StoryService.getStories, {
@@ -39,6 +40,7 @@ function useGetInfiniteStories(newsFeedId?: string) {
 }
 
 function useGetInfiniteStoryComments(storyId?: string) {
+    const url = storyId ? StoryService.ROUTES.storyComments(storyId) : null;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getKey = (pageIndex: number, previousPageData: any) => {
         if (previousPageData && !previousPageData.data?.length) {
@@ -50,7 +52,7 @@ function useGetInfiniteStoryComments(storyId?: string) {
             limit: 10,
         };
 
-        return storyId ? {storyId, pagination} : null;
+        return storyId ? {key: url, storyId, pagination} : null;
     };
 
     const {data, mutate, error, size, setSize, isValidating, isLoading} = useSWRInfinite(

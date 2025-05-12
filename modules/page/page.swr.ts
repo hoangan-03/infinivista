@@ -5,6 +5,7 @@ import {PaginationRequest} from '../api.interface';
 import {PageService} from './page.service';
 
 function useGetInfiniteMyPages() {
+    const url = PageService.ROUTES.myPages;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getKey = (pageIndex: number, previousPageData: any) => {
         if (previousPageData && !previousPageData.data?.length) {
@@ -16,7 +17,7 @@ function useGetInfiniteMyPages() {
             limit: 10,
         };
 
-        return {pagination};
+        return {key: url, pagination};
     };
 
     const {data, mutate, error, size, setSize, isValidating, isLoading} = useSWRInfinite(
@@ -63,4 +64,84 @@ function useGetPageById(pageId?: string) {
     };
 }
 
-export {useGetInfiniteMyPages, useGetPageById};
+function useGetInfinitePagePosts(pageId?: string) {
+    const url = pageId ? PageService.ROUTES.pagePosts(pageId) : null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const getKey = (pageIndex: number, previousPageData: any) => {
+        if (previousPageData && !previousPageData.data?.length) {
+            return null;
+        }
+
+        const pagination: PaginationRequest = {
+            page: pageIndex + 1,
+            limit: 10,
+        };
+
+        return pageId ? {key: url, pageId, pagination} : null;
+    };
+
+    const {data, mutate, error, size, setSize, isValidating, isLoading} = useSWRInfinite(
+        getKey,
+        PageService.getPagePosts,
+        {
+            keepPreviousData: false,
+            revalidateFirstPage: false,
+        }
+    );
+
+    const posts = data ? data.flatMap((page) => page.data || []) : [];
+    const pagination = data ? data.map((page) => page.metadata).filter(Boolean) : [];
+
+    return {
+        data: posts,
+        pagination,
+        mutate,
+        error,
+        size,
+        setSize,
+        isValidating,
+        isLoading,
+    };
+}
+
+function useGetInfinitePageFollowers(pageId?: string) {
+    const url = pageId ? PageService.ROUTES.pageFollowers(pageId) : null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const getKey = (pageIndex: number, previousPageData: any) => {
+        if (previousPageData && !previousPageData.data?.length) {
+            return null;
+        }
+
+        const pagination: PaginationRequest = {
+            page: pageIndex + 1,
+            limit: 10,
+        };
+
+        return pageId ? {key: url, pageId, pagination} : null;
+    };
+
+    const {data, mutate, error, size, setSize, isValidating, isLoading} = useSWRInfinite(
+        getKey,
+        PageService.getPageFollowers,
+        {
+            keepPreviousData: false,
+            revalidateFirstPage: false,
+        }
+    );
+
+    const followers = data ? data.flatMap((page) => page.data || []) : [];
+    const pagination = data ? data.map((page) => page.metadata).filter(Boolean) : [];
+
+    return {
+        data: followers,
+        pagination,
+        mutate,
+        error,
+        size,
+        setSize,
+        isValidating,
+        isLoading,
+    };
+}
+
+export {useGetInfiniteMyPages, useGetInfinitePageFollowers, useGetInfinitePagePosts, useGetPageById};

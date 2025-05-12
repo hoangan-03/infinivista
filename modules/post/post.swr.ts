@@ -9,6 +9,20 @@ import {PostService} from './post.service';
 type PostType = FeedType | 'discover' | 'all';
 
 function useGetInfinitePosts(newsFeedId?: string, type: PostType = 'all') {
+    let fetcher = newsFeedId ? PostService.getPosts : null;
+    let url = newsFeedId ? PostService.ROUTES.postsByNewsFeed(newsFeedId) : null;
+    if (type === 'for-you') {
+        fetcher = PostService.getForYouPosts;
+        url = PostService.ROUTES.postForYou;
+    }
+    if (type === 'discover') {
+        fetcher = PostService.getDiscoverPosts;
+        url = PostService.ROUTES.postDiscover;
+    } else if (type === 'friends') {
+        fetcher = PostService.getFriendsPosts;
+        url = PostService.ROUTES.postFriends;
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getKey = (pageIndex: number, previousPageData: any) => {
         if (previousPageData && !previousPageData.data?.length) {
@@ -20,15 +34,10 @@ function useGetInfinitePosts(newsFeedId?: string, type: PostType = 'all') {
             limit: 10,
         };
 
-        if (type === 'discover') {
-            return {pagination};
-        } else return newsFeedId ? {newsFeedId, pagination} : null;
+        if (type === 'discover' || type === 'for-you' || type === 'friends') {
+            return {key: url, pagination};
+        } else return newsFeedId ? {key: url, newsFeedId, pagination} : null;
     };
-
-    let fetcher = PostService.getPosts;
-    if (type === 'discover') {
-        fetcher = PostService.getDiscoverPosts;
-    }
 
     const {data, mutate, error, size, setSize, isValidating, isLoading} = useSWRInfinite(getKey, fetcher, {
         keepPreviousData: false,
@@ -51,6 +60,7 @@ function useGetInfinitePosts(newsFeedId?: string, type: PostType = 'all') {
 }
 
 function useGetInfinitePostComments(postId?: string) {
+    const url = postId ? PostService.ROUTES.postComments(postId) : null;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getKey = (pageIndex: number, previousPageData: any) => {
         if (previousPageData && !previousPageData.data?.length) {
@@ -62,7 +72,7 @@ function useGetInfinitePostComments(postId?: string) {
             limit: 10,
         };
 
-        return postId ? {postId, pagination} : null;
+        return postId ? {key: url, postId, pagination} : null;
     };
 
     const {data, mutate, error, size, setSize, isValidating, isLoading} = useSWRInfinite(

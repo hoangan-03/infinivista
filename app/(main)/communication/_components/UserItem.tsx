@@ -19,6 +19,7 @@ interface Props {
 function useGetLatestMessage(friendId?: string) {
     const {data, error, isLoading} = useSWR(
         friendId ? {key: MessageService.ROUTES.messages(friendId), pagination: {page: 1, limit: 1}} : null,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         async ({key, pagination}) => {
             const response = await MessageService.getMessages({
                 targetId: friendId as string,
@@ -40,8 +41,8 @@ function useGetLatestMessage(friendId?: string) {
 }
 
 export const UserItem: React.FC<Props> = ({friend, className, setCurrentTargetType, setCurrentTargetId}) => {
-    const {data: profile, isLoading: profileLoading} = useGetProfileById(friend.id);
-    const {latestMessage, isLoading: messageLoading} = useGetLatestMessage(friend.id);
+    const {data: profile} = useGetProfileById(friend.id);
+    const {latestMessage} = useGetLatestMessage(friend.id);
 
     // Lấy tin nhắn mới nhất
     const messageText = latestMessage

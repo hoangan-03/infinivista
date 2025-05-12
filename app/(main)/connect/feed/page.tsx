@@ -12,7 +12,14 @@ function FeedPage() {
     const {feedType, newsFeed} = useFeedContext();
     const {userId} = useGetProfileInfo();
 
-    const {data: posts, pagination, size, setSize, isValidating, isLoading} = useGetInfinitePosts(newsFeed?.id);
+    const {
+        data: posts,
+        pagination,
+        size,
+        setSize,
+        isValidating,
+        isLoading,
+    } = useGetInfinitePosts(newsFeed?.id, feedType);
     const {loadMoreRef} = useInfiniteScrolling({
         data: posts,
         pagination,
@@ -26,7 +33,13 @@ function FeedPage() {
     }, [feedType, setSize]);
 
     return (
-        <div className='space-y-7'>
+        <div className='relative space-y-7'>
+            {isLoading && (
+                <div className='my-10 flex items-center justify-center'>
+                    <Spinner width={60} height={60} />
+                </div>
+            )}
+
             {posts.map((post) => (
                 <Post key={post.id} post={post} isShared={post?.userOwner.id !== userId} />
             ))}

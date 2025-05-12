@@ -1,6 +1,4 @@
-import {ATTACHMENT_TYPE} from '../common.enum';
 import {BaseEntity} from '../common.interface';
-import {POST_VISIBILITY} from '../post/post.enum';
 
 export interface IPage extends BaseEntity {
     id: string;
@@ -15,32 +13,10 @@ export interface IPage extends BaseEntity {
     address: string;
     city: string;
     country: string;
-    owner: IPageOwner;
+    owner: IPageUser;
 }
 
-// DO NOT USE YET
-export interface IPagePost extends BaseEntity {
-    id: string;
-    content: string;
-    visibility: POST_VISIBILITY;
-    userOwner: IPageOwner;
-    postAttachments: IPostAttachment[];
-    topics: IPostTopic[];
-}
-
-interface IPostTopic extends BaseEntity {
-    id: string;
-    topicName: string;
-    topicDescription: string;
-}
-
-interface IPostAttachment {
-    id: string;
-    attachment_url: string;
-    attachmentType: ATTACHMENT_TYPE;
-}
-
-interface IPageOwner {
+export interface IPageUser {
     id: string;
     email: string;
     username: string;

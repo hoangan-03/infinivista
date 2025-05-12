@@ -41,7 +41,7 @@ export const FriendsSection: React.FC<FriendsSectionProps> = ({profile, classNam
                     {friends.map((friend, index) => (
                         <FriendListItem
                             key={friend.username}
-                            data={friend}
+                            friend={friend}
                             className={cn('mb-4', index === friends.length - 1 && 'mb-0')}
                             onViewProfile={() => router.push(`/profile/${friend.id}`)}
                         />

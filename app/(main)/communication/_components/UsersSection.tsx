@@ -1,4 +1,4 @@
-import {Icon, Spinner} from '@/components/commons';
+import {Spinner} from '@/components/commons';
 import {ScrollArea} from '@/components/ui';
 import {useInfiniteScrolling} from '@/hooks';
 import {PaginationMetadata} from '@/modules/api.interface';

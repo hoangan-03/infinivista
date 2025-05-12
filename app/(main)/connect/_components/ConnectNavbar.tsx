@@ -22,11 +22,11 @@ const tabList: Tab[] = [
         value: 'friends',
         disabled: false,
     },
-    {
-        label: 'Following',
-        value: 'following',
-        disabled: false,
-    },
+    // {
+    //     label: 'Following',
+    //     value: 'following',
+    //     disabled: false,
+    // },
     // {
     //     label: 'Popular',
     //     value: 'popular',
@@ -51,7 +51,10 @@ export const ConnectNavbar: React.FC<ConnectNavbarProps> = ({title, showTab, cla
                     {tabList.map((tab, index) => (
                         <p
                             key={index}
-                            onClick={() => setFeedType(tab.value)}
+                            onClick={() => {
+                                if (feedType === tab.value) return;
+                                setFeedType(tab.value);
+                            }}
                             className={cn(
                                 'cursor-pointer text-subtitle2 font-bold',
                                 tab.disabled

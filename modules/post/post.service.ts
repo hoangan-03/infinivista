@@ -19,6 +19,8 @@ export class PostService extends APIBaseService {
         postsByNewsFeed: (newsFeedId: string) => APIBaseService.BASE_API_URL + `/newsfeed/${newsFeedId}/posts`,
         post: APIBaseService.BASE_API_URL + '/post',
         postDiscover: APIBaseService.BASE_API_URL + '/newsfeed/discover',
+        postForYou: APIBaseService.BASE_API_URL + '/newsfeed/foryou',
+        postFriends: APIBaseService.BASE_API_URL + '/newsfeed/friends',
         postComments: (postId: string) => APIBaseService.BASE_API_URL + `/post/${postId}/comments`,
         postComment: (postId: string) => APIBaseService.BASE_API_URL + `/post/${postId}/comment`,
         postReactions: (postId: string) => APIBaseService.BASE_API_URL + `/post/${postId}/reactions`,
@@ -42,6 +44,28 @@ export class PostService extends APIBaseService {
     public static async getDiscoverPosts({pagination}: {pagination?: PaginationRequest}) {
         return await axiosInstance
             .get<PaginationResponse<IPost>>(PostService.ROUTES.postDiscover, {
+                params: {
+                    page: pagination?.page,
+                    limit: pagination?.limit,
+                },
+            })
+            .then((res) => res.data);
+    }
+
+    public static async getForYouPosts({pagination}: {pagination?: PaginationRequest}) {
+        return await axiosInstance
+            .get<PaginationResponse<IPost>>(PostService.ROUTES.postForYou, {
+                params: {
+                    page: pagination?.page,
+                    limit: pagination?.limit,
+                },
+            })
+            .then((res) => res.data);
+    }
+
+    public static async getFriendsPosts({pagination}: {pagination?: PaginationRequest}) {
+        return await axiosInstance
+            .get<PaginationResponse<IPost>>(PostService.ROUTES.postFriends, {
                 params: {
                     page: pagination?.page,
                     limit: pagination?.limit,

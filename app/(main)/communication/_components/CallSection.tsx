@@ -5,7 +5,6 @@ import {useEffect, useRef, useState} from 'react';
 
 import {Icon} from '@/components/commons';
 import {useWebRTCContext} from '@/context';
-import {CallingService} from '@/modules/calling/calling.service';
 import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';
 import {useGetGroupChatById} from '@/modules/groupchat/groupchat.swr';
 import {useGetProfileById} from '@/modules/profile/profile.swr';
@@ -14,7 +13,6 @@ interface Props {
     targetType: MESSAGE_TARGET_TYPE;
 }
 export const CallSection: React.FC<Props> = ({targetType}) => {
-    const callingService = new CallingService();
     const {localStream, remoteStream, endCall, currentCallTargetId, backendCallId} = useWebRTCContext();
     let caller_name = '';
     let groupName = '';

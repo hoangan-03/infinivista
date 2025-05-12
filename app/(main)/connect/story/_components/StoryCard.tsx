@@ -51,9 +51,11 @@ function StoryCard({width, height, data, onClick}: Props) {
         >
             <Image
                 src={
-                    data?.attachmentType === ATTACHMENT_TYPE.IMAGE && data?.story_url
-                        ? data.story_url
-                        : '/assets/images/bg_placeholder.jpg'
+                    data?.attachmentType === ATTACHMENT_TYPE.IMAGE
+                        ? data?.story_url
+                        : data?.thumbnail_url
+                          ? data?.thumbnail_url
+                          : '/assets/images/bg_placeholder.jpg'
                 }
                 alt={`Image of ${data?.story_url}`}
                 fill

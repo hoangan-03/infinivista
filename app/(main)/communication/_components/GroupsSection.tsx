@@ -1,5 +1,5 @@
-import {Icon, Spinner} from '@/components/commons';
-import {Button, ScrollArea} from '@/components/ui';
+import {Spinner} from '@/components/commons';
+import {ScrollArea} from '@/components/ui';
 import {useInfiniteScrolling} from '@/hooks';
 import {PaginationMetadata} from '@/modules/api.interface';
 import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';

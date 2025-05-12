@@ -14,7 +14,6 @@ import {
     VisuallyHidden,
 } from '@/components/ui';
 import {useWebRTCContext} from '@/context';
-import {CallingService} from '@/modules/calling/calling.service';
 import {useGetProfileById} from '@/modules/profile/profile.swr';
 
 const placeholderImage = '/assets/images/placeholder-avatar.png';

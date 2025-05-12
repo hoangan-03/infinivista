@@ -8,8 +8,6 @@ import {Icon} from '@/components/commons';
 import {Button} from '@/components/ui';
 import {useWebRTCContext} from '@/context';
 import {useGetProfileInfo} from '@/hooks';
-import {CallingService} from '@/modules/calling/calling.service';
-import {useCallHistory} from '@/modules/calling/calling.swr';
 import {MESSAGE_TARGET_TYPE} from '@/modules/common.enum';
 import {useGetInfiniteFriends} from '@/modules/friend/friend.swr';
 import {useGetGroupChatById, useGetInfiniteGroupChats} from '@/modules/groupchat/groupchat.swr';
@@ -21,7 +19,7 @@ import {CallSection, GroupsSection, MessageSectionGroup, MessageSectionUser, Use
 const placeholderImage = '/assets/images/placeholder-avatar.png';
 
 export default function CommunicationPage() {
-    const callingService = new CallingService();
+    // const callingService = new CallingService();
     const {userId: currentUserId} = useGetProfileInfo();
 
     const {isCalling, startCall} = useWebRTCContext();
@@ -29,7 +27,7 @@ export default function CommunicationPage() {
     const [currentTargetType, setCurrentTargetType] = useState<MESSAGE_TARGET_TYPE>(MESSAGE_TARGET_TYPE.USER);
 
     // Lấy lịch sử cuộc gọi
-    const {callHistory, isLoading: isLoadingCallHistory} = useCallHistory({page: 1, limit: 10});
+    // const {callHistory, isLoading: isLoadingCallHistory} = useCallHistory({page: 1, limit: 10});
 
     // Chỉ gọi API khi đúng loại đối tượng
     const {data: opponentProfile} = useGetProfileById(

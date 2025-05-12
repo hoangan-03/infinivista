@@ -30,7 +30,7 @@ export class GroupChatService extends APIBaseService {
             })
             .then((res) => res.data);
     }
-    public static async getGroupChatById(groupChatId: string) {
+    public static async getGroupChatById({groupChatId}: {groupChatId: string}) {
         return await axiosInstance
             .get<IGroupChat>(GroupChatService.ROUTES.groupChatById(groupChatId))
             .then((res) => res.data);
