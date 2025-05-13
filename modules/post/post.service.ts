@@ -1,4 +1,5 @@
 import {axiosInstance} from '@/lib/axios';
+import {ITrending} from '@/mock_data/trending';
 
 import {PaginationRequest, PaginationResponse} from '../api.interface';
 import {APIBaseService} from '../main.service';
@@ -28,7 +29,14 @@ export class PostService extends APIBaseService {
         postReactionCount: (postId: string) => APIBaseService.BASE_API_URL + `/post/${postId}/reaction-counts`,
         comment: (commentId: string) => APIBaseService.BASE_API_URL + `/post/comment/${commentId}`,
         createPost: APIBaseService.BASE_API_URL + '/newsfeed/post',
+        trending: APIBaseService.BASE_API_URL + '/post/trending/tags',
     };
+
+    public static async getTrendingTags() {
+        return await axiosInstance
+            .get<PaginationResponse<ITrending>>(PostService.ROUTES.trending)
+            .then((res) => res.data);
+    }
 
     public static async getPosts({newsFeedId, pagination}: {newsFeedId: string; pagination?: PaginationRequest}) {
         return await axiosInstance

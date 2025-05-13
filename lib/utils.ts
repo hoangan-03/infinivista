@@ -21,7 +21,10 @@ export function getTimeStamp(time: Date | string): string {
     if (!time) return '';
     if (typeof time === 'string') time = new Date(time);
 
-    const timeOffset: number = (new Date().getTime() - time.getTime()) / 1000;
+    const timeOffset: number = Math.floor(
+        (Date.now() - time.getTime() + new Date().getTimezoneOffset() * 60000) / 1000
+    );
+
     let timeStamp: string;
     if (timeOffset < 60) {
         const seconds = Math.floor(timeOffset);

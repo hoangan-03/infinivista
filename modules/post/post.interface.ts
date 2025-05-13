@@ -6,6 +6,7 @@ export interface IPost extends BaseEntity {
     id: string;
     content: string;
     userOwner: IPostUser;
+    share_count: number;
     postAttachments: IPostAttachment[];
     topics: IPostTopic[];
     visibility: POST_VISIBILITY;

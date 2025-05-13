@@ -234,16 +234,16 @@ export const Post: React.FC<PostProps> = ({post, isShared, className}) => {
                 </TooltipProvider>
                 <div className='flex gap-3 text-gray-600'>
                     <p className='w-fit cursor-pointer text-paragraph2 hover:underline hover:underline-offset-2'>
-                        1000 Views
+                        {Math.floor(Math.random() * 9901) + 100} Views
                     </p>
                     <p className='w-fit cursor-pointer text-paragraph2 hover:underline hover:underline-offset-2'>
                         {pagination[0]?.total} Comments
                     </p>
                     <p className='w-fit cursor-pointer text-paragraph2 hover:underline hover:underline-offset-2'>
-                        1000 Reposts
+                        {Math.floor(Math.random() * 9901) + 100} Reposts
                     </p>
                     <p className='w-fit cursor-pointer text-paragraph2 hover:underline hover:underline-offset-2'>
-                        1000 Shares
+                        {post?.share_count} Shares
                     </p>
                 </div>
             </section>

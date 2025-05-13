@@ -5,7 +5,7 @@ import React, {useEffect, useState} from 'react';
 import {Icon} from '@/components/commons';
 import {Button} from '@/components/ui';
 import {connectSidebarConfig} from '@/constants/common';
-import {trendings} from '@/mock_data/trending';
+import {useGetTrendingTags} from '@/modules/post/post.swr';
 
 const minTrending = connectSidebarConfig.trending.min;
 const maxTrending = connectSidebarConfig.trending.max;
@@ -14,6 +14,10 @@ export const Trending: React.FC = () => {
     const [displayNumber, setDisplayNumber] = useState<number>(0);
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [isMounted, setIsMounted] = useState<boolean>(false);
+    const {data: trendingResponse} = useGetTrendingTags();
+
+    // Get the trending data from the paginated response
+    const trendings = trendingResponse?.data || [];
 
     const handleToggleExpand = () => {
         const newDisplayNumber = isExpanded ? minTrending : maxTrending;
@@ -25,7 +29,7 @@ export const Trending: React.FC = () => {
         setDisplayNumber(Math.min(minTrending, trendings.length));
         setIsExpanded(false);
         setIsMounted(true);
-    }, []);
+    }, [trendings.length]);
 
     return (
         <div className='flex flex-col gap-3'>
@@ -36,9 +40,9 @@ export const Trending: React.FC = () => {
                         className='friend-tag -mx-2 flex w-[calc(100%+1rem)] cursor-pointer items-center justify-between gap-5 rounded-lg px-2 hover:bg-gray-200'
                     >
                         <div className='flex w-full flex-col'>
-                            <p className='text-caption font-bold'>{trend.topic}</p>
+                            <p className='text-caption font-bold'>{trend.trending}</p>
                             <p className='text-overline'>
-                                {trend.postCount < 1000 ? trend.postCount : trend.postCount / 1000 + 'k'} posts
+                                {trend.popularity < 1000 ? trend.popularity : trend.popularity / 1000 + 'k'} posts
                             </p>
                         </div>
                         <Button variant='icon' size='icon'>

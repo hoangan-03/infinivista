@@ -139,4 +139,24 @@ function useGetPostReactions(postId?: string) {
     };
 }
 
-export {useGetInfinitePostComments, useGetInfinitePosts, useGetPostReactionCount, useGetPostReactions};
+function useGetTrendingTags() {
+    const {data, mutate, error, isValidating, isLoading} = useSWR(
+        PostService.ROUTES.trending,
+        PostService.getTrendingTags
+    );
+
+    return {
+        data,
+        mutate,
+        error,
+        isValidating,
+        isLoading,
+    };
+}
+export {
+    useGetInfinitePostComments,
+    useGetInfinitePosts,
+    useGetPostReactionCount,
+    useGetPostReactions,
+    useGetTrendingTags,
+};
