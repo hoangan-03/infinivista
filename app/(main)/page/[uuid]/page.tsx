@@ -19,7 +19,7 @@ const PageInfoPage: React.FC<{params: {uuid: string}}> = ({params}) => {
                 <AboutSection page={page} />
 
                 <div className='flex gap-4 py-6'>
-                    <FollowersSection page={page} className='flex-1 self-start' />
+                    {/* <FollowersSection page={page} className='flex-1 self-start' /> */}
                     <MainSection page={page} className='flex-3' />
                 </div>
             </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import React from 'react';
 
@@ -14,9 +15,16 @@ import {IProfile} from '@/modules/profile/profile.interface';
 interface FriendsSectionProps {
     profile?: IProfile;
     className?: string;
+    title?: string;
+    viewAllLabel?: string;
 }
 
-export const FriendsSection: React.FC<FriendsSectionProps> = ({profile, className}) => {
+export const FriendsSection: React.FC<FriendsSectionProps> = ({
+    profile,
+    className,
+    title = 'Friends',
+    viewAllLabel = 'View All Friends',
+}) => {
     const router = useRouter();
 
     const {data: friends, pagination, size, setSize, isValidating, isLoading} = useGetInfiniteFriends(profile?.id);
@@ -29,13 +37,14 @@ export const FriendsSection: React.FC<FriendsSectionProps> = ({profile, classNam
     });
 
     return (
-        <div className={cn('rounded-3xl bg-white pb-5 pt-7 shadow-sm', className)}>
-            <div className='w-52 border-b border-blue-600 pb-4'>
-                <div className='flex items-center justify-between gap-6'>
-                    <h2 className='ml-6 text-[28px] font-bold text-blue-600'>Friends</h2>
+        <div className={cn('rounded-3xl bg-white shadow-sm', className)}>
+            <div className='flex flex-col gap-4 p-6'>
+                <div className='flex flex-row items-center justify-between'>
+                    <h2 className='text-xl font-bold'>{title}</h2>
+                    <Link href='#' className='text-sm font-medium text-primary hover:underline'>
+                        {viewAllLabel}
+                    </Link>
                 </div>
-            </div>
-            <div className='p-3'>
                 <Input variant='outline' placeholder='Find friends' className='text-paragraph1' />
                 <ScrollArea className={'mt-6 h-[587px] pr-3'}>
                     {friends.map((friend, index) => (

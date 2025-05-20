@@ -220,7 +220,7 @@ function ModalStory({open, story, onClose}: Props) {
                     </div>
                     <div className='w-2/5'>
                         <div className='flex items-center gap-2'>
-                            <Avatar />
+                            <Avatar src={story?.userOwner.profileImageUrl ?? undefined} />
                             <div>
                                 <p className='font-bold'>{story?.userOwner.username}</p>
                                 <p className='text-sm text-gray-500'>{getTimeStamp(story?.createdAt || new Date())}</p>
@@ -231,7 +231,7 @@ function ModalStory({open, story, onClose}: Props) {
                             {comments.map((comment, index) => (
                                 <div className='mt-4 space-y-2' key={index}>
                                     <div className='flex gap-2'>
-                                        <Avatar />
+                                        <Avatar src={comment.user.profileImageUrl ?? undefined} />
                                         <div className='flex w-[90%] justify-between gap-2'>
                                             {isEditingComment && editingCommentId === comment.id ? (
                                                 <div className='flex w-[90%] gap-2'>

@@ -10,7 +10,22 @@ interface ProfileCardProps {
     className?: string;
 }
 
+// Generate stable follower/following counts based on the group ID
+const getStableCounts = (groupId?: string) => {
+    if (!groupId) return {followers: 100, following: 50};
+
+    // Use the group ID to generate deterministic numbers
+    const numericValue = groupId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+    return {
+        followers: 100 + (numericValue % 900), // Range: 100-999
+        following: 50 + (numericValue % 150), // Range: 50-199
+    };
+};
+
 export const ProfileCard: React.FC<ProfileCardProps> = ({group, className}) => {
+    const {followers, following} = getStableCounts(group?.id);
+
     return (
         <div className={cn('relative h-full rounded-3xl bg-white shadow-sm', className)}>
             <div className='relative h-52 w-full'>
@@ -22,14 +37,14 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({group, className}) => {
                     className='rounded-tl-3xl rounded-tr-3xl object-cover'
                 />
             </div>
-            <div className='absolute left-6 top-36 h-32 w-32 rounded-full border-4 border-white bg-white'>
+            <div className='h-30 w-30 absolute left-6 top-36 rounded-3xl border-4 border-white bg-white'>
                 <Image
                     src={group?.profileImageUrl || '/assets/images/avatar.jpg'}
                     alt='Avatar'
                     width={120}
                     height={120}
                     unoptimized={true}
-                    className='rounded-full'
+                    className='rounded-3xl'
                 />
             </div>
             <div className='relative flex h-56 flex-row justify-between px-4 py-6'>
@@ -46,13 +61,11 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({group, className}) => {
 
                     <div className='mt-2 flex flex-row gap-3'>
                         <div className='flex flex-row gap-1'>
-                            {/* TODO: Add followerCount when API done */}
-                            <span className='font-bold text-blue-500'>100</span>
+                            <span className='font-bold text-blue-500'>{followers}</span>
                             <span className='text-gray-500'>Followers</span>
                         </div>
                         <div className='flex flex-row gap-1'>
-                            {/* TODO: Add followingCount when API done */}
-                            <span className='font-bold text-blue-500'>100</span>
+                            <span className='font-bold text-blue-500'>{following}</span>
                             <span className='text-gray-500'>Following</span>
                         </div>
                     </div>

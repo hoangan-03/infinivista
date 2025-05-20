@@ -14,6 +14,7 @@ export interface IProfile extends BaseEntity {
     coverImageUrl: string;
     address: string;
     profilePrivacy: PROFILE_PRIVACY;
+    type: 'USER' | 'PAGE' | 'GROUP';
 }
 
 export interface IProfileSocialLink extends BaseEntity {

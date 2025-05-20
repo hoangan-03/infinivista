@@ -39,7 +39,7 @@ export const FollowersSection: React.FC<FollowersSectionProps> = ({group, classN
         <div className={cn('rounded-3xl bg-white pb-5 pt-7 shadow-sm', className)}>
             <div className='w-52 border-b border-blue-600 pb-4'>
                 <div className='flex items-center justify-between gap-6'>
-                    <h2 className='ml-6 text-[28px] font-bold text-blue-600'>Friends</h2>
+                    <h2 className='ml-6 text-[28px] font-bold text-blue-600'>Members</h2>
                 </div>
             </div>
             <div className='p-3'>

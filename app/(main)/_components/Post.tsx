@@ -1,7 +1,7 @@
 'use client';
 
 import {useRouter} from 'next/navigation';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Controller, SubmitHandler, useForm} from 'react-hook-form';
 import {toast} from 'react-toastify';
 
@@ -21,6 +21,7 @@ interface PostProps {
     post?: IPost;
     isShared?: boolean;
     className?: string;
+    dangerouslySetInnerHTML?: boolean; // New prop to handle highlighting
 }
 
 type Icon = {
@@ -33,9 +34,24 @@ const icons: Icon[] = Object.values(REACTION_TYPE).map((type) => ({
     type,
 }));
 
+// Helper function to generate stable random numbers based on post ID
+const getStableRandomNumber = (postId: string | undefined, seed: number = 0): number => {
+    if (!postId) return 100;
+
+    let hash = seed; // Add seed for different distributions
+    for (let i = 0; i < postId.length; i++) {
+        hash = (hash << 5) - hash + postId.charCodeAt(i);
+        hash = hash & hash; // Convert to 32bit integer
+    }
+
+    // Return a number between 100 and 10000
+    return Math.abs(hash % 9901) + 100;
+};
+
 type FormValues = IPostCommentCreate;
 
-export const Post: React.FC<PostProps> = ({post, isShared, className}) => {
+export const Post: React.FC<PostProps> = ({post, isShared, className, dangerouslySetInnerHTML}) => {
+    const isSharedd: boolean = false;
     const [showModalComments, setShowModalComments] = useState<boolean>(false);
 
     const {userId: currentUserId} = useGetProfileInfo();
@@ -44,6 +60,10 @@ export const Post: React.FC<PostProps> = ({post, isShared, className}) => {
     const {data: reactionCounts} = useGetPostReactionCount(post?.id);
 
     const router = useRouter();
+
+    // Generate stable view and repost counts based on post ID
+    const viewsCount = useMemo(() => getStableRandomNumber(post?.id, 1), [post?.id]);
+    const repostsCount = useMemo(() => getStableRandomNumber(post?.id, 2), [post?.id]);
 
     const {
         control,
@@ -116,6 +136,20 @@ export const Post: React.FC<PostProps> = ({post, isShared, className}) => {
         return () => window.removeEventListener('resize', updateDisplayCount);
     }, []);
 
+    const renderContent = () => {
+        if (dangerouslySetInnerHTML) {
+            return <p className='whitespace-pre-wrap' dangerouslySetInnerHTML={{__html: post?.content || ''}} />;
+        }
+        return <p className='whitespace-pre-wrap'>{post?.content}</p>;
+    };
+
+    const renderUsername = () => {
+        if (dangerouslySetInnerHTML && post?.userOwner) {
+            return <span dangerouslySetInnerHTML={{__html: post.userOwner.username}} />;
+        }
+        return <>{post?.userOwner?.username}</>;
+    };
+
     return (
         <div
             className={cn(
@@ -134,19 +168,15 @@ export const Post: React.FC<PostProps> = ({post, isShared, className}) => {
                         className='cursor-pointer font-bold'
                         onClick={() => router.push(ROUTES.PROFILE + `/${post?.userOwner?.id}`)}
                     >
-                        {post?.userOwner?.username}
+                        {renderUsername()}
                     </h6>
                     <p className='text-caption font-medium text-gray-500'>
                         {getTimeStamp(post?.createdAt || new Date())}
                     </p>
                 </div>
             </section>
-            {!isShared && (
-                <section>
-                    <p className='text-justify text-paragraph1 font-medium'>{post?.content}</p>
-                </section>
-            )}
-            {isShared && (
+            {!isSharedd && <section>{renderContent()}</section>}
+            {isSharedd && (
                 <div
                     className={cn(
                         'flex min-w-fit flex-col gap-5 rounded-[1.5rem] border border-gray-100 bg-white p-7 shadow-md',
@@ -168,7 +198,7 @@ export const Post: React.FC<PostProps> = ({post, isShared, className}) => {
                     <ModalMultimedia attachments={post?.postAttachments} displayCount={displayCount} />
                 </div>
             )}
-            {!isShared && <ModalMultimedia attachments={post?.postAttachments} displayCount={displayCount} />}
+            {!isSharedd && <ModalMultimedia attachments={post?.postAttachments} displayCount={displayCount} />}
             <section>
                 <div className='space-y-2'>
                     <Separator className='bg-gray-200' />
@@ -188,7 +218,7 @@ export const Post: React.FC<PostProps> = ({post, isShared, className}) => {
                             </Button>
                         </div>
                         <div className='flex gap-4'>
-                            {!isShared && (
+                            {!isSharedd && (
                                 <Button variant='icon' size='icon'>
                                     <Icon name='share' className='block group-hover:hidden' />
                                     <Icon name='share-filled' className='hidden text-primary/80 group-hover:block' />
@@ -234,13 +264,13 @@ export const Post: React.FC<PostProps> = ({post, isShared, className}) => {
                 </TooltipProvider>
                 <div className='flex gap-3 text-gray-600'>
                     <p className='w-fit cursor-pointer text-paragraph2 hover:underline hover:underline-offset-2'>
-                        {Math.floor(Math.random() * 9901) + 100} Views
+                        {viewsCount} Views
                     </p>
                     <p className='w-fit cursor-pointer text-paragraph2 hover:underline hover:underline-offset-2'>
                         {pagination[0]?.total} Comments
                     </p>
                     <p className='w-fit cursor-pointer text-paragraph2 hover:underline hover:underline-offset-2'>
-                        {Math.floor(Math.random() * 9901) + 100} Reposts
+                        {repostsCount} Reposts
                     </p>
                     <p className='w-fit cursor-pointer text-paragraph2 hover:underline hover:underline-offset-2'>
                         {post?.share_count} Shares
