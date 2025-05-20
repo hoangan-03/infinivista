@@ -35,7 +35,7 @@ const menuSidebarContents: ISidebarContent[] = [
             {label: 'Story', iconName: 'globe', href: ROUTES.CONNECT_STORY},
         ],
     },
-     {label: 'Discover', iconName: 'navigation', href: ROUTES.DISCOVER},
+    {label: 'Discover', iconName: 'navigation', href: ROUTES.DISCOVER},
     {label: 'Messages', iconName: 'chat-circle', href: ROUTES.COMMUNICATION},
     {label: 'Settings', iconName: 'settings-gear', href: ROUTES.SETTINGS},
     {label: 'Notifications', iconName: 'notification-bell', href: ROUTES.NOTIFICATIONS},
