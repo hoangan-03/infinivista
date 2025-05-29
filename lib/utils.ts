@@ -39,7 +39,13 @@ export function getTimeStamp(time: Date | string): string {
         const days = Math.floor(timeOffset / 86400);
         timeStamp = `${days} day${days !== 1 ? 's' : ''} ago`;
     } else {
-        timeStamp = time.toString();
+        // For dates older than a week, show a formatted date
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        };
+        timeStamp = time.toLocaleDateString('en-US', options);
     }
 
     return timeStamp;

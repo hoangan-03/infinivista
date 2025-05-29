@@ -13,9 +13,10 @@ import {REACTION_TYPE} from '@/modules/common.enum';
 import {IPost, IPostCommentCreate, IPostReactionAdd, IPostReactionDelete} from '@/modules/post/post.interface';
 import {PostService} from '@/modules/post/post.service';
 import {useGetInfinitePostComments, useGetPostReactionCount, useGetPostReactions} from '@/modules/post/post.swr';
+import {TranslationLanguage} from '@/modules/translation/translation.interface';
 import {ROUTES} from '@/routes/routes.enum';
 
-import {ModalComments, ModalMultimedia, ReactionButton} from '.';
+import {ModalComments, ModalMultimedia, ReactionButton, TranslationButton} from '.';
 
 interface PostProps {
     post?: IPost;
@@ -52,7 +53,10 @@ type FormValues = IPostCommentCreate;
 
 export const Post: React.FC<PostProps> = ({post, isShared, className, dangerouslySetInnerHTML}) => {
     const isSharedd: boolean = false;
-    const [showModalComments, setShowModalComments] = useState<boolean>(false);
+    const [showModalComments, setShowModalComments] = useState<boolean>(false); // Translation state
+    const [translatedContent, setTranslatedContent] = useState<string>('');
+    const [isTranslated, setIsTranslated] = useState<boolean>(false);
+    const [currentTargetLanguage, setCurrentTargetLanguage] = useState<TranslationLanguage | ''>('');
 
     const {userId: currentUserId} = useGetProfileInfo();
 
@@ -61,7 +65,6 @@ export const Post: React.FC<PostProps> = ({post, isShared, className, dangerousl
 
     const router = useRouter();
 
-    // Generate stable view and repost counts based on post ID
     const viewsCount = useMemo(() => getStableRandomNumber(post?.id, 1), [post?.id]);
     const repostsCount = useMemo(() => getStableRandomNumber(post?.id, 2), [post?.id]);
 
@@ -111,6 +114,18 @@ export const Post: React.FC<PostProps> = ({post, isShared, className, dangerousl
             toast.error('Failed to add reaction.');
         }
     };
+    const handleTranslationComplete = (translatedText: string, targetLanguage?: string) => {
+        setTranslatedContent(translatedText);
+        setIsTranslated(true);
+        if (targetLanguage) {
+            setCurrentTargetLanguage(targetLanguage as TranslationLanguage);
+        }
+    };
+    const handleTranslationClear = () => {
+        setTranslatedContent('');
+        setIsTranslated(false);
+        setCurrentTargetLanguage('');
+    };
 
     const [displayCount, setDisplayCount] = useState<number>(0);
     useEffect(() => {
@@ -135,12 +150,13 @@ export const Post: React.FC<PostProps> = ({post, isShared, className, dangerousl
 
         return () => window.removeEventListener('resize', updateDisplayCount);
     }, []);
-
     const renderContent = () => {
+        const contentToDisplay = isTranslated ? translatedContent : post?.content || '';
+
         if (dangerouslySetInnerHTML) {
-            return <p className='whitespace-pre-wrap' dangerouslySetInnerHTML={{__html: post?.content || ''}} />;
+            return <p className='whitespace-pre-wrap' dangerouslySetInnerHTML={{__html: contentToDisplay}} />;
         }
-        return <p className='whitespace-pre-wrap'>{post?.content}</p>;
+        return <p className='whitespace-pre-wrap'>{contentToDisplay}</p>;
     };
 
     const renderUsername = () => {
@@ -203,6 +219,7 @@ export const Post: React.FC<PostProps> = ({post, isShared, className, dangerousl
                 <div className='space-y-2'>
                     <Separator className='bg-gray-200' />
                     <div className='flex items-center justify-between gap-3'>
+                        {' '}
                         <div className='reaction-container flex items-center gap-4'>
                             <ReactionButton reacted={currentUserReaction} onReact={handleReactPost} />
                             <Button variant='icon' size='icon' onClick={() => setShowModalComments(true)}>
@@ -215,7 +232,14 @@ export const Post: React.FC<PostProps> = ({post, isShared, className, dangerousl
                             <Button variant='icon' size='icon'>
                                 <Icon name='file-copy' className='block group-hover:hidden' />
                                 <Icon name='file-copy-filled' className='hidden text-primary/80 group-hover:block' />
-                            </Button>
+                            </Button>{' '}
+                            <TranslationButton
+                                originalText={post?.content || ''}
+                                onTranslationComplete={handleTranslationComplete}
+                                onTranslationClear={handleTranslationClear}
+                                isTranslated={isTranslated}
+                                currentTargetLanguage={currentTargetLanguage || undefined}
+                            />
                         </div>
                         <div className='flex gap-4'>
                             {!isSharedd && (

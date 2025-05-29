@@ -6,16 +6,15 @@ import React, {useState} from 'react';
 
 import {ModalNewPost} from '@/app/(main)/_components';
 import {Icon} from '@/components/commons';
+import {SidebarElement} from '@/components/commons/sidebar/SidebarElement';
+import {SidebarProfile} from '@/components/commons/sidebar/SidebarProfile';
+import {SidebarSubElement} from '@/components/commons/sidebar/SidebarSubElement';
 import {Button, Separator} from '@/components/ui';
 import {useAuthContext} from '@/context';
 import {cn} from '@/lib/utils';
 import LogoIcon from '@/public/assets/images/logo_icon.svg';
 import LogoText from '@/public/assets/images/logo_text.svg';
 import {ROUTES} from '@/routes/routes.enum';
-
-import {SidebarElement} from './SidebarElement';
-import {SidebarProfile} from './SidebarProfile';
-import {SidebarSubElement} from './SidebarSubElement';
 
 interface ISidebarContent {
     label: string;
@@ -39,6 +38,7 @@ const menuSidebarContents: ISidebarContent[] = [
     {label: 'Messages', iconName: 'chat-circle', href: ROUTES.COMMUNICATION},
     {label: 'Settings', iconName: 'settings-gear', href: ROUTES.SETTINGS},
     {label: 'Notifications', iconName: 'notification-bell', href: ROUTES.NOTIFICATIONS},
+    {label: 'About', iconName: 'about', href: ROUTES.ABOUT},
 ];
 
 const profileSidebarContents: ISidebarContent[] = [

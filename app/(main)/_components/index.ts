@@ -6,3 +6,4 @@ export {ModalMultimedia} from './ModalMultimedia';
 export {ModalNewPost} from './ModalNewPost';
 export {Post} from './Post';
 export {ReactionButton} from './ReactionButton';
+export {TranslationButton} from './TranslationButton';
