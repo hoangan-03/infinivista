@@ -4,13 +4,7 @@ import React, {useState} from 'react';
 import {toast} from 'react-toastify';
 
 import {Icon, Spinner} from '@/components/commons';
-import {
-    Button,
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from '@/components/ui';
+import {Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from '@/components/ui';
 import {cn} from '@/lib/utils';
 import {SUPPORTED_LANGUAGES} from '@/modules/translation/translation.interface';
 import {useTranslateText} from '@/modules/translation/translation.swr';
@@ -31,13 +25,14 @@ export const TranslationButton: React.FC<TranslationButtonProps> = ({
     className,
 }) => {
     const {translateText, isTranslating} = useTranslateText();
-    const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);    const handleTranslate = async (targetLanguage: string) => {
+    const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+    const handleTranslate = async (targetLanguage: string) => {
         if (!originalText.trim()) {
             toast.error('No text to translate');
             return;
         }
 
-        console.log('Starting translation...', { targetLanguage, isTranslating });
+        console.log('Starting translation...', {targetLanguage, isTranslating});
 
         try {
             const response = await translateText({
@@ -77,7 +72,8 @@ export const TranslationButton: React.FC<TranslationButtonProps> = ({
                 <Spinner width={16} height={16} />
             </Button>
         );
-    }    return (
+    }
+    return (
         <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
             <DropdownMenuTrigger asChild>
                 <Button variant='icon' size='icon' className={cn('group', className)}>
@@ -85,14 +81,12 @@ export const TranslationButton: React.FC<TranslationButtonProps> = ({
                         name={isTranslated ? 'language-filled' : 'language'}
                         className={cn(
                             'transition-colors',
-                            isTranslated 
-                                ? 'text-primary' 
-                                : 'text-gray-600 group-hover:text-primary'
+                            isTranslated ? 'text-primary' : 'text-gray-600 group-hover:text-primary'
                         )}
                     />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align='center' className='w-48 max-h-64 overflow-y-auto z-50'>
+            <DropdownMenuContent align='center' className='z-50 max-h-64 w-48 overflow-y-auto'>
                 {isTranslated && (
                     <>
                         <DropdownMenuItem
