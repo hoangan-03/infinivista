@@ -14,7 +14,7 @@ function useTranslateText() {
             setIsTranslating(true);
             try {
                 const response = await TranslationService.translateText({payload: arg});
-                return response;
+                return response.data;
             } finally {
                 setIsTranslating(false);
             }

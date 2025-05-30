@@ -1,44 +1,42 @@
 export interface ITranslationRequest {
-    content: string;
-    targetLanguage: TranslationLanguage;
+    text: string;
+    sourceLanguage?: string; // Auto-detect if not provided
+    targetLanguage: string;
 }
 
-export enum TranslationLanguage {
-    ENGLISH = 'ENGLISH',
-    FRENCH = 'FRENCH',
-    SPANISH = 'SPANISH',
-    GERMAN = 'GERMAN',
-    ITALIAN = 'ITALIAN',
-    PORTUGUESE = 'PORTUGUESE',
-    RUSSIAN = 'RUSSIAN',
-    ARABIC = 'ARABIC',
-    CHINESE = 'CHINESE',
-    JAPANESE = 'JAPANESE',
-    KOREAN = 'KOREAN',
-    VIETNAMESE = 'VIETNAMESE',
-    HINDI = 'HINDI',
-    THAI = 'THAI',
+export interface ITranslationResponse {
+    success: boolean;
+    data: ITranslationResponseData;
+}
+
+export interface ITranslationResponseData {
+    originalText: string;
+    translatedText: string;
+    sourceLanguage: string;
+    targetLanguage: string;
+    confidence?: number; // Translation confidence score
+    timestamp: string;
 }
 
 export interface ISupportedLanguage {
-    code: TranslationLanguage;
+    code: string;
     name: string;
     nativeName: string;
 }
 
 export const SUPPORTED_LANGUAGES: ISupportedLanguage[] = [
-    {code: TranslationLanguage.ENGLISH, name: 'English', nativeName: 'English'},
-    {code: TranslationLanguage.VIETNAMESE, name: 'Vietnamese', nativeName: 'Tiếng Việt'},
-    {code: TranslationLanguage.FRENCH, name: 'French', nativeName: 'Français'},
-    {code: TranslationLanguage.SPANISH, name: 'Spanish', nativeName: 'Español'},
-    {code: TranslationLanguage.GERMAN, name: 'German', nativeName: 'Deutsch'},
-    {code: TranslationLanguage.ITALIAN, name: 'Italian', nativeName: 'Italiano'},
-    {code: TranslationLanguage.PORTUGUESE, name: 'Portuguese', nativeName: 'Português'},
-    {code: TranslationLanguage.RUSSIAN, name: 'Russian', nativeName: 'Русский'},
-    {code: TranslationLanguage.JAPANESE, name: 'Japanese', nativeName: '日本語'},
-    {code: TranslationLanguage.KOREAN, name: 'Korean', nativeName: '한국어'},
-    {code: TranslationLanguage.CHINESE, name: 'Chinese', nativeName: '中文'},
-    {code: TranslationLanguage.ARABIC, name: 'Arabic', nativeName: 'العربية'},
-    {code: TranslationLanguage.HINDI, name: 'Hindi', nativeName: 'हिन्दी'},
-    {code: TranslationLanguage.THAI, name: 'Thai', nativeName: 'ไทย'},
+    {code: 'en', name: 'English', nativeName: 'English'},
+    {code: 'vi', name: 'Vietnamese', nativeName: 'Tiếng Việt'},
+    {code: 'fr', name: 'French', nativeName: 'Français'},
+    {code: 'es', name: 'Spanish', nativeName: 'Español'},
+    {code: 'de', name: 'German', nativeName: 'Deutsch'},
+    {code: 'it', name: 'Italian', nativeName: 'Italiano'},
+    {code: 'pt', name: 'Portuguese', nativeName: 'Português'},
+    {code: 'ru', name: 'Russian', nativeName: 'Русский'},
+    {code: 'ja', name: 'Japanese', nativeName: '日本語'},
+    {code: 'ko', name: 'Korean', nativeName: '한국어'},
+    {code: 'zh', name: 'Chinese', nativeName: '中文'},
+    {code: 'ar', name: 'Arabic', nativeName: 'العربية'},
+    {code: 'hi', name: 'Hindi', nativeName: 'हिन्दी'},
+    {code: 'th', name: 'Thai', nativeName: 'ไทย'},
 ];

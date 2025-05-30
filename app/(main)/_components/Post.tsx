@@ -13,7 +13,6 @@ import {REACTION_TYPE} from '@/modules/common.enum';
 import {IPost, IPostCommentCreate, IPostReactionAdd, IPostReactionDelete} from '@/modules/post/post.interface';
 import {PostService} from '@/modules/post/post.service';
 import {useGetInfinitePostComments, useGetPostReactionCount, useGetPostReactions} from '@/modules/post/post.swr';
-import {TranslationLanguage} from '@/modules/translation/translation.interface';
 import {ROUTES} from '@/routes/routes.enum';
 
 import {ModalComments, ModalMultimedia, ReactionButton, TranslationButton} from '.';
@@ -53,10 +52,13 @@ type FormValues = IPostCommentCreate;
 
 export const Post: React.FC<PostProps> = ({post, isShared, className, dangerouslySetInnerHTML}) => {
     const isSharedd: boolean = false;
-    const [showModalComments, setShowModalComments] = useState<boolean>(false); // Translation state
+    const [showModalComments, setShowModalComments] = useState<boolean>(false);
+
+    // Translation state
     const [translatedContent, setTranslatedContent] = useState<string>('');
     const [isTranslated, setIsTranslated] = useState<boolean>(false);
-    const [currentTargetLanguage, setCurrentTargetLanguage] = useState<TranslationLanguage | ''>('');
+    const [sourceLanguage, setSourceLanguage] = useState<string>('');
+    const [targetLanguage, setTargetLanguage] = useState<string>('');
 
     const {userId: currentUserId} = useGetProfileInfo();
 
@@ -65,6 +67,7 @@ export const Post: React.FC<PostProps> = ({post, isShared, className, dangerousl
 
     const router = useRouter();
 
+    // Generate stable view and repost counts based on post ID
     const viewsCount = useMemo(() => getStableRandomNumber(post?.id, 1), [post?.id]);
     const repostsCount = useMemo(() => getStableRandomNumber(post?.id, 2), [post?.id]);
 
@@ -114,17 +117,20 @@ export const Post: React.FC<PostProps> = ({post, isShared, className, dangerousl
             toast.error('Failed to add reaction.');
         }
     };
-    const handleTranslationComplete = (translatedText: string, targetLanguage?: string) => {
+
+    // Translation handlers
+    const handleTranslationComplete = (translatedText: string, sourceLang: string, targetLang: string) => {
         setTranslatedContent(translatedText);
+        setSourceLanguage(sourceLang);
+        setTargetLanguage(targetLang);
         setIsTranslated(true);
-        if (targetLanguage) {
-            setCurrentTargetLanguage(targetLanguage as TranslationLanguage);
-        }
     };
+
     const handleTranslationClear = () => {
         setTranslatedContent('');
+        setSourceLanguage('');
+        setTargetLanguage('');
         setIsTranslated(false);
-        setCurrentTargetLanguage('');
     };
 
     const [displayCount, setDisplayCount] = useState<number>(0);
@@ -232,13 +238,12 @@ export const Post: React.FC<PostProps> = ({post, isShared, className, dangerousl
                             <Button variant='icon' size='icon'>
                                 <Icon name='file-copy' className='block group-hover:hidden' />
                                 <Icon name='file-copy-filled' className='hidden text-primary/80 group-hover:block' />
-                            </Button>{' '}
+                            </Button>
                             <TranslationButton
                                 originalText={post?.content || ''}
                                 onTranslationComplete={handleTranslationComplete}
                                 onTranslationClear={handleTranslationClear}
                                 isTranslated={isTranslated}
-                                currentTargetLanguage={currentTargetLanguage || undefined}
                             />
                         </div>
                         <div className='flex gap-4'>
